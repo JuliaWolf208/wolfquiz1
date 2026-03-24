@@ -1,0 +1,15 @@
+{
+  "short_name": "Wolf-App",
+  "name": "Mrs. Wolfs Quiz-Portal",
+  "icons": [
+    {
+      "src": "icon.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#f0fffe",
+  "display": "standalone",
+  "theme_color": "#26a69a"
+}
