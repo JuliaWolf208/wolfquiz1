@@ -15,7 +15,7 @@
 <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png?v=2">
 <link rel="icon" type="image/png" sizes="192x192" href="icon_192.png">
 
-<title>Quizmaster Wolf</title>
+<title>Quizmaster Wolf Hub</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 
@@ -206,46 +206,40 @@ window.onload = function() {
 };
 
 function filterQuizzes() {
-    // 1. Eingabe holen und in Kleinbuchstaben umwandeln
     const input = document.getElementById('searchBar').value.toLowerCase();
-    
-    // 2. Alle Quiz-Karten finden
     const cards = document.querySelectorAll('.quiz-card');
-    
-    // 3. Jede Karte prüfen
-    cards.forEach(card => {
-        // Wir suchen im Titel
-        const title = card.querySelector('.quiz-title').textContent.toLowerCase();
-        // Wir suchen in der Meta-Info (z.B. "8 Fragen")
-        const meta = card.querySelector('.quiz-meta').textContent.toLowerCase();
-        
-        // Wenn Treffer: Karte zeigen, sonst verstecken
-        if (title.includes(input) || meta.includes(input)) {
-            card.style.display = "flex";
-        } else {
-            card.style.display = "none";
-        }
-    });
-
-    // 4. Leere Units (z.B. "Revision", "Unit 3") ausblenden
     const unitGroups = document.querySelectorAll('.unit-group');
-    unitGroups.forEach(group => {
-        const visibleCards = group.querySelectorAll('.quiz-card[style="display: flex"]');
-        if (visibleCards.length > 0 || input === "") {
-            group.style.display = "block";
+    const sections = document.querySelectorAll('.section');
+
+    // 1. Karten filtern
+    cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        if (text.includes(input)) {
+            card.classList.remove('hidden');
         } else {
-            group.style.display = "none";
+            card.classList.add('hidden');
         }
     });
 
-    // 5. Ganze Sektionen (z.B. "Klasse 6", "Klasse 8") ausblenden
-    const sections = document.querySelectorAll('.section');
-    sections.forEach(section => {
-        const visibleGroups = section.querySelectorAll('.unit-group[style="display: block"]');
-        if (visibleGroups.length > 0 || input === "") {
-            section.style.display = "block";
+    // 2. Units filtern: Zeige Unit nur, wenn sie sichtbare Karten hat
+    unitGroups.forEach(group => {
+        const hasVisibleCards = Array.from(group.querySelectorAll('.quiz-card'))
+                                     .some(card => !card.classList.contains('hidden'));
+        if (hasVisibleCards || input === "") {
+            group.classList.remove('hidden');
         } else {
-            section.style.display = "none";
+            group.classList.add('hidden');
+        }
+    });
+
+    // 3. Sektionen filtern: Zeige Sektion nur, wenn sie sichtbare Units hat
+    sections.forEach(section => {
+        const hasVisibleGroups = Array.from(section.querySelectorAll('.unit-group'))
+                                      .some(group => !group.classList.contains('hidden'));
+        if (hasVisibleGroups || input === "") {
+            section.classList.remove('hidden');
+        } else {
+            section.classList.add('hidden');
         }
     });
 }
