@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Klasse8_260327_FourTenses</title>
+<title>Klasse6_260325_SimplePastVsPresentPerfect</title>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -71,14 +72,14 @@ h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; text-align: center
 </style>
 </head>
 <body>
-<h1>Four Tenses Quiz</h1>
-<p class="subtitle">Class 8 &middot; 8 Questions</p>
+<h1>Simple Past vs. Present Perfect</h1>
+<p class="subtitle">Class 6 &middot; 8 Questions</p>
 
 <div id="startScreen" class="start-screen">
   <div class="start-emoji">&#127919;</div>
   <div class="start-title">Get ready!</div>
   <div class="start-info">
-    <p>&#128221; 8 questions &ndash; Simple Past &middot; Present Perfect &middot; Past Progressive &middot; Past Perfect</p>
+    <p>&#128221; 8 questions</p>
     <div class="timer-input-row">
       <label for="timerInput">&#9201; Seconds per question:</label>
       <input class="timer-input" id="timerInput" type="number" min="5" max="60" value="15">
@@ -136,64 +137,55 @@ function beep() {
   } catch(e) {}
 }
 
-// 8 Fragen: je 2x Simple Past, Present Perfect, Past Progressive, Past Perfect
-// Richtige Antworten verteilt auf Positionen: 1, 2, 3, 4, 5, 1, 3, 5
+// Richtige Antworten verteilt auf Positionen: 1,2,3,4,5,1,3,2
 var questions = [
   {
-    // Simple Past – answer pos 1
-    text: '\u201cThe storm ______ suddenly last night and knocked down several trees.\u201d',
-    options: ['hit', 'has hit', 'was hitting', 'had hit', 'is hitting'],
+    text: '\u201cI ______ my keys. I can\u2019t open the door!\u201d',
+    options: ['have lost', 'lost', 'had lost', 'was losing', 'lose'],
     answer: 0,
-    explanation: '"Last night" = finished time \u2192 simple past: hit.'
+    explanation: 'Present perfect: the effect is NOW \u2013 "have lost".'
   },
   {
-    // Present Perfect – answer pos 2
-    text: '\u201cOh no! Someone ______ my bike. It\u2019s not outside anymore!\u201d',
-    options: ['stole', 'has stolen', 'was stealing', 'had stolen', 'steals'],
+    text: '\u201cShe ______ to Paris last summer.\u201d',
+    options: ['has gone', 'went', 'had gone', 'was going', 'goes'],
     answer: 1,
-    explanation: 'The result is visible NOW (bike is gone) \u2192 present perfect: has stolen.'
+    explanation: '"Last summer" = specific time in the past \u2192 simple past: went.'
   },
   {
-    // Past Progressive – answer pos 3
-    text: '\u201cI couldn\u2019t hear you. I ______ music with my headphones on.\u201d',
-    options: ['listened', 'have listened', 'was listening', 'had listened', 'listen'],
+    text: '\u201cWe ______ this film three times already.\u201d',
+    options: ['saw', 'had seen', 'have seen', 'were seeing', 'see'],
     answer: 2,
-    explanation: 'Action in progress at that moment in the past \u2192 past progressive: was listening.'
+    explanation: '"Already" signals a result up to now \u2192 present perfect: have seen.'
   },
   {
-    // Past Perfect – answer pos 4
-    text: '\u201cWhen we arrived at the cinema, the film ______ already ______ .\u201d',
-    options: ['started', 'has started', 'was starting', 'had started', 'starts'],
+    text: '\u201cHe ______ his homework two hours ago.\u201d',
+    options: ['has finished', 'was finishing', 'had finished', 'finished', 'finishes'],
     answer: 3,
-    explanation: 'The film started before we arrived \u2013 past perfect: had already started.'
+    explanation: '"Two hours ago" = specific past time \u2192 simple past: finished.'
   },
   {
-    // Simple Past – answer pos 5
-    text: '\u201cShe ______ her driving test on her third attempt last spring.\u201d',
-    options: ['passes', 'has passed', 'was passing', 'had passed', 'passed'],
+    text: '\u201cHave you ever ______ sushi?\u201d',
+    options: ['ate', 'eating', 'eat', 'eats', 'eaten'],
     answer: 4,
-    explanation: '"Last spring" = specific finished time \u2192 simple past: passed.'
+    explanation: 'After "have/has", always use the past participle: eaten.'
   },
   {
-    // Present Perfect – answer pos 1
-    text: '\u201cI ______ this book before, so I know exactly how it ends.\u201d',
-    options: ['have read', 'read', 'was reading', 'had read', 'reads'],
+    text: '\u201cShe ______ in Berlin for five years and still lives there.\u201d',
+    options: ['has lived', 'lived', 'had lived', 'was living', 'lives'],
     answer: 0,
-    explanation: 'Experience up to now with current relevance \u2192 present perfect: have read.'
+    explanation: '"Still lives there" = action continues now \u2192 present perfect: has lived.'
   },
   {
-    // Past Progressive – answer pos 3
-    text: '\u201cThe children ______ in the garden when it started to rain.\u201d',
-    options: ['played', 'have played', 'were playing', 'had played', 'play'],
+    text: '\u201cI ______ Tom at the market yesterday morning.\u201d',
+    options: ['have met', 'had met', 'met', 'was meeting', 'meet'],
     answer: 2,
-    explanation: 'Action in progress when interrupted \u2192 past progressive: were playing.'
+    explanation: '"Yesterday morning" = finished time \u2192 simple past: met.'
   },
   {
-    // Past Perfect – answer pos 5
-    text: '\u201cBy the time the guests arrived, she ______ the whole flat.\u201d',
-    options: ['cleaned', 'has cleaned', 'was cleaning', 'is cleaning', 'had cleaned'],
-    answer: 4,
-    explanation: 'Completed before another past event \u2192 past perfect: had cleaned.'
+    text: '\u201cThey ______ just had lunch. They are not hungry.\u201d',
+    options: ['just had', 'have just had', 'had just had', 'were just having', 'just have'],
+    answer: 1,
+    explanation: 'Present effect (not hungry now) \u2192 present perfect: have just had.'
   }
 ];
 
@@ -343,5 +335,6 @@ function restart() {
   document.getElementById('startScreen').style.display = 'flex';
 }
 </script>
+
 </body>
 </html>
