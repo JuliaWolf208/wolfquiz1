@@ -72,7 +72,7 @@
 </header>
 
 <div class="search-container">
-  <input type="text" id="quizSearch" placeholder="Quiz suchen..." onkeyup="filterQuizzes()">
+    <input type="text" id="searchBar" oninput="filterQuizzes()" placeholder="Search quiz...">
 </div>
 
 <div class="install-banner" id="installBanner">
@@ -206,49 +206,48 @@ window.onload = function() {
 };
 
 function filterQuizzes() {
-    // 1. Was hat der User getippt? (In Kleinbuchstaben umwandeln)
-    let input = document.getElementById('searchBar').value.toLowerCase();
+    // 1. Eingabe holen und in Kleinbuchstaben umwandeln
+    const input = document.getElementById('searchBar').value.toLowerCase();
     
-    // 2. Alle Quiz-Karten auf der Seite holen
-    let cards = document.getElementsByClassName('quiz-card');
+    // 2. Alle Quiz-Karten finden
+    const cards = document.querySelectorAll('.quiz-card');
     
-    // 3. Jede Karte einzeln prüfen
-    for (let i = 0; i < cards.length; i++) {
-        // Wir suchen im Titel UND im Untertext (meta) der Karte
-        let title = cards[i].querySelector('.quiz-title').innerText.toLowerCase();
-        let meta = cards[i].querySelector('.quiz-meta').innerText.toLowerCase();
+    // 3. Jede Karte prüfen
+    cards.forEach(card => {
+        // Wir suchen im Titel
+        const title = card.querySelector('.quiz-title').textContent.toLowerCase();
+        // Wir suchen in der Meta-Info (z.B. "8 Fragen")
+        const meta = card.querySelector('.quiz-meta').textContent.toLowerCase();
         
+        // Wenn Treffer: Karte zeigen, sonst verstecken
         if (title.includes(input) || meta.includes(input)) {
-            cards[i].style.display = "flex"; // Treffer zeigen
+            card.style.display = "flex";
         } else {
-            cards[i].style.display = "none"; // Nicht-Treffer verstecken
+            card.style.display = "none";
         }
-    }
+    });
 
-    // 4. Leere Units/Sektionen aufräumen
-    // Wir prüfen alle Unit-Gruppen (z.B. Revision, Unit 3&4)
-    let groups = document.getElementsByClassName('unit-group');
-    for (let i = 0; i < groups.length; i++) {
-        // Zähle, wie viele Karten in dieser Gruppe gerade SICHTBAR sind
-        let visibleCards = groups[i].querySelectorAll('.quiz-card[style*="display: flex"]');
-        
+    // 4. Leere Units (z.B. "Revision", "Unit 3") ausblenden
+    const unitGroups = document.querySelectorAll('.unit-group');
+    unitGroups.forEach(group => {
+        const visibleCards = group.querySelectorAll('.quiz-card[style="display: flex"]');
         if (visibleCards.length > 0 || input === "") {
-            groups[i].style.display = "block"; // Zeigen, wenn Karten drin sind
+            group.style.display = "block";
         } else {
-            groups[i].style.display = "none";  // Verstecken, wenn leer gefiltert
+            group.style.display = "none";
         }
-    }
-    
-    // 5. Sektionen (Klasse 6, Klasse 8) prüfen
-    let sections = document.getElementsByClassName('section');
-    for (let i = 0; i < sections.length; i++) {
-        let visibleGroups = sections[i].querySelectorAll('.unit-group[style*="display: block"]');
+    });
+
+    // 5. Ganze Sektionen (z.B. "Klasse 6", "Klasse 8") ausblenden
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(section => {
+        const visibleGroups = section.querySelectorAll('.unit-group[style="display: block"]');
         if (visibleGroups.length > 0 || input === "") {
-            sections[i].style.display = "block";
+            section.style.display = "block";
         } else {
-            sections[i].style.display = "none";
+            section.style.display = "none";
         }
-    }
+    });
 }
 
 if ('serviceWorker' in navigator) {
