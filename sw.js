@@ -1,6 +1,6 @@
-const cacheName = 'wolf-quiz-v22'; // Version bei großen Änderungen hochzählen
+const cacheName = 'wolf-quiz-v33'; // Version erhöhen bei Änderungen
 
-// Beim Installieren cachen wir nur das Nötigste (die App-Hülle)
+// Beim Installieren: nur Grundstruktur cachen
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(cacheName).then(cache => {
@@ -14,37 +14,28 @@ self.addEventListener('install', e => {
   self.skipWaiting();
 });
 
-// Alte Caches aufräumen
+// Alte Caches löschen
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys => {
       return Promise.all(
-        keys.filter(k => k !== cacheName).map(k => caches.delete(k))
+        keys
+          .filter(k => k !== cacheName)
+          .map(k => caches.delete(k))
       );
     })
   );
+  self.clients.claim();
 });
 
-// DER AUTOMATIK-TRICK: Alles, was aufgerufen wird, landet im Cache
+// Fetch-Handler (FIX: Icons nicht cachen!)
 self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request).then(cachedResponse => {
-      // 1. Wenn wir es im Cache haben, zeigen wir es sofort (schnell!)
-      // 2. Parallel fragen wir das Netzwerk nach einer frischen Version
-      const networkFetch = fetch(e.request).then(networkResponse => {
-        // Wenn die Antwort gültig ist, kopieren wir sie in den Cache
-        if (networkResponse && networkResponse.status === 200) {
-          const resClone = networkResponse.clone();
-          caches.open(cacheName).then(cache => {
-            cache.put(e.request, resClone);
-          });
-        }
-        return networkResponse;
-      }).catch(() => {
-        // Offline-Fall: Wenn Netzwerk fehlschlägt, ist das okay
-      });
+  const url = e.request.url;
 
-      return cachedResponse || networkFetch;
-    })
-  );
-});
+  // 🔥 WICHTIG: Icons und Bilder NICHT cachen
+  if (url.includes('.png') || url.includes('.jpg') || url.includes('.jpeg')) {
+    return; // immer direkt vom Netzwerk laden
+  }
+
+  e.respondWith(
+    caches.match(e.reques
