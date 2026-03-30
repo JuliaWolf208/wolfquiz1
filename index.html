@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-title" content="Wolf-App">
 <meta name="theme-color" content="#26a69a">
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" href="icon.png">
 
 <title>Quizmaster Wolf</title>
 
@@ -64,7 +64,7 @@
 
 <header>
   <div class="app-icon">👩‍🏫</div>
-  <h1>Quizmaster Wolf</h1>
+  <h1>Quizmaster Ms. Wolf</h1>
   <p>Englisch &amp; Musik · Julia Wolf</p>
 </header>
 
@@ -85,7 +85,7 @@
       <a class="quiz-card" href="2.html"><span class="quiz-icon">📝</span><div class="quiz-info"><div class="quiz-title">Vocabulary Unit 3</div><div class="quiz-meta">8 Fragen</div></div></a>
       <a class="quiz-card" href="3.html"><span class="quiz-icon">📝</span><div class="quiz-info"><div class="quiz-title">Simple past vs. present perfect</div><div class="quiz-meta">8 Fragen</div></div></a>
       <a class="quiz-card" href="4.html"><span class="quiz-icon">📚</span><div class="quiz-info"><div class="quiz-title">Klassik Comics</div><div class="quiz-meta">8 Fragen</div></div></a>
-      <a class="quiz-card" href="Dur-Moll-Akkorde1.html"><span class="quiz-icon">📚</span><div class="quiz-info"><div class="quiz-title">Dur- und Moll-Dreiklänge neu</div><div class="quiz-meta">8 Fragen</div></div></a>
+      <a class="quiz-card" href="Dur-Moll-Dreiklänge1.html"><span class="quiz-icon">📚</span><div class="quiz-info"><div class="quiz-title">Dur- und Moll-Dreiklänge</div><div class="quiz-meta">8 Fragen</div></div></a>
     </div>
   </div>
 </div>
@@ -95,6 +95,9 @@
   <div class="unit-group">
     <div class="unit-title">Grammar &amp; More</div>
     <div class="quiz-list">
+      <a class="quiz-card" href="Klasse8_260327_FourTenses.html"><span class="quiz-icon">📝</span><div class="quiz-info"><div class="quiz-title">Four Tenses</div><div class="quiz-meta">8 Fragen</div></div></a>
+      <a class="quiz-card" href="Klasse8_260327_IndirectSpeechBackshift.html"><span class="quiz-icon">📝</span><div class="quiz-info"><div class="quiz-title">Indirect Speech</div><div class="quiz-meta">8 Fragen</div></div></a>
+      <a class="quiz-card" href="Klasse8_260328_IndirectQuestions.html"><span class="quiz-icon">📝</span><div class="quiz-info"><div class="quiz-title">Indirect Questions</div><div class="quiz-meta">8 Fragen</div></div></a>
       <a class="quiz-card" href="Vorlage bunt deutsch.html"><span class="quiz-icon">📝</span><div class="quiz-info"><div class="quiz-title">Vorlage bunt deutsch</div><div class="quiz-meta">8 Fragen</div></div></a>
       <a class="quiz-card" href="Vorlage lila deutsch.html"><span class="quiz-icon">📝</span><div class="quiz-info"><div class="quiz-title">Vorlage lila deutsch</div><div class="quiz-meta">8 Fragen</div></div></a>
       <a class="quiz-card" href="260316_Klasse8_indirect-speech.html"><span class="quiz-icon">📝</span><div class="quiz-info"><div class="quiz-title">Indirect Speech</div><div class="quiz-meta">8 Fragen</div></div></a>
@@ -118,7 +121,7 @@
 </div>
 
 <footer style="text-align: center; margin-top: 40px; padding-bottom: 20px;">
-  <p id="version-display" style="font-size: 0.7rem; color: #b2dfdb; font-weight: 700; text-transform: uppercase;">Portal-Status: v2.1</p>
+  <p id="version-display" style="font-size: 0.7rem; color: #b2dfdb; font-weight: 700; text-transform: uppercase;">Portal-Status: v1</p>
   <div style="margin-top: 20px;">
     <button onclick="updateApp()" style="background: none; border: 1.5px solid #b2dfdb; color: #7ab8b3; padding: 8px 15px; border-radius: 8px; font-family: 'Quicksand', sans-serif; font-size: 0.7rem; font-weight: 700; cursor: pointer; -webkit-tap-highlight-color: transparent;">
       🔄 APP AKTUALISIEREN
@@ -128,7 +131,7 @@
 
 <script>
 const MEIN_PASSWORT = "jtw2008";
-const AUTH_KEY = "wolf_auth_v1";
+const AUTH_KEY = "wolf_auth_v2";
 
 function checkPass() {
   const pw = document.getElementById('passInput').value;
