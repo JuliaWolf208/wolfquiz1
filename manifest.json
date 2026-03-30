@@ -3,10 +3,9 @@
   "name": "Mrs. Wolfs Quiz-Portal",
   "icons": [
     {
-      "src": "apple-touch-icon.png",
+      "src": "./favicon.png",
       "type": "image/png",
-      "sizes": "180x180",
-      "purpose": "any maskable"
+      "sizes": "180x180"
     }
   ],
   "start_url": "./index.html",
