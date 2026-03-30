@@ -1,14 +1,16 @@
 {
-  "short_name": "Wolf-App",
+  "short_name": "Wolf-Quiz",
   "name": "Mrs. Wolfs Quiz-Portal",
   "icons": [
     {
-      "src": "./favicon.png",
+      "src": "apple-touch-icon.png",
       "type": "image/png",
-      "sizes": "180x180"
+      "sizes": "180x180",
+      "purpose": "any maskable"
     }
   ],
-  "start_url": "./index.html",
+  "start_url": "index.html",
   "display": "standalone",
-  "theme_color": "#26a69a"
+  "theme_color": "#26a69a",
+  "background_color": "#26a69a"
 }
