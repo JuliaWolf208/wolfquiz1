@@ -1,6 +1,6 @@
-const cacheName = 'wolf-quiz-v33'; // Version erhöhen bei Änderungen
+const cacheName = 'wolf-quiz-v2'; // Version bei großen Änderungen hochzählen
 
-// Beim Installieren: nur Grundstruktur cachen
+// Beim Installieren cachen wir nur das Nötigste (die App-Hülle)
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(cacheName).then(cache => {
@@ -14,28 +14,37 @@ self.addEventListener('install', e => {
   self.skipWaiting();
 });
 
-// Alte Caches löschen
+// Alte Caches aufräumen
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys => {
       return Promise.all(
-        keys
-          .filter(k => k !== cacheName)
-          .map(k => caches.delete(k))
+        keys.filter(k => k !== cacheName).map(k => caches.delete(k))
       );
     })
   );
-  self.clients.claim();
 });
 
-// Fetch-Handler (FIX: Icons nicht cachen!)
+// DER AUTOMATIK-TRICK: Alles, was aufgerufen wird, landet im Cache
 self.addEventListener('fetch', e => {
-  const url = e.request.url;
-
-  // 🔥 WICHTIG: Icons und Bilder NICHT cachen
-  if (url.includes('.png') || url.includes('.jpg') || url.includes('.jpeg')) {
-    return; // immer direkt vom Netzwerk laden
-  }
-
   e.respondWith(
-    caches.match(e.reques
+    caches.match(e.request).then(cachedResponse => {
+      // 1. Wenn wir es im Cache haben, zeigen wir es sofort (schnell!)
+      // 2. Parallel fragen wir das Netzwerk nach einer frischen Version
+      const networkFetch = fetch(e.request).then(networkResponse => {
+        // Wenn die Antwort gültig ist, kopieren wir sie in den Cache
+        if (networkResponse && networkResponse.status === 200) {
+          const resClone = networkResponse.clone();
+          caches.open(cacheName).then(cache => {
+            cache.put(e.request, resClone);
+          });
+        }
+        return networkResponse;
+      }).catch(() => {
+        // Offline-Fall: Wenn Netzwerk fehlschlägt, ist das okay
+      });
+
+      return cachedResponse || networkFetch;
+    })
+  );
+});

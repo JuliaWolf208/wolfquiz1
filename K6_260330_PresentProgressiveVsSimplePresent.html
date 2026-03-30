@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K6_260330_PresentProgressiveVsSimplePresent.html</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: linear-gradient(135deg, #fce4ec 0%, #ede7f6 50%, #e8eaf6 100%);
+    color: #4a3a6a;
+    font-family: 'Quicksand', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px 40px;
+  }
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #7c6fcd;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    font-size: 0.9rem;
+    color: #b0a8d8;
+    text-align: center;
+    margin-bottom: 24px;
+    font-weight: 600;
+  }
+  .start-screen {
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .start-emoji { font-size: 3.5rem; margin-bottom: 4px; }
+  .start-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #7c6fcd;
+    margin-bottom: 4px;
+  }
+  .start-info {
+    background: rgba(255,255,255,0.78);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.9);
+    border-radius: 16px;
+    padding: 20px 24px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 8px 32px rgba(124,111,205,0.1);
+  }
+  .start-info p { font-weight: 600; color: #5a4a8a; }
+  .timer-input-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .timer-input-row label { font-weight: 600; color: #5a4a8a; }
+  .timer-input-row input {
+    width: 60px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1.5px solid #d8d0f0;
+    background: white;
+    color: #4a3a6a;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: center;
+  }
+  .timer-input-row span { font-weight: 600; color: #5a4a8a; }
+  .play-btn {
+    background: linear-gradient(135deg, #f48fb1, #9c6fcd);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 40px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: 'Quicksand', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(156,111,205,0.35);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .play-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(156,111,205,0.45); }
+  .portal-link-start {
+    color: #9c6fcd;
+    border: 1.5px solid #9c6fcd;
+    border-radius: 50px;
+    padding: 8px 22px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: background 0.15s;
+  }
+  .portal-link-start:hover { background: #f3f0fc; }
+
+  #quizWrap { width: 100%; max-width: 540px; display: none; flex-direction: column; align-items: center; }
+  .question-number-display {
+    font-size: 4rem;
+    font-weight: 700;
+    color: #7c6fcd;
+    line-height: 1;
+    margin-bottom: 0;
+  }
+  .question-number-label {
+    font-size: 0.95rem;
+    color: #b0a8d8;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .card {
+    background: rgba(255,255,255,0.78);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 28px 32px;
+    box-shadow: 0 8px 32px rgba(124,111,205,0.1);
+    border: 1px solid rgba(255,255,255,0.9);
+    width: 100%;
+  }
+  .timer-wrap {
+    background: #d8d0f0;
+    border-radius: 50px;
+    height: 8px;
+    width: 100%;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .timer-fill {
+    height: 100%;
+    border-radius: 50px;
+    background: #9c6fcd;
+    transition: width 0.9s linear, background 0.4s;
+    width: 100%;
+  }
+  .timer-fill.warning { background: #ff9800; }
+  .timer-fill.danger { background: #e53935; }
+  .timer-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    gap: 8px;
+  }
+  .timer-seconds {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #9c6fcd;
+    min-width: 36px;
+  }
+  .pause-btn, .back-btn {
+    border: 1.5px solid #d8d0f0;
+    background: rgba(255,255,255,0.8);
+    color: #4a3a6a;
+    border-radius: 50px;
+    padding: 6px 16px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .pause-btn:hover, .back-btn:hover { background: rgba(237,231,246,0.9); border-color: #9c6fcd; }
+  .score-display {
+    font-size: 0.9rem;
+    color: #b0a8d8;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .question-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #4a3a6a;
+    margin-bottom: 20px;
+    line-height: 1.5;
+    text-align: center;
+  }
+  .btn-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+  .answer-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1.5px solid #d8d0f0;
+    background: rgba(255,255,255,0.8);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.97rem;
+    font-weight: 600;
+    color: #4a3a6a;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    text-align: left;
+  }
+  .answer-btn:hover:not(:disabled) { background: rgba(237,231,246,0.9); border-color: #9c6fcd; }
+  .answer-btn:disabled { cursor: default; }
+  .finger-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #f3f0fc;
+    color: #9c6fcd;
+    border: 1px solid #d8d0f0;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    transition: background 0.2s, color 0.2s;
+  }
+  .answer-btn.correct { border-color: #81c784; background: #e8f5e9; color: #2e7d32; }
+  .answer-btn.correct .finger-num { background: #81c784; color: white; border-color: #81c784; }
+  .answer-btn.wrong { text-decoration: line-through; opacity: 0.7; border-color: #f48fb1; background: #fce4ec; }
+  .feedback {
+    display: none;
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+  .feedback.correct { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; display: block; }
+  .feedback.wrong { background: #fce4ec; color: #c62828; border: 1px solid #f48fb1; display: block; }
+  .feedback.timeout { background: #fff8e1; color: #e65100; border: 1px solid #ffcc80; display: block; }
+  .btn-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 4px; }
+  .next-btn {
+    background: linear-gradient(135deg, #f48fb1, #9c6fcd);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 24px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 2px 12px rgba(156,111,205,0.3);
+  }
+  .next-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(156,111,205,0.4); }
+
+  .result-screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 16px 0 8px;
+    gap: 12px;
+  }
+  .result-screen.show { display: flex; }
+  .result-emoji { font-size: 3rem; }
+  .result-title { font-size: 1.5rem; font-weight: 700; color: #7c6fcd; }
+  .result-score { font-size: 1rem; font-weight: 600; color: #5a4a8a; }
+  .restart-btn {
+    background: linear-gradient(135deg, #f48fb1, #9c6fcd);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 11px 30px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 4px;
+  }
+  .portal-link {
+    color: #9c6fcd;
+    border: 1.5px solid #9c6fcd;
+    border-radius: 50px;
+    padding: 8px 22px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: background 0.15s;
+  }
+  .portal-link:hover { background: #f3f0fc; }
+  #questionArea { width: 100%; }
+</style>
+</head>
+<body>
+
+<h1>Present Progressive vs. Simple Present</h1>
+<p class="subtitle">Class 6 &middot; 8 Questions</p>
+
+<div id="startScreen" class="start-screen">
+  <div class="start-emoji">&#128218;</div>
+  <div class="start-title">Get ready!</div>
+  <div class="start-info">
+    <p>&#128221; 8 questions</p>
+    <div class="timer-input-row">
+      <label for="timerInput">&#9201; Seconds per question:</label>
+      <input id="timerInput" type="number" min="5" max="60" value="15">
+      <span>sec</span>
+    </div>
+  </div>
+  <button class="play-btn" onclick="startQuiz()">&#9654; Let&#39;s go!</button>
+  <a class="portal-link-start" href="index.html">&#8592; Back to Portal</a>
+</div>
+
+<div id="quizWrap" style="display:none; flex-direction:column; align-items:center; width:100%; max-width:540px;">
+  <div class="question-number-display" id="bigNumber">1</div>
+  <div class="question-number-label" id="bigLabel">of 8</div>
+  <div class="card">
+    <div id="questionArea">
+      <div class="timer-wrap"><div class="timer-fill" id="timerFill"></div></div>
+      <div class="timer-row">
+        <span class="timer-seconds" id="timerSeconds">15</span>
+        <button class="pause-btn" id="pauseBtn" onclick="togglePause()">Pause</button>
+        <span class="score-display">Score: <strong id="scoreNum">0</strong></span>
+      </div>
+      <div class="question-text" id="questionText"></div>
+      <div class="btn-group" id="btnGroup"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="btn-row">
+        <button class="back-btn" id="backBtn" onclick="goBack()">&#8592; Start</button>
+        <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next question &#8594;</button>
+      </div>
+    </div>
+    <div id="resultScreen" class="result-screen">
+      <div class="result-emoji" id="resultEmoji"></div>
+      <div class="result-title" id="resultTitle"></div>
+      <div class="result-score" id="resultScore"></div>
+      <button class="restart-btn" onclick="restart()">&#8629; Play again</button>
+      <a class="portal-link" href="index.html">&#8592; Back to Portal</a>
+    </div>
+  </div>
+</div>
+
+<script>
+var questions = [
+  {
+    text: "Look! She ______ her homework right now.",
+    options: ["does", "is doing", "do", "does do", "have done"],
+    answer: 1,
+    explanation: "We use present progressive (is doing) for actions happening right now."
+  },
+  {
+    text: "Every morning, Tom ______ breakfast at 7 o\u2019clock.",
+    options: ["is having", "have", "has", "is have", "are having"],
+    answer: 2,
+    explanation: "We use simple present (has) for regular habits and routines."
+  },
+  {
+    text: "They ______ TV at the moment.",
+    options: ["watch", "watches", "watched", "are watching", "have watch"],
+    answer: 3,
+    explanation: "We use present progressive (are watching) for actions happening right now."
+  },
+  {
+    text: "Our teacher always ______ us interesting stories.",
+    options: ["is telling", "tell", "are telling", "tells", "have told"],
+    answer: 3,
+    explanation: "We use simple present (tells) with \u2018always\u2019 for habits and repeated actions."
+  },
+  {
+    text: "Listen! The birds ______ outside.",
+    options: ["are singing", "sings", "sing", "is singing", "have sang"],
+    answer: 0,
+    explanation: "We use present progressive (are singing) for actions happening right now. \u2018Listen!\u2019 is a clue."
+  },
+  {
+    text: "We ______ to school by bus every day.",
+    options: ["is going", "goes", "are going", "go", "going"],
+    answer: 3,
+    explanation: "We use simple present (go) for regular routines. \u2018Every day\u2019 is the clue."
+  },
+  {
+    text: "My little brother ______ a nap right now, so please be quiet!",
+    options: ["takes", "take", "is taking", "are taking", "has taken"],
+    answer: 2,
+    explanation: "We use present progressive (is taking) for actions happening right now."
+  },
+  {
+    text: "Dogs usually ______ very fast.",
+    options: ["are running", "is running", "run", "runs", "have run"],
+    answer: 2,
+    explanation: "We use simple present (run) for general truths and habits. \u2018Usually\u2019 is the clue."
+  }
+];
+
+var TIMER_SECONDS = 15;
+var current = 0, score = 0, answered = false, paused = false;
+var timerInterval = null, timeLeft = TIMER_SECONDS;
+var answeredState = [];
+var audioCtx = null;
+
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+function beep() {
+  try {
+    var ctx = getAudioCtx();
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value = 880; osc.type = 'sine';
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.15);
+  } catch(e) {}
+}
+
+function startQuiz() {
+  try { getAudioCtx(); } catch(e) {}
+  TIMER_SECONDS = parseInt(document.getElementById('timerInput').value) || 15;
+  if (TIMER_SECONDS < 5) TIMER_SECONDS = 5;
+  if (TIMER_SECONDS > 60) TIMER_SECONDS = 60;
+  document.getElementById('startScreen').style.display = 'none';
+  var qw = document.getElementById('quizWrap');
+  qw.style.display = 'flex';
+  current = 0; score = 0; answered = false; paused = false;
+  answeredState = [];
+  document.getElementById('scoreNum').textContent = '0';
+  document.getElementById('questionArea').style.display = '';
+  document.getElementById('resultScreen').classList.remove('show');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  answered = false; paused = false;
+  document.getElementById('pauseBtn').textContent = 'Pause';
+  document.getElementById('pauseBtn').disabled = false;
+  var q = questions[current];
+  document.getElementById('bigNumber').textContent = (current + 1);
+  document.getElementById('bigLabel').textContent = 'of ' + questions.length;
+  document.getElementById('questionText').textContent = q.text;
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('feedback').textContent = '';
+
+  var html = '';
+  for (var i = 0; i < q.options.length; i++) {
+    html += '<button class="answer-btn" id="btn' + i + '" onclick="answer(' + i + ')">'
+          + '<span class="finger-num">' + (i + 1) + '</span>'
+          + q.options[i] + '</button>';
+  }
+  document.getElementById('btnGroup').innerHTML = html;
+
+  if (current === 0) {
+    document.getElementById('backBtn').textContent = '\u2190 Start';
+  } else {
+    document.getElementById('backBtn').textContent = '\u2190 Back';
+  }
+  if (current === questions.length - 1) {
+    document.getElementById('nextBtn').textContent = 'See results \u2192';
+  } else {
+    document.getElementById('nextBtn').textContent = 'Next question \u2192';
+  }
+
+  if (answeredState[current]) {
+    var st = answeredState[current];
+    answered = true;
+    document.getElementById('pauseBtn').disabled = true;
+    var btns = document.querySelectorAll('.answer-btn');
+    for (var j = 0; j < btns.length; j++) btns[j].disabled = true;
+    btns[q.answer].classList.add('correct');
+    if (st.chosen !== q.answer && st.chosen >= 0) {
+      btns[st.chosen].classList.add('wrong');
+    }
+    if (st.chosen === -1) {
+      var fb = document.getElementById('feedback');
+      fb.className = 'feedback timeout';
+      fb.textContent = '\u23F0 Time\u2019s up! Next question please.';
+    } else if (st.chosen === q.answer) {
+      var fb = document.getElementById('feedback');
+      fb.className = 'feedback correct';
+      fb.textContent = '\u2705 Correct! ' + q.explanation;
+    } else {
+      var fb = document.getElementById('feedback');
+      fb.className = 'feedback wrong';
+      fb.textContent = '\u274C Not quite! ' + q.explanation;
+    }
+    return;
+  }
+
+  startTimer();
+}
+
+function startTimer() {
+  clearInterval(timerInterval);
+  timeLeft = TIMER_SECONDS;
+  updateTimerDisplay();
+  timerInterval = setInterval(tick, 1000);
+}
+
+function tick() {
+  if (paused) return;
+  timeLeft--;
+  updateTimerDisplay();
+  if (timeLeft <= 3 && timeLeft > 0) beep();
+  if (timeLeft <= 0) {
+    clearInterval(timerInterval);
+    answered = true;
+    document.getElementById('pauseBtn').disabled = true;
+    var btns = document.querySelectorAll('.answer-btn');
+    for (var i = 0; i < btns.length; i++) btns[i].disabled = true;
+    var fb = document.getElementById('feedback');
+    fb.className = 'feedback timeout';
+    fb.textContent = '\u23F0 Time\u2019s up! Next question please.';
+    answeredState[current] = { chosen: -1, correct: false };
+    setTimeout(function() { nextQuestion(); }, 2000);
+  }
+}
+
+function updateTimerDisplay() {
+  document.getElementById('timerSeconds').textContent = timeLeft;
+  var pct = (timeLeft / TIMER_SECONDS) * 100;
+  var fill = document.getElementById('timerFill');
+  fill.style.width = pct + '%';
+  fill.className = 'timer-fill';
+  if (pct <= 20) fill.classList.add('danger');
+  else if (pct <= 40) fill.classList.add('warning');
+}
+
+function togglePause() {
+  if (answered) return;
+  paused = !paused;
+  document.getElementById('pauseBtn').textContent = paused ? '\u25BA Resume' : 'Pause';
+}
+
+function answer(idx) {
+  if (answered) return;
+  answered = true;
+  clearInterval(timerInterval);
+  document.getElementById('pauseBtn').disabled = true;
+  var q = questions[current];
+  var btns = document.querySelectorAll('.answer-btn');
+  for (var i = 0; i < btns.length; i++) btns[i].disabled = true;
+  var isCorrect = (idx === q.answer);
+  if (isCorrect) {
+    score++;
+    document.getElementById('scoreNum').textContent = score;
+    btns[idx].classList.add('correct');
+    var fb = document.getElementById('feedback');
+    fb.className = 'feedback correct';
+    fb.textContent = '\u2705 Correct! ' + q.explanation;
+  } else {
+    btns[idx].classList.add('wrong');
+    btns[q.answer].classList.add('correct');
+    var fb = document.getElementById('feedback');
+    fb.className = 'feedback wrong';
+    fb.textContent = '\u274C Not quite! ' + q.explanation;
+  }
+  answeredState[current] = { chosen: idx, correct: isCorrect };
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= questions.length) {
+    showResult();
+  } else {
+    renderQuestion();
+  }
+}
+
+function goBack() {
+  clearInterval(timerInterval);
+  if (current === 0) {
+    restart();
+    document.getElementById('quizWrap').style.display = 'none';
+    document.getElementById('startScreen').style.display = 'flex';
+    document.getElementById('startScreen').style.flexDirection = 'column';
+  } else {
+    current--;
+    renderQuestion();
+  }
+}
+
+function showResult() {
+  clearInterval(timerInterval);
+  document.getElementById('questionArea').style.display = 'none';
+  var rs = document.getElementById('resultScreen');
+  rs.classList.add('show');
+  var pct = score / questions.length;
+  var emoji, title, scoreText;
+  if (pct === 1) { emoji = '\uD83C\uDFC6'; title = 'Perfect!'; scoreText = 'All 8 correct. Excellent!'; }
+  else if (pct >= 0.75) { emoji = '\uD83C\uDF89'; title = 'Great job!'; scoreText = score + ' out of 8 correct.'; }
+  else if (pct >= 0.5) { emoji = '\uD83D\uDC4D'; title = 'Good effort!'; scoreText = score + ' out of 8 correct. Keep practising!'; }
+  else { emoji = '\uD83D\uDCAA'; title = 'Keep going!'; scoreText = score + ' out of 8 correct. Keep practising!'; }
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultScore').textContent = scoreText;
+}
+
+function restart() {
+  clearInterval(timerInterval);
+  current = 0; score = 0; answered = false; paused = false;
+  answeredState = [];
+  document.getElementById('scoreNum').textContent = '0';
+  document.getElementById('questionArea').style.display = '';
+  document.getElementById('resultScreen').classList.remove('show');
+  document.getElementById('quizWrap').style.display = 'none';
+  document.getElementById('startScreen').style.display = 'flex';
+  document.getElementById('startScreen').style.flexDirection = 'column';
+}
+</script>
+</body>
+</html>
