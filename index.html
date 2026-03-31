@@ -4,57 +4,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-
-```
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Wolf-App">
-<meta name="theme-color" content="#26a69a">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=2">
-<link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png?v=2">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Wolf-App">
+    <meta name="theme-color" content="#26a69a">
+    <link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="apple-touch-icon-precomposed" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon_192.png">
 
-<title>Quizmaster Wolf Hub</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
-
-<style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Quicksand', sans-serif; background: #f0fffe; color: #1a4a44; min-height: 100vh; padding: 24px 16px 40px; overscroll-behavior-y: contain; -webkit-tap-highlight-color: transparent; }
-
-    #passwordOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #26a69a; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; transition: opacity 0.5s; }
-    header { text-align: center; padding: 24px 0 32px; }
-    .app-icon { font-size: 3rem; margin-bottom: 8px; }
-    header h1 { font-size: 1.8rem; font-weight: 700; color: #1a7a72; margin-bottom: 4px; }
-    header p { color: #7ab8b3; font-size: 0.9rem; font-weight: 600; }
-    .search-container { margin-bottom: 24px; }
-    .search-container input { width: 100%; padding: 14px 18px; border-radius: 12px; border: 1.5px solid #b2dfdb; font-family: 'Quicksand', sans-serif; font-size: 1rem; color: #1a4a44; outline: none; transition: border-color 0.2s; }
-    .section { margin-bottom: 35px; }
-    .section-title { font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #1a7a72; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 2px solid rgba(38,166,154,0.1); }
-    .unit-group { margin-bottom: 20px; }
-    .unit-title { font-size: 0.9rem; font-weight: 700; color: #559e98; margin: 20px 0 10px 4px; display: flex; align-items: center; }
-    .unit-title::after { content: ""; flex: 1; height: 1px; background: rgba(38,166,154,0.15); margin-left: 10px; }
-    .quiz-list { display: flex; flex-direction: column; gap: 10px; }
-    .quiz-card { background: white; border-radius: 14px; padding: 16px 18px; display: flex; align-items: center; gap: 14px; text-decoration: none; color: #1a4a44; box-shadow: 0 2px 10px rgba(38,166,154,0.08); border: 1.5px solid #e0f7f4; transition: transform 0.15s; }
-    .quiz-card:active { transform: scale(0.98); border-left-width: 10px; }
-    .section.klasse-6 .quiz-card { border-left: 6px solid #81d4fa; }
-    .section.klasse-8 .quiz-card { border-left: 6px solid #ce93d8; }
-    .section.musik    .quiz-card { border-left: 6px solid #fff59d; }
-    .section.vorlagen .quiz-card { border-left: 6px solid #26a69a; }
-    .quiz-icon { font-size: 1.6rem; flex-shrink: 0; }
-    .quiz-info { flex: 1; }
-    .quiz-title { font-size: 1rem; font-weight: 700; color: #1a7a72; }
-    .quiz-meta { font-size: 0.8rem; color: #7ab8b3; font-weight: 600; }
-    .install-banner { background: white; border-radius: 14px; padding: 16px; margin-bottom: 28px; border: 1.5px solid #b2dfdb; display: none; }
-</style>
-```
-
+  
+    <title>Quizmaster Wolf</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Quicksand', sans-serif; background: #f0fffe; color: #1a4a44; min-height: 100vh; padding: 24px 16px 40px; overscroll-behavior-y: contain; -webkit-tap-highlight-color: transparent; }
+        #passwordOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #26a69a; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; transition: opacity 0.5s; }
+        header { text-align: center; padding: 24px 0 32px; }
+        .app-icon { font-size: 3rem; margin-bottom: 8px; }
+        header h1 { font-size: 1.8rem; font-weight: 700; color: #1a7a72; margin-bottom: 4px; }
+        header p { color: #7ab8b3; font-size: 0.9rem; font-weight: 600; }
+        .search-container { margin-bottom: 24px; }
+        .search-container input { width: 100%; padding: 14px 18px; border-radius: 12px; border: 1.5px solid #b2dfdb; font-family: 'Quicksand', sans-serif; font-size: 1rem; color: #1a4a44; outline: none; transition: border-color 0.2s; }
+        .section { margin-bottom: 35px; }
+        .section-title { font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #1a7a72; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 2px solid rgba(38,166,154,0.1); }
+        .unit-group { margin-bottom: 20px; }
+        .unit-title { font-size: 0.9rem; font-weight: 700; color: #559e98; margin: 20px 0 10px 4px; display: flex; align-items: center; }
+        .unit-title::after { content: ""; flex: 1; height: 1px; background: rgba(38,166,154,0.15); margin-left: 10px; }
+        .quiz-list { display: flex; flex-direction: column; gap: 10px; }
+        .quiz-card { background: white; border-radius: 14px; padding: 16px 18px; display: flex; align-items: center; gap: 14px; text-decoration: none; color: #1a4a44; box-shadow: 0 2px 10px rgba(38,166,154,0.08); border: 1.5px solid #e0f7f4; transition: transform 0.15s; }
+        .quiz-card:active { transform: scale(0.98); border-left-width: 10px; }
+        .section.klasse-6 .quiz-card { border-left: 6px solid #81d4fa; }
+        .section.klasse-8 .quiz-card { border-left: 6px solid #ce93d8; }
+        .section.musik    .quiz-card { border-left: 6px solid #fff59d; }
+        .section.vorlagen .quiz-card { border-left: 6px solid #26a69a; }
+        .quiz-icon { font-size: 1.6rem; flex-shrink: 0; }
+        .quiz-info { flex: 1; }
+        .quiz-title { font-size: 1rem; font-weight: 700; color: #1a7a72; }
+        .quiz-meta { font-size: 0.8rem; color: #7ab8b3; font-weight: 600; }
+        .install-banner { background: white; border-radius: 14px; padding: 16px; margin-bottom: 28px; border: 1.5px solid #b2dfdb; display: none; }
+        .quiz-card.hidden { display: none !important; }
+        .unit-group.hidden { display: none !important; }
+        .section.hidden { display: none !important; }
+    </style>
 </head>
 <body>
 
 <div id="passwordOverlay">
-  <div class="app-icon">👩‍🦰</div>
+  <div class="app-icon">&#128105;&#8205;&#129472;</div>
   <h2 style="color: white; margin-bottom: 20px;">Quizmaster-Wolf-App</h2>
   <form onsubmit="event.preventDefault(); checkPass();" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
     <input type="password" id="passInput" placeholder="Passwort..."
@@ -62,76 +59,60 @@
            style="width: 80%; max-width: 300px; padding: 15px; border-radius: 12px; border: none; font-size: 1.1rem; text-align: center; outline: none;">
     <button type="submit" style="margin-top: 20px; padding: 12px 30px; border-radius: 12px; border: none; background: #1a4a44; color: white; font-weight: 700; cursor: pointer;">Let's go</button>
   </form>
-  <p id="errorMsg" style="color: #ffcdd2; margin-top: 15px; font-weight: 600; display: none;">Leider falsch! 🐺</p>
+  <p id="errorMsg" style="color: #ffcdd2; margin-top: 15px; font-weight: 600; display: none;">Leider falsch! &#128058;</p>
 </div>
 
 <header>
-  <div class="app-icon">👩‍🏫</div>
+  <div class="app-icon">&#128105;&#8205;&#127979;</div>
   <h1>Quizmaster Ms. Wolf</h1>
-  <p>Englisch &amp; Musik · Julia Wolf</p>
+  <p>Englisch &amp; Musik &middot; Julia Wolf</p>
 </header>
 
 <div class="search-container">
-    <input type="text" id="searchBar" oninput="filterQuizzes()" placeholder="Search quiz hub...">
+    <input type="text" id="searchBar" oninput="filterQuizzes()" placeholder="Search quiz...">
 </div>
 
 <div class="install-banner" id="installBanner">
-  <p style="font-size: 0.85rem; color: #1a7a72; font-weight: 700;">Tippe auf ↑ und wähle „Zum Home-Bildschirm".</p>
+  <p style="font-size: 0.85rem; color: #1a7a72; font-weight: 700;">Tippe auf &#8593; und w&auml;hle &bdquo;Zum Home-Bildschirm&ldquo;.</p>
 </div>
-
 
 <div class="section klasse-6" id="section-klasse6">
   <div class="section-title">Klasse 6</div>
-
   <div class="unit-group">
     <div class="unit-title">Revision</div>
     <div class="quiz-list">
-      <a class="quiz-card" href="K6_260330_simplepresentvspresentprogressive_V3.html"><span class="quiz-icon">📝</span>
+      <a class="quiz-card" href="K6_260330_simplepresentvspresentprogressive_V3.html"><span class="quiz-icon">&#128221;</span>
         <div class="quiz-info"><div class="quiz-title">Present Progressive vs. Simple Present V1</div><div class="quiz-meta">8 Questions</div></div></a>
-      <a class="quiz-card" href="K6_260330_PPvsSPresent.html">
-          <span class="quiz-icon">📝</span>
-          <div class="quiz-info">
-              <div class="quiz-title">Present Progressive vs. Simple Present V2</div>
-              <div class="quiz-meta">8 Questions</div>
-          </div>
-      </a>Questions
-      <a class="quiz-card" href="K6_260330_PresentProgressiveVsSimplePresent.html">
-          <span class="quiz-icon">📝</span>
-          <div class="quiz-info">
-              <div class="quiz-title">Present Progressive vs. Simple Present V3</div>
-              <div class="quiz-meta">8 Questions</div>
-          </div>
-      </a>
-      
+      <a class="quiz-card" href="K6_260330_PPvsSPresent.html"><span class="quiz-icon">&#128221;</span>
+        <div class="quiz-info"><div class="quiz-title">Present Progressive vs. Simple Present V2</div><div class="quiz-meta">8 Questions</div></div></a>
+      <a class="quiz-card" href="K6_260330_PresentProgressiveVsSimplePresent.html"><span class="quiz-icon">&#128221;</span>
+        <div class="quiz-info"><div class="quiz-title">Present Progressive vs. Simple Present V3</div><div class="quiz-meta">8 Questions</div></div></a>
     </div>
   </div>
-
   <div class="unit-group">
     <div class="unit-title">Unit 3 &amp; 4</div>
     <div class="quiz-list">
-      <a class="quiz-card" href="1.html"><span class="quiz-icon">📝</span><div class="quiz-info"><div class="quiz-title">Wrong</div><div class="quiz-meta">8 Questions</div></div></a>
-      <a class="quiz-card" href="2.html"><span class="quiz-icon">📝</span><div class="quiz-info"><div class="quiz-title">WRong3</div><div class="quiz-meta">8 Questions</div></div></a>
-      <a class="quiz-card" href="3.html"><span class="quiz-icon">📝</span><div class="quiz-info"><div class="quiz-title">wrong</div><div class="quiz-meta">8 Questions</div></div></a>
-      <a class="quiz-card" href="4.html"><span class="quiz-icon">📚</span><div class="quiz-info"><div class="quiz-title">wrong</div><div class="quiz-meta">8 Questions</div></div></a>
-      <a class="quiz-card" href="Dur-Moll-Dreiklänge1.html"><span class="quiz-icon">📚</span><div class="quiz-info"><div class="quiz-title">wrong</div><div class="quiz-meta">8 Questions</div></div></a>
+      <a class="quiz-card" href="1.html"><span class="quiz-icon">&#128221;</span><div class="quiz-info"><div class="quiz-title">Wrong</div><div class="quiz-meta">8 Questions</div></div></a>
+      <a class="quiz-card" href="2.html"><span class="quiz-icon">&#128221;</span><div class="quiz-info"><div class="quiz-title">WRong3</div><div class="quiz-meta">8 Questions</div></div></a>
+      <a class="quiz-card" href="3.html"><span class="quiz-icon">&#128221;</span><div class="quiz-info"><div class="quiz-title">wrong</div><div class="quiz-meta">8 Questions</div></div></a>
+      <a class="quiz-card" href="4.html"><span class="quiz-icon">&#128221;</span><div class="quiz-info"><div class="quiz-title">wrong</div><div class="quiz-meta">8 Questions</div></div></a>
+      <a class="quiz-card" href="Dur-Moll-Dreiklänge1.html"><span class="quiz-icon">&#128218;</span><div class="quiz-info"><div class="quiz-title">wrong</div><div class="quiz-meta">8 Questions</div></div></a>
     </div>
   </div>
-</div> 
-
-
+</div>
 
 <div class="section klasse-8" id="section-klasse8">
   <div class="section-title">Klasse 8</div>
   <div class="unit-group">
     <div class="unit-title">Grammar &amp; More</div>
     <div class="quiz-list">
-      <a class="quiz-card" href="Klasse8_260327_FourTenses.html"><span class="quiz-icon">📝</span><div class="quiz-info"><div class="quiz-title">Four Tenses</div><div class="quiz-meta">8 Questions</div></div></a>
-      <a class="quiz-card" href="Klasse8_260327_IndirectSpeechBackshift.html"><span class="quiz-icon">📝</span><div class="quiz-info"><div class="quiz-title">Indirect Speech V1</div><div class="quiz-meta">8 Questions</div></div></a>
-       <a class="quiz-card" href="260316_Klasse8_indirect-speech.html"><span class="quiz-icon">📝</span><div class="quiz-info"><div class="quiz-title">Indirect Speech V2 Wrong</div><div class="quiz-meta">8 Questions</div></div></a>
-      <a class="quiz-card" href="Klasse8_260328_IndirectQuestions.html"><span class="quiz-icon">📝</span><div class="quiz-info"><div class="quiz-title">Indirect Questions V1</div><div class="quiz-meta">8 Questions</div></div></a>
-      <a class="quiz-card" href="Klasse8_260328_IndirectQuestions.html"><span class="quiz-icon">📝</span><div class="quiz-info"><div class="quiz-title">Indirect Questions V2</div><div class="quiz-meta">8 Questions</div></div></a>
-      <a class="quiz-card" href="Klasse8_260327_IndirectSpeechBackshift.html"><span class="quiz-icon">📝</span><div class="quiz-info"><div class="quiz-title">Indirect Questions V3</div><div class="quiz-meta">8 Questions</div></div></a>
-      <a class="quiz-card" href="260316_Klasse8_Vocabulary-p215.html"><span class="quiz-icon">📚</span><div class="quiz-info"><div class="quiz-title">Vocabulary p. 215 Wrong</div><div class="quiz-meta">8 Questions</div></div></a>
+      <a class="quiz-card" href="Klasse8_260327_FourTenses.html"><span class="quiz-icon">&#128221;</span><div class="quiz-info"><div class="quiz-title">Four Tenses</div><div class="quiz-meta">8 Questions</div></div></a>
+      <a class="quiz-card" href="Klasse8_260327_IndirectSpeechBackshift.html"><span class="quiz-icon">&#128221;</span><div class="quiz-info"><div class="quiz-title">Indirect Speech V1</div><div class="quiz-meta">8 Questions</div></div></a>
+      <a class="quiz-card" href="260316_Klasse8_indirect-speech.html"><span class="quiz-icon">&#128221;</span><div class="quiz-info"><div class="quiz-title">Indirect Speech V2 Wrong</div><div class="quiz-meta">8 Questions</div></div></a>
+      <a class="quiz-card" href="Klasse8_260328_IndirectQuestions.html"><span class="quiz-icon">&#128221;</span><div class="quiz-info"><div class="quiz-title">Indirect Questions V1</div><div class="quiz-meta">8 Questions</div></div></a>
+      <a class="quiz-card" href="Klasse8_260328_IndirectQuestions.html"><span class="quiz-icon">&#128221;</span><div class="quiz-info"><div class="quiz-title">Indirect Questions V2</div><div class="quiz-meta">8 Questions</div></div></a>
+      <a class="quiz-card" href="Klasse8_260327_IndirectSpeechBackshift.html"><span class="quiz-icon">&#128221;</span><div class="quiz-info"><div class="quiz-title">Indirect Questions V3</div><div class="quiz-meta">8 Questions</div></div></a>
+      <a class="quiz-card" href="260316_Klasse8_Vocabulary-p215.html"><span class="quiz-icon">&#128218;</span><div class="quiz-info"><div class="quiz-title">Vocabulary p. 215 Wrong</div><div class="quiz-meta">8 Questions</div></div></a>
     </div>
   </div>
 </div>
@@ -141,40 +122,37 @@
   <div class="unit-group">
     <div class="unit-title">Geschichte</div>
     <div class="quiz-list">
-      <a class="quiz-card" href="260316_Klasse9_Musikepoche-Barock.html"><span class="quiz-icon">🎼</span><div class="quiz-info"><div class="quiz-title">Barock Wrong</div><div class="quiz-meta">15 Fragen</div></div></a>
-      <a class="quiz-card" href="260320_Klasse9_Musikgeschichte.html"><span class="quiz-icon">🎼</span><div class="quiz-info"><div class="quiz-title">Musikgeschichte Überblick Wrong</div><div class="quiz-meta">20 Fragen</div></div></a>
+      <a class="quiz-card" href="260316_Klasse9_Musikepoche-Barock.html"><span class="quiz-icon">&#127932;</span><div class="quiz-info"><div class="quiz-title">Barock Wrong</div><div class="quiz-meta">15 Fragen</div></div></a>
+      <a class="quiz-card" href="260320_Klasse9_Musikgeschichte.html"><span class="quiz-icon">&#127932;</span><div class="quiz-info"><div class="quiz-title">Musikgeschichte Überblick Wrong</div><div class="quiz-meta">20 Fragen</div></div></a>
     </div>
   </div>
 </div>
-
 
 <div class="section vorlagen" id="section-vorlagen">
   <div class="section-title">Vorlagen</div>
   <div class="unit-group">
     <div class="unit-title">Englisch</div>
     <div class="quiz-list">
-      <a class="quiz-card" href="Vorlage bunt englisch 1.html"><span class="quiz-icon">🎨</span><div class="quiz-info"><div class="quiz-title">Bunt</div><div class="quiz-meta">8 Questions</div></div></a>
-      <a class="quiz-card" href="Vorlage mint englisch 1.html"><span class="quiz-icon">🎨</span><div class="quiz-info"><div class="quiz-title">Mint</div><div class="quiz-meta">8 Questions</div></div></a>
-      <a class="quiz-card" href="Vorlage pastell englisch 1.html"><span class="quiz-icon">🎨</span><div class="quiz-info"><div class="quiz-title">Pastell</div><div class="quiz-meta">8 Questions</div></div></a>
-      
+      <a class="quiz-card" href="Vorlage bunt englisch 1.html"><span class="quiz-icon">&#127912;</span><div class="quiz-info"><div class="quiz-title">Bunt</div><div class="quiz-meta">8 Questions</div></div></a>
+      <a class="quiz-card" href="Vorlage mint englisch 1.html"><span class="quiz-icon">&#127912;</span><div class="quiz-info"><div class="quiz-title">Mint</div><div class="quiz-meta">8 Questions</div></div></a>
+      <a class="quiz-card" href="Vorlage pastell englisch 1.html"><span class="quiz-icon">&#127912;</span><div class="quiz-info"><div class="quiz-title">Pastell</div><div class="quiz-meta">8 Questions</div></div></a>
     </div>
   </div>
   <div class="unit-group">
-    <div class="unit-title">Musik Suche?</div>
+    <div class="unit-title">Musik</div>
     <div class="quiz-list">
-      <a class="quiz-card" href="Vorlage bunt deutsch 1 .html"><span class="quiz-icon">🎨</span><div class="quiz-info"><div class="quiz-title">Bunt</div><div class="quiz-meta">8 Fragen</div></div></a>
-       <a class="quiz-card" href="Vorlage mint deutsch 1 .html"><span class="quiz-icon">🎨</span><div class="quiz-info"><div class="quiz-title">Mint</div><div class="quiz-meta">8 Fragen</div></div></a>
-        <a class="quiz-card" href="Vorlage pastell deutsch 1 .html"><span class="quiz-icon">🎨</span><div class="quiz-info"><div class="quiz-title">Pastell</div><div class="quiz-meta">8 Fragen</div></div></a>
+      <a class="quiz-card" href="Vorlage bunt deutsch 1 .html"><span class="quiz-icon">&#127912;</span><div class="quiz-info"><div class="quiz-title">Bunt</div><div class="quiz-meta">8 Fragen</div></div></a>
+      <a class="quiz-card" href="Vorlage mint deutsch 1 .html"><span class="quiz-icon">&#127912;</span><div class="quiz-info"><div class="quiz-title">Mint</div><div class="quiz-meta">8 Fragen</div></div></a>
+      <a class="quiz-card" href="Vorlage pastell deutsch 1 .html"><span class="quiz-icon">&#127912;</span><div class="quiz-info"><div class="quiz-title">Pastell</div><div class="quiz-meta">8 Fragen</div></div></a>
     </div>
   </div>
 </div>
-
 
 <footer style="text-align: center; margin-top: 40px; padding-bottom: 20px;">
   <p id="version-display" style="font-size: 0.7rem; color: #b2dfdb; font-weight: 700; text-transform: uppercase;">Portal-Status: v1</p>
   <div style="margin-top: 20px;">
     <button onclick="updateApp()" style="background: none; border: 1.5px solid #b2dfdb; color: #7ab8b3; padding: 8px 15px; border-radius: 8px; font-family: 'Quicksand', sans-serif; font-size: 0.7rem; font-weight: 700; cursor: pointer; -webkit-tap-highlight-color: transparent;">
-      🔄 APP AKTUALISIEREN
+      &#128260; APP AKTUALISIEREN
     </button>
   </div>
 </footer>
@@ -206,42 +184,41 @@ window.onload = function() {
 };
 
 function filterQuizzes() {
-    const input = document.getElementById('searchBar').value.toLowerCase();
-    const cards = document.querySelectorAll('.quiz-card');
-    const unitGroups = document.querySelectorAll('.unit-group');
-    const sections = document.querySelectorAll('.section');
+  const input = document.getElementById('searchBar').value.toLowerCase().trim();
 
-    // 1. Karten filtern
-    cards.forEach(card => {
-        const text = card.textContent.toLowerCase();
-        if (text.includes(input)) {
-            card.classList.remove('hidden');
-        } else {
-            card.classList.add('hidden');
-        }
-    });
+  // Show/hide individual cards using CSS class
+  const cards = document.querySelectorAll('.quiz-card');
+  cards.forEach(function(card) {
+    const title = card.querySelector('.quiz-title').textContent.toLowerCase();
+    const meta = card.querySelector('.quiz-meta').textContent.toLowerCase();
+    if (input === '' || title.includes(input) || meta.includes(input)) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
 
-    // 2. Units filtern: Zeige Unit nur, wenn sie sichtbare Karten hat
-    unitGroups.forEach(group => {
-        const hasVisibleCards = Array.from(group.querySelectorAll('.quiz-card'))
-                                     .some(card => !card.classList.contains('hidden'));
-        if (hasVisibleCards || input === "") {
-            group.classList.remove('hidden');
-        } else {
-            group.classList.add('hidden');
-        }
-    });
+  // Hide unit-groups where all cards are hidden
+  const unitGroups = document.querySelectorAll('.unit-group');
+  unitGroups.forEach(function(group) {
+    const visibleCards = group.querySelectorAll('.quiz-card:not(.hidden)');
+    if (visibleCards.length === 0 && input !== '') {
+      group.classList.add('hidden');
+    } else {
+      group.classList.remove('hidden');
+    }
+  });
 
-    // 3. Sektionen filtern: Zeige Sektion nur, wenn sie sichtbare Units hat
-    sections.forEach(section => {
-        const hasVisibleGroups = Array.from(section.querySelectorAll('.unit-group'))
-                                      .some(group => !group.classList.contains('hidden'));
-        if (hasVisibleGroups || input === "") {
-            section.classList.remove('hidden');
-        } else {
-            section.classList.add('hidden');
-        }
-    });
+  // Hide sections where all unit-groups are hidden
+  const sections = document.querySelectorAll('.section');
+  sections.forEach(function(section) {
+    const visibleGroups = section.querySelectorAll('.unit-group:not(.hidden)');
+    if (visibleGroups.length === 0 && input !== '') {
+      section.classList.add('hidden');
+    } else {
+      section.classList.remove('hidden');
+    }
+  });
 }
 
 if ('serviceWorker' in navigator) {
@@ -249,7 +226,7 @@ if ('serviceWorker' in navigator) {
 }
 
 async function updateApp() {
-  if (confirm('Möchtest du die App wirklich aktualisieren? Alle Quizzes werden neu geladen. 🐺')) {
+  if (confirm('Möchtest du die App wirklich aktualisieren? Alle Quizzes werden neu geladen. \uD83D\uDC3A')) {
     if ('serviceWorker' in navigator) {
       const names = await caches.keys();
       for (let name of names) await caches.delete(name);
