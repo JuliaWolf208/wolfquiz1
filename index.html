@@ -47,14 +47,15 @@
         .hidden { display: none !important; }
     </style>
 </head>
+
 <body>
 
 <div id="passwordOverlay">
-  <div class="app-icon">&#128105;&#8205;&#129472;</div>
+  <div class="app-icon">👩‍🦰</div>
   <h2 style="color: white; margin-bottom: 20px;">Wolf Quiz</h2>
   <form onsubmit="event.preventDefault(); checkPass();" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
     <input type="password" id="passInput" placeholder="Passwort..."
-           autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+           autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false"
            style="width: 80%; max-width: 300px; padding: 15px; border-radius: 12px; border: none; font-size: 1.1rem; text-align: center; outline: none;">
     <button type="submit" style="margin-top: 20px; padding: 12px 30px; border-radius: 12px; border: none; background: #1a4a44; color: white; font-weight: 700; cursor: pointer;">Let's go</button>
   </form>
@@ -62,10 +63,11 @@
 </div>
 
 <header>
-  <div class="app-icon">&#128105;&#8205;&#127979;</div>
+  <div class="app-icon">👩‍🦰</div>
   <h1>Quizmaster Ms. Wolf</h1>
   <p>Englisch &amp; Musik &middot; Julia Wolf</p>
 </header>
+
 
 <div class="search-container">
     <input type="text" id="searchBar" oninput="filterQuizzes()" placeholder="Suche nach Quizzen...">
