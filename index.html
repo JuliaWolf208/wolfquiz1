@@ -120,9 +120,10 @@
   <div class="unit-group">
     <div class="unit-title">Grammar &amp; More</div>
     <div class="quiz-list">
-      <a class="quiz-card" href="Klasse8_260327_FourTenses.html"><span class="quiz-icon">&#128221;</span><div class="quiz-info"><div class="quiz-title">Four Tenses</div><div class="quiz-meta">8 Questions</div></div></a>
-      <a class="quiz-card" href="Klasse8_260327_IndirectSpeech.html"><span class="quiz-icon">&#128221;</span><div class="quiz-info"><div class="quiz-title">Indirect Speech V1</div><div class="quiz-meta">8 Questions</div></div></a>
-      <a class="quiz-card" href="260316_Klasse8_indirect-speech.html"><span class="quiz-icon">&#128221;</span><div class="quiz-info"><div class="quiz-title">Indirect Speech V2 Wrong</div><div class="quiz-meta">8 Questions</div></div></a>
+      <a class="quiz-card" href="K8_260327_FourTenses.html"><span class="quiz-icon">&#128221;</span><div class="quiz-info"><div class="quiz-title">Four Tenses</div><div class="quiz-meta">8 Questions</div></div></a>
+      <a class="quiz-card" href="K8_260327_IndirectSpeech.html"><span class="quiz-icon">&#128221;</span><div class="quiz-info"><div class="quiz-title">Indirect Speech V1</div><div class="quiz-meta">8 Questions</div></div></a>
+      <a class="quiz-card" href="260316_Klasse8_indirect-speech.html"><span class="quiz-icon">&#128221;</span><div class="quiz-info"><div class="quiz-title">Indirect Speech V2</div><div class="quiz-meta">8 Questions</div></div></a>
+      <a class="quiz-card" href="260316_Klasse8_indirect-speech.html"><span class="quiz-icon">&#128221;</span><div class="quiz-info"><div class="quiz-title">Indirect Speech V3</div><div class="quiz-meta">8 Questions</div></div></a><a class="quiz-card" href="260316_Klasse8_indirect-speech.html"><span class="quiz-icon">&#128221;</span><div class="quiz-info"><div class="quiz-title">Indirect Speech V4</div><div class="quiz-meta">8 Questions</div></div></a>
       <a class="quiz-card" href="Klasse8_260328_IndirectQuestions.html"><span class="quiz-icon">&#128221;</span><div class="quiz-info"><div class="quiz-title">Indirect Questions V1</div><div class="quiz-meta">8 Questions</div></div></a>
       <a class="quiz-card" href="260316_Klasse8_Vocabulary-p215.html"><span class="quiz-icon">&#128218;</span><div class="quiz-info"><div class="quiz-title">Vocabulary p. 215 Wrong</div><div class="quiz-meta">8 Questions</div></div></a>
     </div>
@@ -161,7 +162,7 @@
 </div>
 
 <footer style="text-align: center; margin-top: 40px; padding-bottom: 20px;">
-  <p id="version-display" style="font-size: 0.7rem; color: #b2dfdb; font-weight: 700; text-transform: uppercase;">Portal-Status: v1</p>
+  <p id="version-display" style="font-size: 0.7rem; color: #b2dfdb; font-weight: 700; text-transform: uppercase;">Portal-Status: v1.2</p>
   <div style="margin-top: 20px;">
     <button onclick="updateApp()" style="background: none; border: 1.5px solid #b2dfdb; color: #7ab8b3; padding: 8px 15px; border-radius: 8px; font-family: 'Quicksand', sans-serif; font-size: 0.7rem; font-weight: 700; cursor: pointer; -webkit-tap-highlight-color: transparent;">
       &#128260; APP AKTUALISIEREN
@@ -184,13 +185,16 @@ function checkPass() {
 }
 
 window.onload = function() {
-  if (localStorage.getItem(AUTH_KEY) === 'true') {
-    document.getElementById('passwordOverlay').style.display = 'none';
-  }
-  if (window.navigator.standalone !== true) {
-    document.getElementById('installBanner').style.display = 'block';
-  }
+    document.getElementById('version-display').innerText = "Portal-Status: " + PORTAL_VERSION;
+
+    if (localStorage.getItem(AUTH_KEY) === 'true') {
+        document.getElementById('passwordOverlay').style.display = 'none';
+    }
+    if (window.navigator.standalone !== true) {
+        document.getElementById('installBanner').style.display = 'block';
+    }
 };
+
 
 function filterQuizzes() {
   const input = document.getElementById('searchBar').value.toLowerCase().trim();
@@ -248,7 +252,7 @@ async function updateApp() {
 // --- HIER SCHNELL FINDEN ---
 const MEIN_PASSWORT = "jtw";
 const AUTH_KEY = "wolf_auth_v1";
-const PORTAL_VERSION = "v1.2"; 
+const PORTAL_VERSION = "v1.3"; 
 </script>
 
 </body>
