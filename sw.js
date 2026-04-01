@@ -1,4 +1,4 @@
-const cacheName = 'wolf-quiz-v.1.4'; // Version bei großen Änderungen hochzählen
+const cacheName = 'wolf-quiz-v1.7'; // Version bei großen Änderungen hochzählen
 
 // Beim Installieren cachen wir nur das Nötigste (die App-Hülle)
 self.addEventListener('install', e => {
@@ -23,6 +23,7 @@ self.addEventListener('activate', e => {
       );
     })
   );
+  self.clients.claim(); // NEU: Neue SW-Version übernimmt sofort alle offenen Tabs
 });
 
 // DER AUTOMATIK-TRICK: Alles, was aufgerufen wird, landet im Cache
