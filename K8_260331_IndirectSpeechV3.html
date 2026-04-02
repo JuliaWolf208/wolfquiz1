@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>K8_260331_IndirectSpeechBackshiftV3</title>
+<title>K8_260331_IndirectSpeechV3</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Quicksand', sans-serif; background: #e0f7f4; color: #1a4a44; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
@@ -39,6 +39,8 @@ h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; text-align: center
 .pause-btn:hover { background: #e0f7f4; }
 .pause-btn:disabled { opacity: 0.3; cursor: default; }
 .score-display { font-size: 0.82rem; color: #7ab8b3; font-weight: 700; }
+.direct-label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #7ab8b3; margin-bottom: 4px; }
+.direct-speech { font-size: 1rem; font-style: italic; color: #1a7a72; background: #e0f7f4; border-left: 3px solid #26a69a; padding: 8px 12px; border-radius: 6px; margin-bottom: 16px; }
 .question-text { font-size: 1.15rem; font-weight: 600; line-height: 1.6; margin-bottom: 24px; color: #1a4a44; }
 .btn-group { display: flex; flex-direction: column; gap: 12px; }
 .answer-btn { width: 100%; padding: 12px 16px; border-radius: 12px; border: 2px solid #b2dfdb; background: white; font-family: 'Quicksand', sans-serif; font-size: 1.05rem; font-weight: 600; color: #1a4a44; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 15px; transition: all 0.2s; }
@@ -69,10 +71,14 @@ h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; text-align: center
 .portal-link { text-decoration: none; color: #26a69a; font-weight: 700; font-size: 0.95rem; padding: 10px 24px; border: 2px solid #26a69a; border-radius: 12px; transition: background 0.15s; }
 .portal-link:hover { background: #e0f7f4; }
 </style>
-</head><body>
-<h1>Indirect Speech \u2013 Backshift</h1><p class="subtitle">Class 8 &middot; 8 Questions</p>
+</head>
+<body>
+
+<h1>Indirect Speech</h1>
+<p class="subtitle">Class 8 &middot; 8 Questions</p>
+
 <div id="startScreen" class="start-screen">
-  <div class="start-emoji">&#127919;</div>
+  <div class="start-emoji">&#128172;</div>
   <div class="start-title">Get ready!</div>
   <div class="start-info">
     <p>&#128221; 8 questions</p>
@@ -97,6 +103,9 @@ h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; text-align: center
       <span class="score-display">Score: <strong id="scoreNum">0</strong></span>
     </div>
     <div id="questionArea">
+      <div class="direct-label">Direct speech:</div>
+      <div class="direct-speech" id="directSpeech"></div>
+      <div class="direct-label">Indirect speech:</div>
       <div class="question-text" id="questionText"></div>
       <div class="btn-group" id="btnGroup"></div>
       <div class="feedback" id="feedback"></div>
@@ -114,6 +123,7 @@ h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; text-align: center
     </div>
   </div>
 </div>
+
 <script>
 var TIMER_SECONDS = 15;
 var audioCtx = null;
@@ -132,17 +142,26 @@ function beep() {
   } catch(e) {}
 }
 
-// Positionen (1-basiert): 5,2,4,1,3,5,2,4
-var questions=[
-  {text:"\"I am reading a great book.\" \u2192 She told me she ______ a great book.",options:["reads","has read","read","is reading","was reading"],answer:4,explanation:"Backshift: am reading \u2192 was reading."},
-  {text:"\"He will come tomorrow.\" \u2192 She said he ______ the next day.",options:["will come","would come","came","has come","had come"],answer:1,explanation:"Backshift: will \u2192 would."},
-  {text:"\"We can\u2019t find the keys.\" \u2192 They said they ______ the keys.",options:["can\u2019t find","couldn\u2019t found","didn\u2019t find","couldn\u2019t find","hadn\u2019t found"],answer:3,explanation:"Backshift: can\u2019t \u2192 couldn\u2019t."},
-  {text:"\"I do my homework every evening.\" \u2192 She said she ______ her homework every evening.",options:["did","does","had done","would do","has done"],answer:0,explanation:"Backshift: do \u2192 did."},
-  {text:"\"They have just arrived.\" \u2192 He told me they ______.",options:["have just arrived","just arrived","had just arrived","were just arriving","just arrive"],answer:2,explanation:"Backshift: have just arrived \u2192 had just arrived."},
-  {text:"\"I may be late.\" \u2192 She said she ______ late.",options:["may be","can be","would be","might be","had been"],answer:3,explanation:"Backshift: may \u2192 might."},
-  {text:"\"We are not ready.\" \u2192 They said they ______ ready.",options:["aren\u2019t","weren\u2019t","hadn\u2019t been","wouldn\u2019t be","aren\u2019t being"],answer:1,explanation:"Backshift: are not \u2192 were not."},
-  {text:"\"She has lost her phone.\" \u2192 He said she ______ her phone.",options:["has lost","lost","was losing","had lost","loses"],answer:3,explanation:"Backshift: has lost \u2192 had lost."}
+// Plan: 5,2,4,1,3,4,2,4  Ist: 4,1,3,0,2,3,1,3 ✅
+var questions = [
+  {direct:'I am reading a great book.',text:'She told me she ______ a great book.',options:['reads','has read','read','is reading','was reading'],answer:4,explanation:'Backshift: am reading \u2192 was reading.'},
+  {direct:'He will come tomorrow.',text:'She said he ______ the next day.',options:['will come','would come','came','has come','had come'],answer:1,explanation:'Backshift: will \u2192 would.'},
+  {direct:'We can\u2019t find the keys.',text:'They said they ______ the keys.',options:['can\u2019t find','couldn\u2019t found','didn\u2019t find','couldn\u2019t find','hadn\u2019t found'],answer:3,explanation:'Backshift: can\u2019t \u2192 couldn\u2019t.'},
+  {direct:'I do my homework every evening.',text:'She said she ______ her homework every evening.',options:['did','does','had done','would do','has done'],answer:0,explanation:'Backshift: do \u2192 did.'},
+  {direct:'They have just arrived.',text:'He told me they ______.',options:['have just arrived','just arrived','had just arrived','were just arriving','just arrive'],answer:2,explanation:'Backshift: have just arrived \u2192 had just arrived.'},
+  {direct:'I may be late.',text:'She said she ______ late.',options:['may be','can be','would be','might be','had been'],answer:3,explanation:'Backshift: may \u2192 might.'},
+  {direct:'We are not ready.',text:'They said they ______ ready.',options:['aren\u2019t','weren\u2019t','hadn\u2019t been','wouldn\u2019t be','aren\u2019t being'],answer:1,explanation:'Backshift: are not \u2192 were not.'},
+  {direct:'She has lost her phone.',text:'He said she ______ her phone.',options:['has lost','lost','was losing','had lost','loses'],answer:3,explanation:'Backshift: has lost \u2192 had lost.'}
 ];
+
+var current = 0, score = 0, answered = false, paused = false;
+var timerInterval = null, timeLeft = TIMER_SECONDS;
+var answeredState = [];
+
+function startQuiz() {
+  var val = parseInt(document.getElementById('timerInput').value);
+  if (isNaN(val) || val < 5) val = 5;
+  if (val > 60) val = 60;
   TIMER_SECONDS = val;
   try { getAudioCtx(); } catch(e) {}
   document.getElementById('startScreen').style.display = 'none';
@@ -154,6 +173,7 @@ function renderQuestion() {
   var q = questions[current];
   document.getElementById('bigNumber').textContent = current + 1;
   document.getElementById('bigLabel').textContent = 'of ' + questions.length;
+  document.getElementById('directSpeech').textContent = q.direct || '';
   document.getElementById('questionText').textContent = q.text;
   var html = '';
   for (var i = 0; i < q.options.length; i++) {
@@ -281,3 +301,5 @@ function restart() {
   document.getElementById('startScreen').style.display = 'flex';
 }
 </script>
+</body>
+</html>

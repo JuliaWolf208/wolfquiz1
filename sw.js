@@ -1,4 +1,4 @@
-const cacheName = 'wolf-quiz-v1.7'; // Version bei großen Änderungen hochzählen
+const cacheName = 'wolf-quiz-v1.8'; // Version bei großen Änderungen hochzählen
 
 // Beim Installieren cachen wir nur das Nötigste (die App-Hülle)
 self.addEventListener('install', e => {

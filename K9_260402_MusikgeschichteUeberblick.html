@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>K8_260331_IndirectSpeechV1</title>
+<title>K9_260402_MusikgeschichteUeberblick</title>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -74,52 +74,53 @@ h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; text-align: center
 </head>
 <body>
 
-<h1>Indirect Speech</h1>
-<p class="subtitle">Class 8 &middot; 8 Questions</p>
+<!-- SWAP 1: Titel + Subtitle -->
+<h1>Musikgeschichte Überblick</h1>
+<p class="subtitle">Klasse 9 &middot; 8 Fragen</p>
+<!-- END SWAP 1 -->
 
 <div id="startScreen" class="start-screen">
-  <div class="start-emoji">&#128172;</div>
-  <div class="start-title">Get ready!</div>
+  <div class="start-emoji">&#127932;</div>
+  <div class="start-title">Bereit?</div>
   <div class="start-info">
-    <p>&#128221; 8 questions</p>
+    <p>&#127932; 8 Fragen</p>
     <div class="timer-input-row">
-      <label for="timerInput">&#9201; Seconds per question:</label>
+      <label for="timerInput">&#9201; Sekunden pro Frage:</label>
       <input class="timer-input" id="timerInput" type="number" min="5" max="60" value="15">
-      <span class="timer-unit">sec</span>
+      <span class="timer-unit">Sek</span>
     </div>
   </div>
-  <button class="play-btn" onclick="startQuiz()">&#9654; Let's go!</button>
-  <a href="index.html" class="portal-link-start">&#8592; Back to Portal</a>
+  <button class="play-btn" onclick="startQuiz()">&#9654; Starten</button>
+  <a href="index.html" class="portal-link-start">&#8592; Zurück zum Portal</a>
 </div>
 
 <div id="quizWrap" style="display:none; width:100%; max-width:580px;">
   <div class="question-number-display" id="bigNumber">1</div>
-  <div class="question-number-label" id="bigLabel">of 8</div>
+  <div class="question-number-label" id="bigLabel">von 8</div>
   <div class="card">
     <div class="timer-wrap"><div class="timer-fill" id="timerFill"></div></div>
     <div class="timer-row">
       <span class="timer-seconds" id="timerSeconds">15s</span>
       <button class="pause-btn" id="pauseBtn" onclick="togglePause()">Pause</button>
-      <span class="score-display">Score: <strong id="scoreNum">0</strong></span>
+      <span class="score-display">Punkte: <strong id="scoreNum">0</strong></span>
     </div>
     <div id="questionArea">
-      <div class="direct-label">Direct speech:</div>
-      <div class="direct-speech" id="directSpeech"></div>
-      <div class="direct-label">Indirect speech:</div>
+      <div class="direct-label" style="display:none;"></div>
+      <div class="direct-speech" id="directSpeech" style="display:none;"></div>
       <div class="question-text" id="questionText"></div>
       <div class="btn-group" id="btnGroup"></div>
       <div class="feedback" id="feedback"></div>
       <div class="btn-row">
-        <button class="back-btn" id="backBtn" onclick="goBack()">&#8592; Back</button>
-        <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next question &#8594;</button>
+        <button class="back-btn" id="backBtn" onclick="goBack()">&#8592; Start</button>
+        <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Nächste Frage &#8594;</button>
       </div>
     </div>
     <div class="result-screen" id="resultScreen">
       <div class="result-emoji" id="resultEmoji"></div>
       <div class="result-title" id="resultTitle"></div>
       <div class="result-score" id="resultScore"></div>
-      <button class="restart-btn" onclick="restart()">&#8629; Play again</button>
-      <a href="index.html" class="portal-link">&#8592; Back to Portal</a>
+      <button class="restart-btn" onclick="restart()">&#8629; Nochmal</button>
+      <a href="index.html" class="portal-link">&#8592; Zurück zum Portal</a>
     </div>
   </div>
 </div>
@@ -142,19 +143,58 @@ function beep() {
   } catch(e) {}
 }
 
-// Plan: 3,1,5,2,4,1,4,3  Ist: 2,0,4,2,0 → adjusted to match original answer values
+/* SWAP 2 */
 var questions = [
-  {direct:'I am tired.',text:'She said that she ______ tired.',options:['is','will be','was','were','be'],answer:2,explanation:'Backshift: is \u2192 was.'},
-  {direct:'I have read the book.',text:'He told me he ______ the book.',options:['had read','has read','would read','reads','read'],answer:0,explanation:'Backshift: has read \u2192 had read.'},
-  {direct:'I will come to the party.',text:'They said they ______ to the party.',options:['come','came','have come','are coming','would come'],answer:4,explanation:'Backshift: will come \u2192 would come.'},
-  {direct:'I have done the homework.',text:'She told me she ______ the homework.',options:['has done','does','did','had done','would do'],answer:3,explanation:'Backshift: has done \u2192 had done.'},
-  {direct:'I know the answer.',text:'He said he ______ the answer.',options:['knew','knows','has known','know','will know'],answer:0,explanation:'Backshift: knows \u2192 knew.'},
-  {direct:'I will leave early.',text:'She told me she ______ leave early.',options:['would','will','had','has','is going to'],answer:0,explanation:'Backshift: will \u2192 would.'},
-  {direct:'We have seen the film already.',text:'They said they ______ the film already.',options:['have seen','see','saw','had seen','were seeing'],answer:3,explanation:'Backshift: have seen \u2192 had seen.'},
-  {direct:'I am working at 8.',text:'He told me he ______ working at 8.',options:['has been','is','was','would be','had been'],answer:2,explanation:'Backshift: is \u2192 was.'}
+  {
+    text: 'Wer hat die Notation von Kirchengesängen im Jahr 600 gesammelt und damit den gregorianischen Choral begründet?',
+    options: ['Guido von Arezzo','Papst Gregor der Große','Claudio Monteverdi','Martin Luther','Johann Sebastian Bach'],
+    answer: 1,
+    explanation: 'Papst Gregor der Große sammelte um 600 einstimmige, unbegleitete Gesänge in lateinischer Sprache – daher „Gregorianischer Choral".'
+  },
+  {
+    text: 'Welche Erfindung von Guido von Arezzo (um 1030) revolutionierte die Musiknotation?',
+    options: ['Die Notenliniensystem (Notenlinien)','Das Klavier','Den Generalbass','Die Zwölftontechnik','Den Buchdruck für Noten'],
+    answer: 0,
+    explanation: 'Guido von Arezzo erfand die Notenlinien, mit denen Töne erstmals präzise aufgeschrieben werden konnten – ein System, das bis heute genutzt wird.'
+  },
+  {
+    text: 'Was bedeutet der Begriff „Renaissance" wörtlich?',
+    options: ['Aufklärung','Mittelalter','Neuanfang','Wiedergeburt','Erneuerung'],
+    answer: 3,
+    explanation: 'Renaissance kommt aus dem Französischen und bedeutet „Wiedergeburt" – gemeint ist die Wiedergeburt der Ideen der Antike.'
+  },
+  {
+    text: 'Welches Tonsystem entstand in der Renaissance und bildet die Grundlage unserer heutigen Musik?',
+    options: ['Die Zwölftontechnik','Dur- und Moll-Tonarten mit Dreiklängen','Der gregorianische Choral','Die elektronische Musik','Das Generalbass-System'],
+    answer: 1,
+    explanation: 'In der Renaissance entstand unser heutiges Tonsystem mit Dur und Moll sowie das Prinzip der Dreiklänge als Basis für die Musik.'
+  },
+  {
+    text: 'Wie nennt man das System im Barock, bei dem eine Bassstimme mit Ziffern eine Melodiestimme begleitet?',
+    options: ['Minnesang','Fuge','Generalbass','Notenschrift','Oratorium'],
+    answer: 2,
+    explanation: 'Der Generalbass ist das charakteristische Begleitprinzip des Barocks: eine bezifferte Basslinie ermöglicht der Melodiestimme ihre Eigenständigkeit.'
+  },
+  {
+    text: 'Wessen Werk gilt als erste Oper?',
+    options: ['Johann Sebastian Bachs','Claudio Monteverdis','Richard Wagners','Arnold Schönbergs','Joseph Haydns'],
+    answer: 1,
+    explanation: 'Die erste Oper wird Claudio Monteverdi zugeschrieben – sie war jedoch nur für die wohlhabende Oberschicht zugänglich, nicht für das einfache Volk.'
+  },
+  {
+    text: 'Welche Gattungen stehen im Mittelpunkt der Klassik und machten Musik einem breiten Bürgerpublikum zugänglich?',
+    options: ['Oper und Oratorium','Lied und Fuge','Sonate und Sinfonie','Concerto und Kirchensonate','Minnesang und Choral'],
+    answer: 2,
+    explanation: 'Sonate und Sinfonie sind die typischen Gattungen der Klassik, die in Konzertsälen einem breiten bürgerlichen Publikum zugänglich gemacht wurden.'
+  },
+  {
+    text: 'Welche neue Kompositionstechnik entwickelte Arnold Schönberg in der Moderne?',
+    options: ['Den Minnesang','Die Fuge','Den Generalbass','Die Klangfarbenmelodie','Die Zwölftontechnik'],
+    answer: 4,
+    explanation: 'Arnold Schönberg entwickelte die Zwölftontechnik, bei der alle zwölf Töne der chromatischen Tonleiter gleichberechtigt verwendet werden – ein radikaler Bruch mit dem Dur-Moll-System.'
+  }
 ];
-
-// Plan: 3,1,5,2,4,1,4,3  Ist: 3,1,5,4,1,1,4,3 — corrected to match original answer indices above
+/* END SWAP 2 */
 
 var current = 0, score = 0, answered = false, paused = false;
 var timerInterval = null, timeLeft = TIMER_SECONDS;
@@ -174,8 +214,7 @@ function startQuiz() {
 function renderQuestion() {
   var q = questions[current];
   document.getElementById('bigNumber').textContent = current + 1;
-  document.getElementById('bigLabel').textContent = 'of ' + questions.length;
-  document.getElementById('directSpeech').textContent = q.direct || '';
+  document.getElementById('bigLabel').textContent = 'von ' + questions.length;
   document.getElementById('questionText').textContent = q.text;
   var html = '';
   for (var i = 0; i < q.options.length; i++) {
@@ -184,8 +223,8 @@ function renderQuestion() {
   document.getElementById('btnGroup').innerHTML = html;
   document.getElementById('feedback').className = 'feedback';
   document.getElementById('feedback').textContent = '';
-  document.getElementById('nextBtn').textContent = current + 1 < questions.length ? 'Next question \u2192' : 'See results \u2192';
-  document.getElementById('backBtn').textContent = current === 0 ? '\u2190 Start' : '\u2190 Back';
+  document.getElementById('nextBtn').textContent = current + 1 < questions.length ? 'Nächste Frage \u2192' : 'Ergebnis anzeigen \u2192';
+  document.getElementById('backBtn').textContent = current === 0 ? '\u2190 Start' : '\u2190 Zurück';
   document.getElementById('pauseBtn').textContent = 'Pause';
   paused = false;
 
@@ -197,10 +236,10 @@ function renderQuestion() {
       document.getElementById('btn' + state.chosen).classList.add(state.correct ? 'correct' : 'wrong');
       if (!state.correct) document.getElementById('btn' + q.answer).classList.add('correct');
       var fb = document.getElementById('feedback');
-      fb.textContent = (state.correct ? '\u2705 Correct! ' : '\u274C Not quite! ') + q.explanation;
+      fb.textContent = (state.correct ? '\u2705 Richtig! ' : '\u274C Leider falsch! ') + q.explanation;
       fb.className = 'feedback show ' + (state.correct ? 'correct-fb' : 'wrong-fb');
     } else {
-      document.getElementById('feedback').textContent = "\u23F0 Time's up! Next question please.";
+      document.getElementById('feedback').textContent = '\u23F0 Zeit abgelaufen! N\u00e4chste Frage bitte.';
       document.getElementById('feedback').className = 'feedback show timeout-fb';
     }
     document.getElementById('timerFill').style.width = '0%';
@@ -229,7 +268,7 @@ function goBack() {
 
 function togglePause() {
   if (answered) return; paused = !paused;
-  if (paused) { clearInterval(timerInterval); document.getElementById('pauseBtn').textContent = '\u25BA Resume'; }
+  if (paused) { clearInterval(timerInterval); document.getElementById('pauseBtn').textContent = '\u25BA Weiter'; }
   else { document.getElementById('pauseBtn').textContent = 'Pause'; timerInterval = setInterval(tick, 1000); }
 }
 
@@ -246,7 +285,7 @@ function tick() {
     if (!answered) {
       answered = true; answeredState[current] = { chosen: null, correct: false };
       for (var i = 0; i < questions[current].options.length; i++) { document.getElementById('btn' + i).disabled = true; }
-      document.getElementById('feedback').textContent = "\u23F0 Time's up! Next question please.";
+      document.getElementById('feedback').textContent = '\u23F0 Zeit abgelaufen! N\u00e4chste Frage bitte.';
       document.getElementById('feedback').className = 'feedback show timeout-fb';
       document.getElementById('pauseBtn').disabled = true;
     }
@@ -274,7 +313,7 @@ function answer(idx) {
   if (!correct) document.getElementById('btn' + q.answer).classList.add('correct');
   if (correct) { score++; document.getElementById('scoreNum').textContent = score; }
   var fb = document.getElementById('feedback');
-  fb.textContent = (correct ? '\u2705 Correct! ' : '\u274C Not quite! ') + q.explanation;
+  fb.textContent = (correct ? '\u2705 Richtig! ' : '\u274C Leider falsch! ') + q.explanation;
   fb.className = 'feedback show ' + (correct ? 'correct-fb' : 'wrong-fb');
 }
 
@@ -290,8 +329,8 @@ function showResult() {
   document.getElementById('questionArea').style.display = 'none'; document.getElementById('resultScreen').classList.add('show');
   var pct = score / questions.length;
   document.getElementById('resultEmoji').textContent = pct===1?'\uD83C\uDFC6':pct>=0.75?'\uD83C\uDF89':pct>=0.5?'\uD83D\uDC4D':'\uD83D\uDCAA';
-  document.getElementById('resultTitle').textContent = pct===1?'Perfect!':pct>=0.75?'Great job!':pct>=0.5?'Good effort!':'Keep going!';
-  document.getElementById('resultScore').textContent = pct===1?'All 8 correct. Excellent!':score+' out of '+questions.length+' correct.'+(pct<0.75?' Keep practising!':'');
+  document.getElementById('resultTitle').textContent = pct===1?'Perfekt!':pct>=0.75?'Super!':pct>=0.5?'Gut gemacht!':'Weiter üben!';
+  document.getElementById('resultScore').textContent = pct===1?'Alle 8 richtig. Ausgezeichnet!':score+' von '+questions.length+' Fragen richtig.'+(pct<0.75?' Noch üben!':'');
 }
 
 function restart() {
