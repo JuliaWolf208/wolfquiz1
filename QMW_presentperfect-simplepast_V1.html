@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QMW_quintenzirkel-moll_V1.html</title>
+<title>QMW_presentperfect-simplepast_V1.html</title>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -41,6 +41,8 @@ h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; text-align: center
 .pause-btn:hover { background: #e0f7f4; }
 .pause-btn:disabled { opacity: 0.3; cursor: default; }
 .score-display { font-size: 0.82rem; color: #7ab8b3; font-weight: 700; }
+.direct-label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #7ab8b3; margin-bottom: 4px; }
+.direct-speech { font-size: 1rem; font-style: italic; color: #1a7a72; background: #e0f7f4; border-left: 3px solid #26a69a; padding: 8px 12px; border-radius: 6px; margin-bottom: 16px; }
 .question-text { font-size: 1.15rem; font-weight: 600; line-height: 1.6; margin-bottom: 24px; color: #1a4a44; }
 .btn-group { display: flex; flex-direction: column; gap: 12px; }
 .answer-btn { width: 100%; padding: 12px 16px; border-radius: 12px; border: 2px solid #b2dfdb; background: white; font-family: 'Quicksand', sans-serif; font-size: 1.05rem; font-weight: 600; color: #1a4a44; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 15px; transition: all 0.2s; }
@@ -69,6 +71,7 @@ h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; text-align: center
 .restart-btn:hover { background: #e0f7f4; }
 .portal-link { text-decoration: none; color: #26a69a; font-weight: 700; font-size: 0.95rem; padding: 10px 24px; border: 2px solid #26a69a; border-radius: 12px; transition: background 0.15s; }
 .portal-link:hover { background: #e0f7f4; }
+/* ── Wolf Logo Ergebnis-Animationen ── */
 @keyframes howl {
   0%   { transform: rotate(0deg) scale(1); }
   10%  { transform: rotate(-8deg) scale(1.05); }
@@ -86,25 +89,29 @@ h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; text-align: center
   0%, 100% { filter: drop-shadow(0 0 5px #26a69a); }
   50%       { filter: drop-shadow(0 0 16px #1a7a72); }
 }
+
 .wolf-result-logo {
   width: 90px;
   height: auto;
   display: block;
   margin: 0 auto;
+  /* Diese Befehle entfernen den Rahmen und Hintergrund garantiert: */
   border: none !important;
   border-radius: 0 !important;
   background: transparent !important;
   background-color: transparent !important;
   box-shadow: none !important;
 }
+
 .wolf-start-logo {
-  width: 150px;
+  width: 150px; /* oder dein Wunschmaß */
   border: none !important;
   border-radius: 0 !important;
   background: transparent !important;
   background-color: transparent !important;
   box-shadow: none !important;
 }
+
 .wolf-result-logo.animate {
   animation: howl 1.2s ease-in-out, glow 2s ease-in-out 1.2s infinite;
 }
@@ -112,50 +119,59 @@ h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; text-align: center
 </head>
 <body>
 
-<h1>Quintenzirkel</h1>
-<p class="subtitle">Moll-Tonarten</p>
+<!-- SWAP 1: Titel + Subtitle
+     %%TITEL%%    = Thema OHNE Nummer (z. B. "Simple Present vs. Present Progressive")
+     %%SUBTITLE%% = immer "8 Questions"
+     Die Nummer (1/2/3) erscheint NICHT hier – nur in der index.html. -->
+<<h1>Present Perfect vs. Simple Past</h1>
+<p class="subtitle">8 Questions</p>
+<!-- END SWAP 1 -->
 
 <div id="startScreen" class="start-screen">
   <img class="wolf-result-logo wolf-start-logo" src="wolf-logo.png" alt="Quizmaster Wolf">
+
   <div class="start-title">Quizmaster Wolf</div>
   <div class="start-info">
-    <p>&#128221; 8 Fragen</p>
+    <p>&#128221; 8 questions</p>
     <div class="timer-input-row">
-      <label for="timerInput">&#9201; Sekunden pro Frage:</label>
+      <label for="timerInput">&#9201; Seconds per question:</label>
       <input class="timer-input" id="timerInput" type="number" min="5" max="60" value="15">
-      <span class="timer-unit">Sek</span>
+      <span class="timer-unit">sec</span>
     </div>
   </div>
-  <a href="https://www.youtube.com/watch?v=U9YVaAjfKSs" target="_blank" class="video-btn">&#9654; Video zuerst ansehen</a>
-  <button class="play-btn" onclick="startQuiz()">&#9654; Starten</button>
-  <a href="index.html" class="portal-link-start">&#8592; Zur&uuml;ck zum Portal</a>
+  <!-- SWAP 3: Video-Button (nur bei /video=URL, sonst weglassen) -->
+  <!-- <a href="%%VIDEOURL%%" target="_blank" class="video-btn">&#9654; Watch video first</a> -->
+  <!-- END SWAP 3 -->
+  <button class="play-btn" onclick="startQuiz()">&#9654; Let's go!</button>
+  <a href="index.html" class="portal-link-start">&#8592; Back to Portal</a>
 </div>
 
 <div id="quizWrap" style="display:none; width:100%; max-width:580px;">
   <div class="question-number-display" id="bigNumber">1</div>
-  <div class="question-number-label" id="bigLabel">von 8</div>
+  <div class="question-number-label" id="bigLabel">of 8</div>
   <div class="card">
     <div class="timer-wrap"><div class="timer-fill" id="timerFill"></div></div>
     <div class="timer-row">
       <span class="timer-seconds" id="timerSeconds">15s</span>
       <button class="pause-btn" id="pauseBtn" onclick="togglePause()">Pause</button>
-      <span class="score-display">Punkte: <strong id="scoreNum">0</strong></span>
+      <span class="score-display">Score: <strong id="scoreNum">0</strong></span>
     </div>
     <div id="questionArea">
       <div class="question-text" id="questionText"></div>
       <div class="btn-group" id="btnGroup"></div>
       <div class="feedback" id="feedback"></div>
       <div class="btn-row">
-        <button class="back-btn" id="backBtn" onclick="goBack()">&#8592; Start</button>
-        <button class="next-btn" id="nextBtn" onclick="nextQuestion()">N&#228;chste Frage &#8594;</button>
+        <button class="back-btn" id="backBtn" onclick="goBack()">&#8592; Back</button>
+        <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next question &#8594;</button>
       </div>
     </div>
     <div class="result-screen" id="resultScreen">
       <img id="wolfLogo" class="wolf-result-logo" src="wolf-logo.png" alt="Quizmaster Wolf">
+      
       <div class="result-title" id="resultTitle"></div>
       <div class="result-score" id="resultScore"></div>
-      <button class="restart-btn" onclick="restart()">&#8629; Nochmal spielen</button>
-      <a href="index.html" class="portal-link">&#8592; Zur&uuml;ck zum Portal</a>
+      <button class="restart-btn" onclick="restart()">&#8629; Play again</button>
+      <a href="index.html" class="portal-link">&#8592; Back to Portal</a>
     </div>
   </div>
 </div>
@@ -178,16 +194,60 @@ function beep() {
   } catch(e) {}
 }
 
-/* SWAP 2 — PLAN: 3,0,4,1,2,4,0,3 | answer-Werte: 3,0,4,1,2,4,0,3 ✅ */
+/* SWAP 2: questions-Array
+   Felder: text, options[5], answer (0-basiert), explanation
+   Optional: direct (nur bei /direkt)
+   WICHTIG: Alle 5 Positionen (0-4) müssen als answer vorkommen!
+   SLOT-FIRST: Positionsplan festlegen VOR dem Schreiben der Fragen. */
 var questions = [
-  {text:'Eine Moll-Tonart wird als \u201eParallele\u201c bezeichnet, wenn sie ______ wie ihre zugeh\u00f6rige Dur-Tonart besitzt.',options:['einen anderen Grundton','einen gr\u00f6\u00dferen Tonumfang','die gleiche Taktart','dieselben Vorzeichen','dieselbe Tonleiter-Struktur'],answer:3,explanation:'Parallele Tonarten teilen sich den gleichen Vorrat an T\u00f6nen und damit auch die identischen Vorzeichen im Quintenzirkel.'},
-  {text:'Um die parallele Moll-Tonart zu einer Dur-Tonart zu finden, muss man vom Dur-Grundton eine ______ nach unten gehen.',options:['kleine Terz','reine Quinte','gro\u00dfe Sekunde','reine Quarte','gro\u00dfe Terz'],answer:0,explanation:'Der Grundton der Moll-Parallele liegt drei Halbtonschritte (eine kleine Terz) unter dem der Dur-Tonart.'},
-  {text:'Im Quintenzirkel werden die Moll-Tonarten \u00fcblicherweise ______ des Kreises notiert.',options:['links au\u00dferhalb','oberhalb','rechts au\u00dferhalb','unterhalb','innerhalb'],answer:4,explanation:'Zur besseren \u00dcbersicht schreibt man die Dur-Tonarten nach au\u00dfen und ihre Moll-Parallelen direkt darunter in das Innere des Zirkels.'},
-  {text:'Die Tonart C-Dur besitzt keine Vorzeichen; ihre parallele Moll-Tonart ist ______.',options:['d-Moll','a-Moll','e-Moll','h-Moll','g-Moll'],answer:1,explanation:'Geht man vom C drei Halbtonschritte abw\u00e4rts (C \u2192 H \u2192 B/A# \u2192 A), landet man beim A.'},
-  {text:'Auf der rechten Seite des Quintenzirkels (Kreuz-Tonarten) ist ______ die Parallele zu G-Dur.',options:['h-Moll','fis-Moll','e-Moll','cis-Moll','d-Moll'],answer:2,explanation:'G-Dur hat ein Kreuz (Fis), und die dazugeh\u00f6rige Moll-Tonart mit einem Kreuz ist e-Moll.'},
-  {text:'Benachbarte Moll-Tonarten im Quintenzirkel haben untereinander stets den Abstand einer ______.',options:['gro\u00dfen Terz','kleinen Terz','reinen Quarte','gro\u00dfen Sexte','reinen Quinte'],answer:4,explanation:'Genau wie die Dur-Tonarten sind auch die Moll-Tonarten im Abstand von f\u00fcnf Tonschritten (Quinten) angeordnet.'},
-  {text:'Die Tonart F-Dur hat ein B-Vorzeichen; die dazugeh\u00f6rige parallele Moll-Tonart ist ______.',options:['d-Moll','g-Moll','c-Moll','f-Moll','b-Moll'],answer:0,explanation:'Eine kleine Terz unter F liegt das D, daher ist d-Moll die Parallele zu F-Dur.'},
-  {text:'Wenn man die 6. Stufe einer Dur-Tonleiter als neuen Grundton verwendet, erh\u00e4lt man die ______.',options:['Subdominante','Dominante','Tonika','Moll-Parallele','Dur-Parallele'],answer:3,explanation:'Die nat\u00fcrliche Moll-Tonleiter beginnt immer auf der sechsten Stufe ihrer parallelen Dur-Tonleiter.'}
+  {
+    text: 'She ___ her homework an hour ago.',
+    options: ['have finished', 'has finish', 'finished', 'has finished', 'finish'],
+    answer: 2,
+    explanation: 'Use Simple Past with a finished time expression like "an hour ago".'
+  },
+  {
+    text: 'I ___ never tried sushi before.',
+    options: ['have', 'had', 'has', 'did', 'was'],
+    answer: 0,
+    explanation: '"Have never tried" is Present Perfect – used for life experiences without a specific time.'
+  },
+  {
+    text: 'They ___ to London last summer.',
+    options: ['have gone', 'has went', 'were going', 'have went', 'went'],
+    answer: 4,
+    explanation: '"Last summer" is a finished past time, so Simple Past is correct: "went".'
+  },
+  {
+    text: 'We ___ just finished the test.',
+    options: ['did', 'have', 'had', 'has', 'were'],
+    answer: 1,
+    explanation: '"Just" signals Present Perfect: "We have just finished."'
+  },
+  {
+    text: 'He ___ his keys yesterday.',
+    options: ['has lose', 'have lost', 'has lost', 'loses', 'lost'],
+    answer: 4,
+    explanation: '"Yesterday" is a finished past time, so Simple Past is correct: "lost".'
+  },
+  {
+    text: '___ you ever seen a shooting star?',
+    options: ['Have', 'Did', 'Do', 'Had', 'Has'],
+    answer: 0,
+    explanation: '"Have you ever seen" is Present Perfect – used for experiences up to now.'
+  },
+  {
+    text: 'My parents ___ married in 2005.',
+    options: ['have got', 'has got', 'got', 'get', 'were got'],
+    answer: 2,
+    explanation: '"In 2005" is a specific finished time, so Simple Past "got" is correct.'
+  },
+  {
+    text: 'She ___ already eaten lunch.',
+    options: ['did', 'was', 'had', 'has', 'have'],
+    answer: 3,
+    explanation: '"Already" with a completed action = Present Perfect: "She has already eaten."'
+  }
 ];
 /* END SWAP 2 */
 
@@ -209,7 +269,10 @@ function startQuiz() {
 function renderQuestion() {
   var q = questions[current];
   document.getElementById('bigNumber').textContent = current + 1;
-  document.getElementById('bigLabel').textContent = 'von ' + questions.length;
+  document.getElementById('bigLabel').textContent = 'of ' + questions.length;
+  if (document.getElementById('directSpeech')) {
+    document.getElementById('directSpeech').textContent = q.direct || '';
+  }
   document.getElementById('questionText').textContent = q.text;
   var html = '';
   for (var i = 0; i < q.options.length; i++) {
@@ -218,8 +281,8 @@ function renderQuestion() {
   document.getElementById('btnGroup').innerHTML = html;
   document.getElementById('feedback').className = 'feedback';
   document.getElementById('feedback').textContent = '';
-  document.getElementById('nextBtn').textContent = current + 1 < questions.length ? 'N\u00e4chste Frage \u2192' : 'Ergebnis anzeigen \u2192';
-  document.getElementById('backBtn').textContent = current === 0 ? '\u2190 Start' : '\u2190 Zur\u00fcck';
+  document.getElementById('nextBtn').textContent = current + 1 < questions.length ? 'Next question \u2192' : 'See results \u2192';
+  document.getElementById('backBtn').textContent = current === 0 ? '\u2190 Start' : '\u2190 Back';
   document.getElementById('pauseBtn').textContent = 'Pause';
   paused = false;
 
@@ -231,10 +294,10 @@ function renderQuestion() {
       document.getElementById('btn' + state.chosen).classList.add(state.correct ? 'correct' : 'wrong');
       if (!state.correct) document.getElementById('btn' + q.answer).classList.add('correct');
       var fb = document.getElementById('feedback');
-      fb.textContent = (state.correct ? '\u2705 Richtig! ' : '\u274C Leider falsch! ') + q.explanation;
+      fb.textContent = (state.correct ? '\u2705 Correct! ' : '\u274C Not quite! ') + q.explanation;
       fb.className = 'feedback show ' + (state.correct ? 'correct-fb' : 'wrong-fb');
     } else {
-      document.getElementById('feedback').textContent = '\u23F0 Zeit abgelaufen! N\u00e4chste Frage bitte.';
+      document.getElementById('feedback').textContent = "\u23F0 Time's up! Next question please.";
       document.getElementById('feedback').className = 'feedback show timeout-fb';
     }
     document.getElementById('timerFill').style.width = '0%';
@@ -263,7 +326,7 @@ function goBack() {
 
 function togglePause() {
   if (answered) return; paused = !paused;
-  if (paused) { clearInterval(timerInterval); document.getElementById('pauseBtn').textContent = '\u25BA Weiter'; }
+  if (paused) { clearInterval(timerInterval); document.getElementById('pauseBtn').textContent = '\u25BA Resume'; }
   else { document.getElementById('pauseBtn').textContent = 'Pause'; timerInterval = setInterval(tick, 1000); }
 }
 
@@ -280,7 +343,7 @@ function tick() {
     if (!answered) {
       answered = true; answeredState[current] = { chosen: null, correct: false };
       for (var i = 0; i < questions[current].options.length; i++) { document.getElementById('btn' + i).disabled = true; }
-      document.getElementById('feedback').textContent = '\u23F0 Zeit abgelaufen! N\u00e4chste Frage bitte.';
+      document.getElementById('feedback').textContent = "\u23F0 Time's up! Next question please.";
       document.getElementById('feedback').className = 'feedback show timeout-fb';
       document.getElementById('pauseBtn').disabled = true;
     }
@@ -308,7 +371,7 @@ function answer(idx) {
   if (!correct) document.getElementById('btn' + q.answer).classList.add('correct');
   if (correct) { score++; document.getElementById('scoreNum').textContent = score; }
   var fb = document.getElementById('feedback');
-  fb.textContent = (correct ? '\u2705 Richtig! ' : '\u274C Leider falsch! ') + q.explanation;
+  fb.textContent = (correct ? '\u2705 Correct! ' : '\u274C Not quite! ') + q.explanation;
   fb.className = 'feedback show ' + (correct ? 'correct-fb' : 'wrong-fb');
 }
 
@@ -327,8 +390,8 @@ function showResult() {
   void wolf.offsetWidth;
   wolf.classList.add('animate');
   var pct = score / questions.length;
-  document.getElementById('resultTitle').textContent = pct===1?'Perfekt!':pct>=0.75?'Super!':pct>=0.5?'Gut gemacht!':'Weiter \u00fcben!';
-  document.getElementById('resultScore').textContent = pct===1?'Alle 8 richtig. Ausgezeichnet!':score+' von '+questions.length+' Fragen richtig.'+(pct<0.75?' Noch \u00fcben!':'');
+  document.getElementById('resultTitle').textContent = pct===1?'Perfect!':pct>=0.75?'Great job!':pct>=0.5?'Good effort!':'Keep going!';
+  document.getElementById('resultScore').textContent = pct===1?'All 8 correct. Excellent!':score+' out of '+questions.length+' correct.'+(pct<0.75?' Keep practising!':''  );
 }
 
 function restart() {
@@ -343,4 +406,8 @@ function restart() {
 
 <footer style="text-align:center;padding:16px;margin-top:8px;font-family:'Quicksand',sans-serif;font-size:0.72rem;color:#b2dfdb;font-weight:600;">
   &copy; 2026&ndash;2027 Julia Wolf &middot; Quizmaster Wolf &middot; Alle Rechte vorbehalten
-  &middot; <a href="/cdn-cgi/l/email-protection#513b243d38307f263e3d3711252425303c30383d7f323e3c" style="color:#7ab8b3;text-decoration:none;">julia.wolf [at
+  &middot; <a href="mailto:julia.wolf@tutamail.com" style="color:#7ab8b3;text-decoration:none;">julia.wolf [at] tutamail.com</a>
+</footer>
+
+</body>
+</html>
