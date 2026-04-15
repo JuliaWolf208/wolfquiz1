@@ -124,7 +124,6 @@ h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; text-align: center
      %%SUBTITLE%% = immer "8 Questions"
      Die Nummer (1/2/3) erscheint NICHT hier – nur in der index.html. -->
 <h1>Present Perfect vs. Simple Past</h1>
-<p class="subtitle">8 Questions</p>
 <!-- END SWAP 1 -->
 
 <div id="startScreen" class="start-screen">
@@ -132,7 +131,6 @@ h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; text-align: center
 
   <div class="start-title">Quizmaster Wolf</div>
   <div class="start-info">
-    <p>&#128221; 8 questions</p>
     <div class="timer-input-row">
       <label for="timerInput">&#9201; Seconds per question:</label>
       <input class="timer-input" id="timerInput" type="number" min="5" max="60" value="15">
@@ -201,100 +199,52 @@ function beep() {
    SLOT-FIRST: Positionsplan festlegen VOR dem Schreiben der Fragen. */
 var questions = [
   {
-    text: 'Choose the correct sentence.',
-    options: [
-      'She already has eaten breakfast.',
-      'She eat breakfast an hour ago.',
-      'She ate breakfast an hour ago.',
-      'She has ate breakfast an hour ago.',
-      'She eated breakfast an hour ago.'
-    ],
-    answer: 2,
-    explanation: 'Simple Past (ate) is used because "an hour ago" is a finished time in the past.'
+    text: 'My sister ___ her phone on the bus yesterday.',
+    options: ['left', 'has left', 'have left', 'leaves', 'is leaving'],
+    answer: 0,
+    explanation: '"Yesterday" is a finished past time, so Simple Past "left" is correct.'
   },
   {
-    text: 'Which sentence is correct?',
-    options: [
-      'I never seen snow before.',
-      'I didn\'t saw snow before.',
-      'I have seen snow yesterday.',
-      'I have never see snow before.',
-      'I have never seen snow before.'
-    ],
+    text: 'I ___ already watched that film twice.',
+    options: ['am', 'was', 'did', 'have', 'had'],
+    answer: 3,
+    explanation: '"Already" signals Present Perfect: "I have already watched."'
+  },
+  {
+    text: 'She ___ her grandparents last Christmas.',
+    options: ['has visited', 'have visited', 'visited', 'visits', 'is visiting'],
+    answer: 2,
+    explanation: '"Last Christmas" is a finished past time, so Simple Past "visited" is correct.'
+  },
+  {
+    text: 'He ___ never ___ a horse before.',
+    options: ['did / ride', 'was / riding', 'has / ridden', 'had / ridden', 'has / rid'],
+    answer: 2,
+    explanation: '"Never … before" signals Present Perfect: "He has never ridden."'
+  },
+  {
+    text: 'We ___ the match on TV last night.',
+    options: ['have watched', 'has watched', 'watched', 'watch', 'are watching'],
+    answer: 2,
+    explanation: '"Last night" is a finished past time, so Simple Past "watched" is correct.'
+  },
+  {
+    text: '___ they ever ___ sushi before?',
+    options: ['Have / tried', 'Did / try', 'Has / tried', 'Do / try', 'Had / try'],
+    answer: 0,
+    explanation: '"Ever … before" = Present Perfect question: "Have they ever tried?"'
+  },
+  {
+    text: 'My teacher ___ the test results yet.',
+    options: ['didn\'t announce', 'haven\'t announced', 'not announced', 'didn\'t announced', 'hasn\'t announced'],
     answer: 4,
-    explanation: 'Present Perfect (have never seen) is used for an experience up to now – no specific time given.'
+    explanation: '"Yet" in a negative sentence = Present Perfect: "hasn\'t announced."'
   },
   {
-    text: 'Tom _____ his homework yet. Choose the correct form.',
-    options: [
-      'hasn\'t finished',
-      'didn\'t finished',
-      'hasn\'t finish',
-      'not finished',
-      'didn\'t finish yet'
-    ],
-    answer: 0,
-    explanation: '"Yet" signals Present Perfect in negative sentences: hasn\'t finished.'
-  },
-  {
-    text: 'Which sentence uses the Simple Past correctly?',
-    options: [
-      'We have visited Paris last summer.',
-      'We visited Paris last summer.',
-      'We have visit Paris last summer.',
-      'We did visit to Paris last summer.',
-      'We have been visit Paris last summer.'
-    ],
+    text: 'Tom ___ his bike in the park last Saturday.',
+    options: ['has rode', 'rode', 'has ridden', 'ride', 'is riding'],
     answer: 1,
-    explanation: '"Last summer" is a specific finished time, so Simple Past (visited) is correct.'
-  },
-  {
-    text: '_____ you ever tried sushi? Choose the correct form.',
-    options: [
-      'Did you ever tried',
-      'Have you ever tried',
-      'Did you ever try',
-      'Have you tried ever',
-      'Did you ever have tried'
-    ],
-    answer: 1,
-    explanation: '"Ever" in questions about life experiences uses Present Perfect: Have you ever tried.'
-  },
-  {
-    text: 'My parents _____ to New York in 2019. Choose the correct form.',
-    options: [
-      'have gone',
-      'has went',
-      'went',
-      'have went',
-      'gone'
-    ],
-    answer: 2,
-    explanation: '"In 2019" is a specific finished time, so Simple Past (went) is correct.'
-  },
-  {
-    text: 'Choose the correct sentence about a recent event.',
-    options: [
-      'I just dropped my phone.',
-      'I have just dropped my phone.',
-      'I just have dropped my phone.',
-      'I did just drop my phone.',
-      'I have just drop my phone.'
-    ],
-    answer: 1,
-    explanation: '"Just" with a recent result uses Present Perfect: I have just dropped my phone.'
-  },
-  {
-    text: 'She _____ three cups of coffee this morning (it\'s still morning). Choose the correct form.',
-    options: [
-      'has drunk',
-      'drank',
-      'have drunk',
-      'has drank',
-      'did drink'
-    ],
-    answer: 0,
-    explanation: 'The time period (this morning) is not finished yet, so Present Perfect (has drunk) is correct.'
+    explanation: '"Last Saturday" is a finished past time, so Simple Past "rode" is correct.'
   }
 ];
 /* END SWAP 2 */

@@ -124,7 +124,6 @@ h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; text-align: center
      %%SUBTITLE%% = immer "8 Questions"
      Die Nummer (1/2/3) erscheint NICHT hier – nur in der index.html. -->
 <h1>Present Perfect vs. Simple Past</h1>
-<p class="subtitle">8 Questions</p>
 <!-- END SWAP 1 -->
 
 <div id="startScreen" class="start-screen">
@@ -132,7 +131,6 @@ h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; text-align: center
 
   <div class="start-title">Quizmaster Wolf</div>
   <div class="start-info">
-    <p>&#128221; 8 questions</p>
     <div class="timer-input-row">
       <label for="timerInput">&#9201; Seconds per question:</label>
       <input class="timer-input" id="timerInput" type="number" min="5" max="60" value="15">
@@ -201,52 +199,52 @@ function beep() {
    SLOT-FIRST: Positionsplan festlegen VOR dem Schreiben der Fragen. */
 var questions = [
   {
-    text: 'My dad ___ breakfast last Sunday.',
-    options: ['have made', 'has make', 'was making', 'made', 'makes'],
-    answer: 3,
-    explanation: '"Last Sunday" refers to a finished time, so Simple Past "made" is correct.'
-  },
-  {
-    text: 'I ___ already seen that episode.',
-    options: ['did', 'was', 'have', 'had', 'has'],
-    answer: 2,
-    explanation: '"Already" signals Present Perfect: "I have already seen."'
-  },
-  {
-    text: '___ he finish his project on time last week?',
-    options: ['Did', 'Has', 'Have', 'Was', 'Does'],
-    answer: 0,
-    explanation: '"Last week" is a finished past time, so Simple Past question form "Did he finish" is correct.'
-  },
-  {
-    text: 'She ___ in London before.',
-    options: ['lived', 'lives', 'was living', 'has lived', 'is living'],
-    answer: 3,
-    explanation: '"Before" signals Present Perfect: "she has lived".'
-  },
-  {
-    text: 'We ___ the museum last Friday.',
-    options: ['have visited', 'visited', 'has visited', 'visit', 'are visiting'],
+    text: 'I ___ just heard the news – it\'s unbelievable!',
+    options: ['did', 'have', 'had', 'has', 'was'],
     answer: 1,
-    explanation: '"Last Friday" is a finished past time, so Simple Past "visited" is correct.'
+    explanation: '"Just" signals a recent event = Present Perfect: "I have just heard."'
   },
   {
-    text: 'He ___ never been to Asia.',
-    options: ['did', 'was', 'had', 'is', 'has'],
-    answer: 4,
-    explanation: '"Has never been" is Present Perfect – used for life experiences up to now.'
+    text: 'We ___ a great time at the beach last weekend.',
+    options: ['have had', 'has had', 'are having', 'had', 'have'],
+    answer: 3,
+    explanation: '"Last weekend" is a finished past time, so Simple Past "had" is correct.'
   },
   {
-    text: '___ you read the book yet?',
-    options: ['Have', 'Did', 'Do', 'Had', 'Has'],
+    text: '___ she ever visited Japan?',
+    options: ['Has', 'Did', 'Does', 'Had', 'Is'],
     answer: 0,
-    explanation: '"Yet" in a question = Present Perfect: "Have you read the book yet?"'
+    explanation: '"Ever" in a question about life experience = Present Perfect: "Has she ever visited?"'
   },
   {
-    text: 'They ___ football in the park yesterday afternoon.',
-    options: ['have played', 'has played', 'played', 'play', 'are playing'],
+    text: 'My brother ___ his driving test in 2022.',
+    options: ['has passed', 'have passed', 'passed', 'pass', 'has pass'],
     answer: 2,
-    explanation: '"Yesterday afternoon" is a finished past time, so Simple Past "played" is correct.'
+    explanation: '"In 2022" is a specific finished time, so Simple Past "passed" is correct.'
+  },
+  {
+    text: 'They ___ never eaten at that restaurant before.',
+    options: ['did', 'had', 'was', 'are', 'have'],
+    answer: 4,
+    explanation: '"Have never eaten" is Present Perfect – used for experiences up to now.'
+  },
+  {
+    text: 'She ___ already booked the tickets.',
+    options: ['did', 'has', 'have', 'had', 'was'],
+    answer: 1,
+    explanation: '"Already" signals Present Perfect: "She has already booked."'
+  },
+  {
+    text: 'He ___ the report two hours ago.',
+    options: ['has sent', 'have sent', 'sended', 'sent', 'has send'],
+    answer: 3,
+    explanation: '"Two hours ago" is a finished past time, so Simple Past "sent" is correct.'
+  },
+  {
+    text: '___ you finished your homework yet?',
+    options: ['Did', 'Does', 'Had', 'Are', 'Have'],
+    answer: 4,
+    explanation: '"Yet" in a question = Present Perfect: "Have you finished your homework yet?"'
   }
 ];
 /* END SWAP 2 */

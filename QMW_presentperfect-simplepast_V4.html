@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>%%DATEINAME%%</title>
+<title>QMW_presentperfect-simplepast_V4.html</title>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -124,7 +124,6 @@ h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; text-align: center
      %%SUBTITLE%% = immer "8 Questions"
      Die Nummer (1/2/3) erscheint NICHT hier – nur in der index.html. -->
 <h1>Present Perfect vs. Simple Past</h1>
-<p class="subtitle">8 Questions</p>
 <!-- END SWAP 1 -->
 
 <div id="startScreen" class="start-screen">
@@ -132,7 +131,6 @@ h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; text-align: center
 
   <div class="start-title">Quizmaster Wolf</div>
   <div class="start-info">
-    <p>&#128221; 8 questions</p>
     <div class="timer-input-row">
       <label for="timerInput">&#9201; Seconds per question:</label>
       <input class="timer-input" id="timerInput" type="number" min="5" max="60" value="15">
@@ -201,52 +199,100 @@ function beep() {
    SLOT-FIRST: Positionsplan festlegen VOR dem Schreiben der Fragen. */
 var questions = [
   {
-    text: 'I ___ just heard the news – it\'s unbelievable!',
-    options: ['did', 'have', 'had', 'has', 'was'],
-    answer: 1,
-    explanation: '"Just" signals a recent event = Present Perfect: "I have just heard."'
-  },
-  {
-    text: 'We ___ a great time at the beach last weekend.',
-    options: ['have had', 'has had', 'are having', 'had', 'have'],
+    text: 'Which sentence is correct?',
+    options: [
+      'I have called him an hour ago.',
+      'I called him since an hour.',
+      'I did call him an hour ago.',
+      'I called him an hour ago.',
+      'I have call him an hour ago.'
+    ],
     answer: 3,
-    explanation: '"Last weekend" is a finished past time, so Simple Past "had" is correct.'
+    explanation: '"An hour ago" is a finished past time, so Simple Past "called" is correct.'
   },
   {
-    text: '___ she ever visited Japan?',
-    options: ['Has', 'Did', 'Does', 'Had', 'Is'],
-    answer: 0,
-    explanation: '"Ever" in a question about life experience = Present Perfect: "Has she ever visited?"'
+    text: 'Choose the correct sentence.',
+    options: [
+      'She has never flied before.',
+      'She has never flown before.',
+      'She never flown before.',
+      'She did never fly before.',
+      'She have never flown before.'
+    ],
+    answer: 1,
+    explanation: '"Never … before" = Present Perfect: "has never flown." "Flown" is the correct past participle.'
   },
   {
-    text: 'My brother ___ his driving test in 2022.',
-    options: ['has passed', 'have passed', 'passed', 'pass', 'has pass'],
-    answer: 2,
-    explanation: '"In 2022" is a specific finished time, so Simple Past "passed" is correct.'
-  },
-  {
-    text: 'They ___ never eaten at that restaurant before.',
-    options: ['did', 'had', 'was', 'are', 'have'],
+    text: 'Which sentence about a recent action is correct?',
+    options: [
+      'He just finished his coffee.',
+      'He did just finish his coffee.',
+      'He has just finish his coffee.',
+      'He just have finished his coffee.',
+      'He has just finished his coffee.'
+    ],
     answer: 4,
-    explanation: '"Have never eaten" is Present Perfect – used for experiences up to now.'
+    explanation: '"Just" with a recent action = Present Perfect: "He has just finished."'
   },
   {
-    text: 'She ___ already booked the tickets.',
-    options: ['did', 'has', 'have', 'had', 'was'],
-    answer: 1,
-    explanation: '"Already" signals Present Perfect: "She has already booked."'
+    text: 'Choose the correct Simple Past sentence.',
+    options: [
+      'We have moved to Berlin in 2020.',
+      'We have move to Berlin in 2020.',
+      'We moved to Berlin in 2020.',
+      'We did move to Berlin in 2020.',
+      'We are moved to Berlin in 2020.'
+    ],
+    answer: 2,
+    explanation: '"In 2020" is a specific finished time, so Simple Past "moved" is correct.'
   },
   {
-    text: 'He ___ the report two hours ago.',
-    options: ['has sent', 'have sent', 'sends', 'sent', 'has send'],
-    answer: 3,
-    explanation: '"Two hours ago" is a finished past time, so Simple Past "sent" is correct.'
-  },
-  {
-    text: '___ you finished your homework yet?',
-    options: ['Did', 'Does', 'Had', 'Are', 'Have'],
+    text: '_____ a book in English? Choose the correct form.',
+    options: [
+      'Have you ever read',
+      'Did you ever read',
+      'Do you ever read',
+      'Did you ever readed',
+      'Has you ever read'
+    ],
     answer: 0,
-    explanation: '"Yet" in a question = Present Perfect: "Have you finished your homework yet?"'
+    explanation: '"Ever" in a question about life experience = Present Perfect: "Have you ever read?"'
+  },
+  {
+    text: 'Which sentence uses "already" correctly?',
+    options: [
+      'She already did finish her project.',
+      'She finished her project already yesterday.',
+      'She has her project already finished.',
+      'She has already finished her project.',
+      'She already has finish her project.'
+    ],
+    answer: 3,
+    explanation: '"Already" belongs between "has" and the past participle: "has already finished."'
+  },
+  {
+    text: 'Choose the correct sentence.',
+    options: [
+      'They have won the championship last year.',
+      'They did win the championship last year.',
+      'They won the championship last year.',
+      'They are won the championship last year.',
+      'They have win the championship last year.'
+    ],
+    answer: 2,
+    explanation: '"Last year" is a finished past time, so Simple Past "won" is correct.'
+  },
+  {
+    text: 'Which negative sentence is correct?',
+    options: [
+      'I didn\'t finished my lunch yet.',
+      'I haven\'t finished my lunch yet.',
+      'I \'m not finished my lunch yet.',
+      'I haven\'t finish my lunch yet.',
+      'I didn\'t finish my lunch already.'
+    ],
+    answer: 1,
+    explanation: '"Yet" in a negative sentence = Present Perfect: "I haven\'t finished my lunch yet."'
   }
 ];
 /* END SWAP 2 */
