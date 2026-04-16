@@ -279,6 +279,7 @@
 <!-- SETUP -->
 <div id="setup">
   <h1>Wortanzeige</h1>
+  <a href="https://claude.ai/project/019d96f3-ba7b-739a-b68e-da3603ccf66b" target="_blank" style="color:var(--muted);font-size:.82rem;text-decoration:none;opacity:.6;">↗ In Claude öffnen</a>
   <p>Gib deine Wörter ein – eines pro Zeile oder kommagetrennt. Sie werden dann zufällig nacheinander groß angezeigt.</p>
 
   <textarea id="words-input" placeholder="Hund&#10;Katze&#10;Maus&#10;Schule&#10;..."></textarea>
@@ -292,6 +293,10 @@
       <input type="checkbox" id="opt-upper">
       GROSSBUCHSTABEN
     </label>
+    <label class="toggle">
+      <input type="checkbox" id="opt-number">
+      Nummerierung
+</label>
   </div>
 
   <div id="error-msg"></div>
@@ -405,7 +410,7 @@
     index = i;
     let w = words[index];
     if (optUpper.checked) w = w.toUpperCase();
-    numberEl.textContent = (index + 1) + '. ';
+    numberEl.textContent = document.getElementById('opt-number').checked ? (index + 1) + '. ' : '';
     wordTextEl.textContent = w;
 
     wordEl.classList.remove('out', 'pop');

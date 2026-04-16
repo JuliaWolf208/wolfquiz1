@@ -293,6 +293,10 @@
       <input type="checkbox" id="opt-upper">
       UPPERCASE
     </label>
+    <label class="toggle">
+     <input type="checkbox" id="opt-number">
+      Show numbers
+</label>
   </div>
 
   
@@ -407,7 +411,7 @@
     index = i;
     let w = words[index];
     if (optUpper.checked) w = w.toUpperCase();
-    numberEl.textContent = (index + 1) + '. ';
+    numberEl.textContent = document.getElementById('opt-number').checked ? (index + 1) + '. ' : '';
     wordTextEl.textContent = w;
 
     wordEl.classList.remove('out', 'pop');
