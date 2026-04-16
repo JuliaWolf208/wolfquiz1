@@ -35,6 +35,7 @@
         .quiz-card:active { transform: scale(0.98); }
         .quiz-card.coming-soon { opacity: 0.4; pointer-events: none; }
 
+        .section.Allgemein .quiz-card { border-left: 6px solid #ef9a9a; }
         .section.klasse-6 .quiz-card { border-left: 6px solid #81d4fa; }
         .section.klasse-8 .quiz-card { border-left: 6px solid #ce93d8; }
         .section.musik    .quiz-card { border-left: 6px solid #fff59d; }
@@ -76,6 +77,20 @@
   <p style="font-size: 0.85rem; color: #1a7a72; font-weight: 700;">Tippe auf &#8593; und w&auml;hle &bdquo;Zum Home-Bildschirm&ldquo;.</p>
 </div>
 
+
+<div class="section Allgemein" id="section-allgemein">
+  <div class="section-title">Allgemein</div>
+    <div class="quiz-list">
+      <a class="quiz-card" href="worddisplay.html">
+        <span class="quiz-icon">&#127919;</span>
+        <div class="quiz-info"><div class="quiz-title">Flashword</div></div>
+      </a>
+      <a class="quiz-card" href="wortanzeige.html">
+        <span class="quiz-icon">&#127919;</span>
+        <div class="quiz-info"><div class="quiz-title">Blitzwort</div></div>
+      </a>
+  </div>
+</div>
 <div class="section klasse-6" id="section-klasse6">
   <div class="section-title">Klasse 6</div>
   <div class="unit-group">
@@ -279,7 +294,7 @@ async function updateApp() {
 // --- HIER SCHNELL FINDEN ---
 const MEIN_PASSWORT = "jtw";
 const AUTH_KEY = "wolf_auth_v1";
-const PORTAL_VERSION = "v2.4";
+const PORTAL_VERSION = "v2.5";
 </script>
 
 </body>

@@ -1,6 +1,6 @@
 {
   "short_name": "Wolf Quiz",
-  "name": "Quizmaster Ms. Wolf",
+  "name": "Quizmaster Wolf",
   "icons": [
     { "src": "apple-touch-icon.png", "type": "image/png", "sizes": "180x180" },
     { "src": "icon_192.png", "type": "image/png", "sizes": "192x192" }
