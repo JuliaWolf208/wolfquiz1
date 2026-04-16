@@ -290,10 +290,6 @@
       Zufällige Reihenfolge
     </label>
     <label class="toggle">
-      <input type="checkbox" id="opt-upper">
-      GROSSBUCHSTABEN
-    </label>
-    <label class="toggle">
       <input type="checkbox" id="opt-number">
       Nummerierung
 </label>
@@ -352,7 +348,7 @@
   const stageEl      = document.getElementById('stage');
   const doneCount    = document.getElementById('done-count');
   const optShuffle   = document.getElementById('opt-shuffle');
-  const optUpper     = document.getElementById('opt-upper');
+  
 
   let words      = [];
   let origWords  = [];
@@ -409,7 +405,6 @@
 
     index = i;
     let w = words[index];
-    if (optUpper.checked) w = w.toUpperCase();
     numberEl.textContent = document.getElementById('opt-number').checked ? (index + 1) + '. ' : '';
     wordTextEl.textContent = w;
 
