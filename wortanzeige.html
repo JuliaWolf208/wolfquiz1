@@ -174,9 +174,9 @@
   <h2>Alle Wörter durch!</h2>
   <p id="done-count"></p>
   <div class="done-btns">
-    <button class="btn-primary" id="btn-review">Besprechung starten →</button>
-    <button class="btn-ghost" id="btn-restart-same">Nochmal (neue Reihenfolge)</button>
+    <button class="btn-primary" id="btn-restart-same">Nochmal (neue Reihenfolge) →</button>
     <button class="btn-ghost" id="btn-restart-new">Neue Wörter eingeben</button>
+    <button class="btn-ghost" id="btn-review">Besprechung starten</button>
   </div>
 </div>
 
@@ -602,6 +602,7 @@ async function showWord(i){
   if(busy)return;busy=true;
   wordEl.classList.add('out');await wait(160);
   if(i>=words.length){
+    stopMetro();
     show('done');
     if(isReview){doneCount.textContent='Besprechung abgeschlossen.';btnReview.style.display='none';}
     else{doneCount.textContent=words.length+' Wörter wurden angezeigt.';btnReview.style.display='';}
