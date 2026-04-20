@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Klasse6_260325_SimplePastVsPresentPerfect</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Quicksand', sans-serif; background: #e0f7f4; color: #1a4a44; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
+h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; text-align: center; color: #1a7a72; }
+.subtitle { color: #7ab8b3; font-size: 0.9rem; margin-bottom: 20px; text-align: center; font-weight: 600; }
+.start-screen { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
+.start-emoji { font-size: 4rem; }
+.start-title { font-size: 2rem; font-weight: 700; color: #1a7a72; }
+.start-info { background: white; border-radius: 16px; padding: 24px 28px; max-width: 400px; width: 100%; box-shadow: 0 4px 20px rgba(38,166,154,0.1); display: flex; flex-direction: column; gap: 14px; }
+.start-info p { font-size: 0.95rem; color: #2d6b65; font-weight: 600; }
+.timer-input-row { display: flex; align-items: center; gap: 10px; }
+.timer-input-row label { font-size: 0.95rem; color: #2d6b65; font-weight: 600; white-space: nowrap; }
+.timer-input { width: 70px; padding: 8px 12px; border-radius: 8px; border: 2px solid #b2dfdb; font-family: 'Quicksand', sans-serif; font-size: 1rem; font-weight: 700; color: #1a7a72; text-align: center; outline: none; background: white; }
+.timer-input:focus { border-color: #26a69a; }
+.timer-unit { font-size: 0.95rem; color: #7ab8b3; font-weight: 600; }
+.play-btn { padding: 18px 48px; border-radius: 14px; border: none; background: #26a69a; color: white; font-family: 'Quicksand', sans-serif; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: opacity 0.15s; box-shadow: 0 4px 16px rgba(38,166,154,0.3); }
+.play-btn:hover { opacity: 0.88; }
+.portal-link-start { display: inline-block; margin-top: 4px; text-decoration: none; color: #26a69a; font-weight: 700; font-size: 0.95rem; padding: 10px 24px; border: 2px solid #26a69a; border-radius: 12px; transition: background 0.15s; }
+.portal-link-start:hover { background: #e0f7f4; }
+.question-number-display { font-size: 4rem; font-weight: 700; color: #26a69a; text-align: center; line-height: 1; margin-bottom: 4px; }
+.question-number-label { font-size: 0.85rem; color: #7ab8b3; text-align: center; font-weight: 600; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; }
+.card { background: white; border-radius: 20px; padding: 28px 32px; max-width: 580px; width: 100%; box-shadow: 0 4px 20px rgba(38,166,154,0.1); }
+.timer-wrap { background: #b2dfdb; border-radius: 99px; height: 10px; margin-bottom: 8px; overflow: hidden; }
+.timer-fill { height: 100%; background: #26a69a; border-radius: 99px; transition: width 1s linear, background 1s linear; width: 100%; }
+.timer-fill.warning { background: #ff9800; }
+.timer-fill.danger { background: #e53935; }
+.timer-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.timer-seconds { font-size: 1rem; font-weight: 700; color: #26a69a; }
+.timer-seconds.warning { color: #ff9800; }
+.timer-seconds.danger { color: #e53935; }
+.pause-btn { padding: 5px 14px; border-radius: 8px; border: 1.5px solid #b2dfdb; background: white; color: #1a7a72; font-size: 0.9rem; font-weight: 700; cursor: pointer; font-family: 'Quicksand', sans-serif; transition: background 0.15s; }
+.pause-btn:hover { background: #e0f7f4; }
+.pause-btn:disabled { opacity: 0.3; cursor: default; }
+.score-display { font-size: 0.82rem; color: #7ab8b3; font-weight: 700; }
+.question-text { font-size: 1.15rem; font-weight: 600; line-height: 1.6; margin-bottom: 24px; color: #1a4a44; }
+.btn-group { display: flex; flex-direction: column; gap: 12px; }
+.answer-btn { width: 100%; padding: 12px 16px; border-radius: 12px; border: 2px solid #b2dfdb; background: white; font-family: 'Quicksand', sans-serif; font-size: 1.05rem; font-weight: 600; color: #1a4a44; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 15px; transition: all 0.2s; }
+.answer-btn:hover:not(:disabled) { background: #e0f7f4; border-color: #26a69a; }
+.finger-num { background: #e0f7f4; color: #26a69a; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: 800; border: 1px solid #b2dfdb; flex-shrink: 0; }
+.answer-btn.correct { background: #e0f7f4 !important; border-color: #26a69a !important; color: #1a7a72 !important; }
+.answer-btn.correct .finger-num { background: #26a69a; color: white; border-color: #26a69a; }
+.answer-btn.wrong { background: #fce4ec !important; border-color: #f48fb1 !important; color: #c62828 !important; text-decoration: line-through; opacity: 0.7; }
+.answer-btn.wrong .finger-num { background: #f48fb1; color: white; border-color: #f48fb1; }
+.answer-btn:disabled { cursor: default; }
+.feedback { margin-top: 16px; padding: 12px 16px; border-radius: 12px; font-size: 0.9rem; font-weight: 600; display: none; line-height: 1.5; }
+.feedback.show { display: block; }
+.feedback.correct-fb { background: #e0f7f4; color: #1a7a72; border: 1.5px solid #80cbc4; }
+.feedback.wrong-fb { background: #fce4ec; color: #c62828; border: 1.5px solid #f48fb1; }
+.feedback.timeout-fb { background: #fff8e1; color: #e65100; border: 1.5px solid #ffcc80; }
+.btn-row { display: flex; gap: 10px; margin-top: 18px; }
+.back-btn { padding: 14px 18px; border-radius: 12px; border: 1.5px solid #b2dfdb; background: white; color: #1a7a72; font-family: 'Quicksand', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background 0.15s; white-space: nowrap; }
+.back-btn:hover { background: #e0f7f4; }
+.next-btn { flex: 1; padding: 14px; border-radius: 12px; border: none; background: #26a69a; color: white; font-family: 'Quicksand', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: opacity 0.15s; }
+.next-btn:hover { opacity: 0.88; }
+.result-screen { display: none; flex-direction: column; align-items: center; text-align: center; gap: 12px; }
+.result-screen.show { display: flex; }
+.result-emoji { font-size: 3.5rem; }
+.result-title { font-size: 1.6rem; font-weight: 700; color: #1a7a72; }
+.result-score { color: #7ab8b3; font-size: 1rem; }
+.restart-btn { margin-top: 8px; padding: 12px 32px; border-radius: 12px; border: 1.5px solid #b2dfdb; background: white; font-family: 'Quicksand', sans-serif; font-size: 1rem; font-weight: 700; color: #1a7a72; cursor: pointer; }
+.restart-btn:hover { background: #e0f7f4; }
+.portal-link { text-decoration: none; color: #26a69a; font-weight: 700; font-size: 0.95rem; padding: 10px 24px; border: 2px solid #26a69a; border-radius: 12px; transition: background 0.15s; }
+.portal-link:hover { background: #e0f7f4; }
+</style>
+</head>
+<body>
+<h1>Simple Past vs. Present Perfect</h1>
+<p class="subtitle">Class 6 &middot; 8 Questions</p>
+
+<div id="startScreen" class="start-screen">
+  <div class="start-emoji">&#127919;</div>
+  <div class="start-title">Get ready!</div>
+  <div class="start-info">
+    <p>&#128221; 8 questions</p>
+    <div class="timer-input-row">
+      <label for="timerInput">&#9201; Seconds per question:</label>
+      <input class="timer-input" id="timerInput" type="number" min="5" max="60" value="15">
+      <span class="timer-unit">sec</span>
+    </div>
+  </div>
+  <button class="play-btn" onclick="startQuiz()">&#9654; Let's go!</button>
+  <a href="index.html" class="portal-link-start">&#8592; Back to Portal</a>
+</div>
+
+<div id="quizWrap" style="display:none; width:100%; max-width:580px;">
+  <div class="question-number-display" id="bigNumber">1</div>
+  <div class="question-number-label" id="bigLabel">of 8</div>
+  <div class="card">
+    <div class="timer-wrap"><div class="timer-fill" id="timerFill"></div></div>
+    <div class="timer-row">
+      <span class="timer-seconds" id="timerSeconds">15s</span>
+      <button class="pause-btn" id="pauseBtn" onclick="togglePause()">Pause</button>
+      <span class="score-display">Score: <strong id="scoreNum">0</strong></span>
+    </div>
+    <div id="questionArea">
+      <div class="question-text" id="questionText"></div>
+      <div class="btn-group" id="btnGroup"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="btn-row">
+        <button class="back-btn" id="backBtn" onclick="goBack()">&#8592; Back</button>
+        <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next question &#8594;</button>
+      </div>
+    </div>
+    <div class="result-screen" id="resultScreen">
+      <div class="result-emoji" id="resultEmoji"></div>
+      <div class="result-title" id="resultTitle"></div>
+      <div class="result-score" id="resultScore"></div>
+      <button class="restart-btn" onclick="restart()">&#8629; Play again</button>
+      <a href="index.html" class="portal-link">&#8592; Back to Portal</a>
+    </div>
+  </div>
+</div>
+
+<script>
+var TIMER_SECONDS = 15;
+var audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+function beep() {
+  try {
+    var ctx = getAudioCtx(); var osc = ctx.createOscillator(); var gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value = 880; osc.type = 'sine';
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.15);
+  } catch(e) {}
+}
+
+// Richtige Antworten verteilt auf Positionen: 1,2,3,4,5,1,3,2
+var questions = [
+  {
+    text: '\u201cI ______ my keys. I can\u2019t open the door!\u201d',
+    options: ['have lost', 'lost', 'had lost', 'was losing', 'lose'],
+    answer: 0,
+    explanation: 'Present perfect: the effect is NOW \u2013 "have lost".'
+  },
+  {
+    text: '\u201cShe ______ to Paris last summer.\u201d',
+    options: ['has gone', 'went', 'had gone', 'was going', 'goes'],
+    answer: 1,
+    explanation: '"Last summer" = specific time in the past \u2192 simple past: went.'
+  },
+  {
+    text: '\u201cWe ______ this film three times already.\u201d',
+    options: ['saw', 'had seen', 'have seen', 'were seeing', 'see'],
+    answer: 2,
+    explanation: '"Already" signals a result up to now \u2192 present perfect: have seen.'
+  },
+  {
+    text: '\u201cHe ______ his homework two hours ago.\u201d',
+    options: ['has finished', 'was finishing', 'had finished', 'finished', 'finishes'],
+    answer: 3,
+    explanation: '"Two hours ago" = specific past time \u2192 simple past: finished.'
+  },
+  {
+    text: '\u201cHave you ever ______ sushi?\u201d',
+    options: ['ate', 'eating', 'eat', 'eats', 'eaten'],
+    answer: 4,
+    explanation: 'After "have/has", always use the past participle: eaten.'
+  },
+  {
+    text: '\u201cShe ______ in Berlin for five years and still lives there.\u201d',
+    options: ['has lived', 'lived', 'had lived', 'was living', 'lives'],
+    answer: 0,
+    explanation: '"Still lives there" = action continues now \u2192 present perfect: has lived.'
+  },
+  {
+    text: '\u201cI ______ Tom at the market yesterday morning.\u201d',
+    options: ['have met', 'had met', 'met', 'was meeting', 'meet'],
+    answer: 2,
+    explanation: '"Yesterday morning" = finished time \u2192 simple past: met.'
+  },
+  {
+    text: '\u201cThey ______ just had lunch. They are not hungry.\u201d',
+    options: ['just had', 'have just had', 'had just had', 'were just having', 'just have'],
+    answer: 1,
+    explanation: 'Present effect (not hungry now) \u2192 present perfect: have just had.'
+  }
+];
+
+var current = 0, score = 0, answered = false, paused = false;
+var timerInterval = null, timeLeft = TIMER_SECONDS;
+var answeredState = [];
+
+function startQuiz() {
+  var val = parseInt(document.getElementById('timerInput').value);
+  if (isNaN(val) || val < 5) val = 5;
+  if (val > 60) val = 60;
+  TIMER_SECONDS = val;
+  try { getAudioCtx(); } catch(e) {}
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('quizWrap').style.display = 'block';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  var q = questions[current];
+  document.getElementById('bigNumber').textContent = current + 1;
+  document.getElementById('bigLabel').textContent = 'of ' + questions.length;
+  document.getElementById('questionText').textContent = q.text;
+  var html = '';
+  for (var i = 0; i < q.options.length; i++) {
+    html += '<button class="answer-btn" id="btn' + i + '" onclick="answer(' + i + ')"><span class="finger-num">' + (i+1) + '</span>' + q.options[i] + '</button>';
+  }
+  document.getElementById('btnGroup').innerHTML = html;
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('nextBtn').textContent = current + 1 < questions.length ? 'Next question \u2192' : 'See results \u2192';
+  document.getElementById('backBtn').textContent = current === 0 ? '\u2190 Start' : '\u2190 Back';
+  document.getElementById('pauseBtn').textContent = 'Pause';
+  paused = false;
+
+  if (answeredState[current] !== undefined) {
+    answered = true; clearInterval(timerInterval);
+    var state = answeredState[current];
+    for (var i = 0; i < q.options.length; i++) { document.getElementById('btn' + i).disabled = true; }
+    if (state.chosen !== null) {
+      document.getElementById('btn' + state.chosen).classList.add(state.correct ? 'correct' : 'wrong');
+      if (!state.correct) document.getElementById('btn' + q.answer).classList.add('correct');
+      var fb = document.getElementById('feedback');
+      fb.textContent = (state.correct ? '\u2705 Correct! ' : '\u274C Not quite! ') + q.explanation;
+      fb.className = 'feedback show ' + (state.correct ? 'correct-fb' : 'wrong-fb');
+    } else {
+      document.getElementById('feedback').textContent = "\u23F0 Time's up! Next question please.";
+      document.getElementById('feedback').className = 'feedback show timeout-fb';
+    }
+    document.getElementById('timerFill').style.width = '0%';
+    document.getElementById('timerSeconds').textContent = '\u2013';
+    document.getElementById('pauseBtn').disabled = true;
+  } else {
+    answered = false;
+    document.getElementById('pauseBtn').disabled = false;
+    startTimer();
+  }
+}
+
+function goBack() {
+  clearInterval(timerInterval);
+  if (current === 0) {
+    document.getElementById('quizWrap').style.display = 'none';
+    document.getElementById('startScreen').style.display = 'flex';
+    current = 0; score = 0; answeredState = [];
+    document.getElementById('scoreNum').textContent = 0;
+    document.getElementById('questionArea').style.display = 'block';
+    document.getElementById('resultScreen').classList.remove('show');
+  } else {
+    current--; renderQuestion();
+  }
+}
+
+function togglePause() {
+  if (answered) return; paused = !paused;
+  if (paused) { clearInterval(timerInterval); document.getElementById('pauseBtn').textContent = '\u25BA Resume'; }
+  else { document.getElementById('pauseBtn').textContent = 'Pause'; timerInterval = setInterval(tick, 1000); }
+}
+
+function startTimer() {
+  clearInterval(timerInterval); paused = false; timeLeft = TIMER_SECONDS;
+  updateTimerDisplay(); timerInterval = setInterval(tick, 1000);
+}
+
+function tick() {
+  timeLeft--; updateTimerDisplay();
+  if (timeLeft <= 3 && timeLeft > 0) { beep(); }
+  if (timeLeft <= 0) {
+    clearInterval(timerInterval);
+    if (!answered) {
+      answered = true; answeredState[current] = { chosen: null, correct: false };
+      for (var i = 0; i < questions[current].options.length; i++) { document.getElementById('btn' + i).disabled = true; }
+      document.getElementById('feedback').textContent = "\u23F0 Time's up! Next question please.";
+      document.getElementById('feedback').className = 'feedback show timeout-fb';
+      document.getElementById('pauseBtn').disabled = true;
+    }
+    setTimeout(function() { nextQuestion(); }, 2000);
+  }
+}
+
+function updateTimerDisplay() {
+  var pct = (timeLeft / TIMER_SECONDS) * 100;
+  var fill = document.getElementById('timerFill'); var secs = document.getElementById('timerSeconds');
+  var warn = Math.round(TIMER_SECONDS * 0.4); var danger = Math.round(TIMER_SECONDS * 0.2);
+  fill.style.width = pct + '%';
+  fill.className = 'timer-fill' + (timeLeft <= danger ? ' danger' : timeLeft <= warn ? ' warning' : '');
+  secs.className = 'timer-seconds' + (timeLeft <= danger ? ' danger' : timeLeft <= warn ? ' warning' : '');
+  secs.textContent = timeLeft + 's';
+}
+
+function answer(idx) {
+  if (answered) return; answered = true; clearInterval(timerInterval);
+  document.getElementById('pauseBtn').disabled = true;
+  var q = questions[current]; var correct = idx === q.answer;
+  answeredState[current] = { chosen: idx, correct: correct };
+  for (var i = 0; i < q.options.length; i++) { document.getElementById('btn' + i).disabled = true; }
+  document.getElementById('btn' + idx).classList.add(correct ? 'correct' : 'wrong');
+  if (!correct) document.getElementById('btn' + q.answer).classList.add('correct');
+  if (correct) { score++; document.getElementById('scoreNum').textContent = score; }
+  var fb = document.getElementById('feedback');
+  fb.textContent = (correct ? '\u2705 Correct! ' : '\u274C Not quite! ') + q.explanation;
+  fb.className = 'feedback show ' + (correct ? 'correct-fb' : 'wrong-fb');
+}
+
+function nextQuestion() {
+  clearInterval(timerInterval); current++;
+  if (current >= questions.length) showResult(); else renderQuestion();
+}
+
+function showResult() {
+  clearInterval(timerInterval);
+  document.getElementById('timerFill').style.width = '0%'; document.getElementById('timerSeconds').textContent = '';
+  document.getElementById('bigNumber').textContent = '\uD83C\uDFC6'; document.getElementById('bigLabel').textContent = '';
+  document.getElementById('questionArea').style.display = 'none'; document.getElementById('resultScreen').classList.add('show');
+  var pct = score / questions.length;
+  document.getElementById('resultEmoji').textContent = pct===1?'\uD83C\uDFC6':pct>=0.75?'\uD83C\uDF89':pct>=0.5?'\uD83D\uDC4D':'\uD83D\uDCAA';
+  document.getElementById('resultTitle').textContent = pct===1?'Perfect!':pct>=0.75?'Great job!':pct>=0.5?'Good effort!':'Keep going!';
+  document.getElementById('resultScore').textContent = pct===1?'All 8 correct. Excellent!':score+' out of '+questions.length+' correct.'+(pct<0.75?' Keep practising!':'');
+}
+
+function restart() {
+  current = 0; score = 0; answeredState = [];
+  document.getElementById('scoreNum').textContent = 0;
+  document.getElementById('questionArea').style.display = 'block';
+  document.getElementById('resultScreen').classList.remove('show');
+  document.getElementById('quizWrap').style.display = 'none';
+  document.getElementById('startScreen').style.display = 'flex';
+}
+</script>
+<footer style="margin-top: 32px; font-size: 0.78rem; color: #7ab8b3; font-weight: 600; text-align: center; letter-spacing: 0.3px;">
+  <a href="mailto:julia.wolf@tutamail.com" style="color: #7ab8b3; text-decoration: none;">julia.wolf@tutamail.com</a>
+</footer>
+</body>
+</html>

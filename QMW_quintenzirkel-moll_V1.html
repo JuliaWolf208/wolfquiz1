@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QMW_quintenzirkel-moll_V1.html</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Quicksand', sans-serif; background: #e0f7f4; color: #1a4a44; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
+h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; text-align: center; color: #1a7a72; }
+.subtitle { color: #7ab8b3; font-size: 0.9rem; margin-bottom: 20px; text-align: center; font-weight: 600; }
+.start-screen { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
+.start-emoji { font-size: 4rem; }
+.start-title { font-size: 1.1rem; font-weight: 600; color: #7ab8b3; letter-spacing: 1px; }
+.start-info { background: white; border-radius: 16px; padding: 24px 28px; max-width: 400px; width: 100%; box-shadow: 0 4px 20px rgba(38,166,154,0.1); display: flex; flex-direction: column; gap: 14px; }
+.start-info p { font-size: 0.95rem; color: #2d6b65; font-weight: 600; }
+.timer-input-row { display: flex; align-items: center; gap: 10px; }
+.timer-input-row label { font-size: 0.95rem; color: #2d6b65; font-weight: 600; white-space: nowrap; }
+.timer-input { width: 70px; padding: 8px 12px; border-radius: 8px; border: 2px solid #b2dfdb; font-family: 'Quicksand', sans-serif; font-size: 1rem; font-weight: 700; color: #1a7a72; text-align: center; outline: none; background: white; }
+.timer-input:focus { border-color: #26a69a; }
+.timer-unit { font-size: 0.95rem; color: #7ab8b3; font-weight: 600; }
+.play-btn { padding: 18px 48px; border-radius: 14px; border: none; background: #26a69a; color: white; font-family: 'Quicksand', sans-serif; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: opacity 0.15s; box-shadow: 0 4px 16px rgba(38,166,154,0.3); }
+.play-btn:hover { opacity: 0.88; }
+.video-btn { display: inline-block; text-decoration: none; color: #e53935; font-weight: 700; font-size: 1rem; padding: 13px 28px; border: 2px solid #e53935; border-radius: 14px; transition: background 0.15s, color 0.15s; background: white; }
+.video-btn:hover { background: #fce4ec; }
+.portal-link-start { display: inline-block; margin-top: 4px; text-decoration: none; color: #26a69a; font-weight: 700; font-size: 0.95rem; padding: 10px 24px; border: 2px solid #26a69a; border-radius: 12px; transition: background 0.15s; }
+.portal-link-start:hover { background: #e0f7f4; }
+.question-number-display { font-size: 4rem; font-weight: 700; color: #26a69a; text-align: center; line-height: 1; margin-bottom: 4px; }
+.question-number-label { font-size: 0.85rem; color: #7ab8b3; text-align: center; font-weight: 600; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; }
+.card { background: white; border-radius: 20px; padding: 28px 32px; max-width: 580px; width: 100%; box-shadow: 0 4px 20px rgba(38,166,154,0.1); }
+.timer-wrap { background: #b2dfdb; border-radius: 99px; height: 10px; margin-bottom: 8px; overflow: hidden; }
+.timer-fill { height: 100%; background: #26a69a; border-radius: 99px; transition: width 1s linear, background 1s linear; width: 100%; }
+.timer-fill.warning { background: #ff9800; }
+.timer-fill.danger { background: #e53935; }
+.timer-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.timer-seconds { font-size: 1rem; font-weight: 700; color: #26a69a; }
+.timer-seconds.warning { color: #ff9800; }
+.timer-seconds.danger { color: #e53935; }
+.pause-btn { padding: 5px 14px; border-radius: 8px; border: 1.5px solid #b2dfdb; background: white; color: #1a7a72; font-size: 0.9rem; font-weight: 700; cursor: pointer; font-family: 'Quicksand', sans-serif; transition: background 0.15s; }
+.pause-btn:hover { background: #e0f7f4; }
+.pause-btn:disabled { opacity: 0.3; cursor: default; }
+.score-display { font-size: 0.82rem; color: #7ab8b3; font-weight: 700; }
+.question-text { font-size: 1.15rem; font-weight: 600; line-height: 1.6; margin-bottom: 24px; color: #1a4a44; }
+.btn-group { display: flex; flex-direction: column; gap: 12px; }
+.answer-btn { width: 100%; padding: 12px 16px; border-radius: 12px; border: 2px solid #b2dfdb; background: white; font-family: 'Quicksand', sans-serif; font-size: 1.05rem; font-weight: 600; color: #1a4a44; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 15px; transition: all 0.2s; }
+.answer-btn:hover:not(:disabled) { background: #e0f7f4; border-color: #26a69a; }
+.finger-num { background: #e0f7f4; color: #26a69a; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: 800; border: 1px solid #b2dfdb; flex-shrink: 0; }
+.answer-btn.correct { background: #e0f7f4 !important; border-color: #26a69a !important; color: #1a7a72 !important; }
+.answer-btn.correct .finger-num { background: #26a69a; color: white; border-color: #26a69a; }
+.answer-btn.wrong { background: #fce4ec !important; border-color: #f48fb1 !important; color: #c62828 !important; text-decoration: line-through; opacity: 0.7; }
+.answer-btn.wrong .finger-num { background: #f48fb1; color: white; border-color: #f48fb1; }
+.answer-btn:disabled { cursor: default; }
+.feedback { margin-top: 16px; padding: 12px 16px; border-radius: 12px; font-size: 0.9rem; font-weight: 600; display: none; line-height: 1.5; }
+.feedback.show { display: block; }
+.feedback.correct-fb { background: #e0f7f4; color: #1a7a72; border: 1.5px solid #80cbc4; }
+.feedback.wrong-fb { background: #fce4ec; color: #c62828; border: 1.5px solid #f48fb1; }
+.feedback.timeout-fb { background: #fff8e1; color: #e65100; border: 1.5px solid #ffcc80; }
+.btn-row { display: flex; gap: 10px; margin-top: 18px; }
+.back-btn { padding: 14px 18px; border-radius: 12px; border: 1.5px solid #b2dfdb; background: white; color: #1a7a72; font-family: 'Quicksand', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background 0.15s; white-space: nowrap; }
+.back-btn:hover { background: #e0f7f4; }
+.next-btn { flex: 1; padding: 14px; border-radius: 12px; border: none; background: #26a69a; color: white; font-family: 'Quicksand', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: opacity 0.15s; }
+.next-btn:hover { opacity: 0.88; }
+.result-screen { display: none; flex-direction: column; align-items: center; text-align: center; gap: 12px; }
+.result-screen.show { display: flex; }
+.result-title { font-size: 1.6rem; font-weight: 700; color: #1a7a72; }
+.result-score { color: #7ab8b3; font-size: 1rem; }
+.restart-btn { margin-top: 8px; padding: 12px 32px; border-radius: 12px; border: 1.5px solid #b2dfdb; background: white; font-family: 'Quicksand', sans-serif; font-size: 1rem; font-weight: 700; color: #1a7a72; cursor: pointer; }
+.restart-btn:hover { background: #e0f7f4; }
+.portal-link { text-decoration: none; color: #26a69a; font-weight: 700; font-size: 0.95rem; padding: 10px 24px; border: 2px solid #26a69a; border-radius: 12px; transition: background 0.15s; }
+.portal-link:hover { background: #e0f7f4; }
+@keyframes howl {
+  0%   { transform: rotate(0deg) scale(1); }
+  10%  { transform: rotate(-8deg) scale(1.05); }
+  20%  { transform: rotate(8deg) scale(1.08); }
+  30%  { transform: rotate(-6deg) scale(1.06); }
+  40%  { transform: rotate(6deg) scale(1.1); }
+  50%  { transform: rotate(-4deg) scale(1.08); }
+  60%  { transform: rotate(4deg) scale(1.06); }
+  70%  { transform: rotate(-2deg) scale(1.04); }
+  80%  { transform: rotate(2deg) scale(1.02); }
+  90%  { transform: rotate(-1deg) scale(1.01); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+@keyframes glow {
+  0%, 100% { filter: drop-shadow(0 0 5px #26a69a); }
+  50%       { filter: drop-shadow(0 0 16px #1a7a72); }
+}
+.wolf-result-logo {
+  width: 90px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+.wolf-start-logo {
+  width: 150px;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+.wolf-result-logo.animate {
+  animation: howl 1.2s ease-in-out, glow 2s ease-in-out 1.2s infinite;
+}
+</style>
+</head>
+<body>
+
+<h1>Quintenzirkel</h1>
+<p class="subtitle">Moll-Tonarten</p>
+
+<div id="startScreen" class="start-screen">
+  <img class="wolf-result-logo wolf-start-logo" src="wolf-logo.png" alt="Quizmaster Wolf">
+  <div class="start-title">Quizmaster Wolf</div>
+  <div class="start-info">
+    <p>&#128221; 8 Fragen</p>
+    <div class="timer-input-row">
+      <label for="timerInput">&#9201; Sekunden pro Frage:</label>
+      <input class="timer-input" id="timerInput" type="number" min="5" max="60" value="15">
+      <span class="timer-unit">Sek</span>
+    </div>
+  </div>
+  <a href="https://www.youtube.com/watch?v=U9YVaAjfKSs" target="_blank" class="video-btn">&#9654; Video zuerst ansehen</a>
+  <button class="play-btn" onclick="startQuiz()">&#9654; Starten</button>
+  <a href="index.html" class="portal-link-start">&#8592; Zur&uuml;ck zum Portal</a>
+</div>
+
+<div id="quizWrap" style="display:none; width:100%; max-width:580px;">
+  <div class="question-number-display" id="bigNumber">1</div>
+  <div class="question-number-label" id="bigLabel">von 8</div>
+  <div class="card">
+    <div class="timer-wrap"><div class="timer-fill" id="timerFill"></div></div>
+    <div class="timer-row">
+      <span class="timer-seconds" id="timerSeconds">15s</span>
+      <button class="pause-btn" id="pauseBtn" onclick="togglePause()">Pause</button>
+      <span class="score-display">Punkte: <strong id="scoreNum">0</strong></span>
+    </div>
+    <div id="questionArea">
+      <div class="question-text" id="questionText"></div>
+      <div class="btn-group" id="btnGroup"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="btn-row">
+        <button class="back-btn" id="backBtn" onclick="goBack()">&#8592; Start</button>
+        <button class="next-btn" id="nextBtn" onclick="nextQuestion()">N&#228;chste Frage &#8594;</button>
+      </div>
+    </div>
+    <div class="result-screen" id="resultScreen">
+      <img id="wolfLogo" class="wolf-result-logo" src="wolf-logo.png" alt="Quizmaster Wolf">
+      <div class="result-title" id="resultTitle"></div>
+      <div class="result-score" id="resultScore"></div>
+      <button class="restart-btn" onclick="restart()">&#8629; Nochmal spielen</button>
+      <a href="index.html" class="portal-link">&#8592; Zur&uuml;ck zum Portal</a>
+    </div>
+  </div>
+</div>
+
+<script>
+var TIMER_SECONDS = 15;
+var audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+function beep() {
+  try {
+    var ctx = getAudioCtx(); var osc = ctx.createOscillator(); var gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value = 880; osc.type = 'sine';
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.15);
+  } catch(e) {}
+}
+
+/* SWAP 2 — PLAN: 3,0,4,1,2,4,0,3 | answer-Werte: 3,0,4,1,2,4,0,3 ✅ */
+var questions = [
+  {text:'Eine Moll-Tonart wird als \u201eParallele\u201c bezeichnet, wenn sie ______ wie ihre zugeh\u00f6rige Dur-Tonart besitzt.',options:['einen anderen Grundton','einen gr\u00f6\u00dferen Tonumfang','die gleiche Taktart','dieselben Vorzeichen','dieselbe Tonleiter-Struktur'],answer:3,explanation:'Parallele Tonarten teilen sich den gleichen Vorrat an T\u00f6nen und damit auch die identischen Vorzeichen im Quintenzirkel.'},
+  {text:'Um die parallele Moll-Tonart zu einer Dur-Tonart zu finden, muss man vom Dur-Grundton eine ______ nach unten gehen.',options:['kleine Terz','reine Quinte','gro\u00dfe Sekunde','reine Quarte','gro\u00dfe Terz'],answer:0,explanation:'Der Grundton der Moll-Parallele liegt drei Halbtonschritte (eine kleine Terz) unter dem der Dur-Tonart.'},
+  {text:'Im Quintenzirkel werden die Moll-Tonarten \u00fcblicherweise ______ des Kreises notiert.',options:['links au\u00dferhalb','oberhalb','rechts au\u00dferhalb','unterhalb','innerhalb'],answer:4,explanation:'Zur besseren \u00dcbersicht schreibt man die Dur-Tonarten nach au\u00dfen und ihre Moll-Parallelen direkt darunter in das Innere des Zirkels.'},
+  {text:'Die Tonart C-Dur besitzt keine Vorzeichen; ihre parallele Moll-Tonart ist ______.',options:['d-Moll','a-Moll','e-Moll','h-Moll','g-Moll'],answer:1,explanation:'Geht man vom C drei Halbtonschritte abw\u00e4rts (C \u2192 H \u2192 B/A# \u2192 A), landet man beim A.'},
+  {text:'Auf der rechten Seite des Quintenzirkels (Kreuz-Tonarten) ist ______ die Parallele zu G-Dur.',options:['h-Moll','fis-Moll','e-Moll','cis-Moll','d-Moll'],answer:2,explanation:'G-Dur hat ein Kreuz (Fis), und die dazugeh\u00f6rige Moll-Tonart mit einem Kreuz ist e-Moll.'},
+  {text:'Benachbarte Moll-Tonarten im Quintenzirkel haben untereinander stets den Abstand einer ______.',options:['gro\u00dfen Terz','kleinen Terz','reinen Quarte','gro\u00dfen Sexte','reinen Quinte'],answer:4,explanation:'Genau wie die Dur-Tonarten sind auch die Moll-Tonarten im Abstand von f\u00fcnf Tonschritten (Quinten) angeordnet.'},
+  {text:'Die Tonart F-Dur hat ein B-Vorzeichen; die dazugeh\u00f6rige parallele Moll-Tonart ist ______.',options:['d-Moll','g-Moll','c-Moll','f-Moll','b-Moll'],answer:0,explanation:'Eine kleine Terz unter F liegt das D, daher ist d-Moll die Parallele zu F-Dur.'},
+  {text:'Wenn man die 6. Stufe einer Dur-Tonleiter als neuen Grundton verwendet, erh\u00e4lt man die ______.',options:['Subdominante','Dominante','Tonika','Moll-Parallele','Dur-Parallele'],answer:3,explanation:'Die nat\u00fcrliche Moll-Tonleiter beginnt immer auf der sechsten Stufe ihrer parallelen Dur-Tonleiter.'}
+];
+/* END SWAP 2 */
+
+var current = 0, score = 0, answered = false, paused = false;
+var timerInterval = null, timeLeft = TIMER_SECONDS;
+var answeredState = [];
+
+function startQuiz() {
+  var val = parseInt(document.getElementById('timerInput').value);
+  if (isNaN(val) || val < 5) val = 5;
+  if (val > 60) val = 60;
+  TIMER_SECONDS = val;
+  try { getAudioCtx(); } catch(e) {}
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('quizWrap').style.display = 'block';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  var q = questions[current];
+  document.getElementById('bigNumber').textContent = current + 1;
+  document.getElementById('bigLabel').textContent = 'von ' + questions.length;
+  document.getElementById('questionText').textContent = q.text;
+  var html = '';
+  for (var i = 0; i < q.options.length; i++) {
+    html += '<button class="answer-btn" id="btn' + i + '" onclick="answer(' + i + ')"><span class="finger-num">' + (i+1) + '</span>' + q.options[i] + '</button>';
+  }
+  document.getElementById('btnGroup').innerHTML = html;
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('nextBtn').textContent = current + 1 < questions.length ? 'N\u00e4chste Frage \u2192' : 'Ergebnis anzeigen \u2192';
+  document.getElementById('backBtn').textContent = current === 0 ? '\u2190 Start' : '\u2190 Zur\u00fcck';
+  document.getElementById('pauseBtn').textContent = 'Pause';
+  paused = false;
+
+  if (answeredState[current] !== undefined) {
+    answered = true; clearInterval(timerInterval);
+    var state = answeredState[current];
+    for (var i = 0; i < q.options.length; i++) { document.getElementById('btn' + i).disabled = true; }
+    if (state.chosen !== null) {
+      document.getElementById('btn' + state.chosen).classList.add(state.correct ? 'correct' : 'wrong');
+      if (!state.correct) document.getElementById('btn' + q.answer).classList.add('correct');
+      var fb = document.getElementById('feedback');
+      fb.textContent = (state.correct ? '\u2705 Richtig! ' : '\u274C Leider falsch! ') + q.explanation;
+      fb.className = 'feedback show ' + (state.correct ? 'correct-fb' : 'wrong-fb');
+    } else {
+      document.getElementById('feedback').textContent = '\u23F0 Zeit abgelaufen! N\u00e4chste Frage bitte.';
+      document.getElementById('feedback').className = 'feedback show timeout-fb';
+    }
+    document.getElementById('timerFill').style.width = '0%';
+    document.getElementById('timerSeconds').textContent = '\u2013';
+    document.getElementById('pauseBtn').disabled = true;
+  } else {
+    answered = false;
+    document.getElementById('pauseBtn').disabled = false;
+    startTimer();
+  }
+}
+
+function goBack() {
+  clearInterval(timerInterval);
+  if (current === 0) {
+    document.getElementById('quizWrap').style.display = 'none';
+    document.getElementById('startScreen').style.display = 'flex';
+    current = 0; score = 0; answeredState = [];
+    document.getElementById('scoreNum').textContent = 0;
+    document.getElementById('questionArea').style.display = 'block';
+    document.getElementById('resultScreen').classList.remove('show');
+  } else {
+    current--; renderQuestion();
+  }
+}
+
+function togglePause() {
+  if (answered) return; paused = !paused;
+  if (paused) { clearInterval(timerInterval); document.getElementById('pauseBtn').textContent = '\u25BA Weiter'; }
+  else { document.getElementById('pauseBtn').textContent = 'Pause'; timerInterval = setInterval(tick, 1000); }
+}
+
+function startTimer() {
+  clearInterval(timerInterval); paused = false; timeLeft = TIMER_SECONDS;
+  updateTimerDisplay(); timerInterval = setInterval(tick, 1000);
+}
+
+function tick() {
+  timeLeft--; updateTimerDisplay();
+  if (timeLeft <= 3 && timeLeft > 0) { beep(); }
+  if (timeLeft <= 0) {
+    clearInterval(timerInterval);
+    if (!answered) {
+      answered = true; answeredState[current] = { chosen: null, correct: false };
+      for (var i = 0; i < questions[current].options.length; i++) { document.getElementById('btn' + i).disabled = true; }
+      document.getElementById('feedback').textContent = '\u23F0 Zeit abgelaufen! N\u00e4chste Frage bitte.';
+      document.getElementById('feedback').className = 'feedback show timeout-fb';
+      document.getElementById('pauseBtn').disabled = true;
+    }
+    setTimeout(function() { nextQuestion(); }, 2000);
+  }
+}
+
+function updateTimerDisplay() {
+  var pct = (timeLeft / TIMER_SECONDS) * 100;
+  var fill = document.getElementById('timerFill'); var secs = document.getElementById('timerSeconds');
+  var warn = Math.round(TIMER_SECONDS * 0.4); var danger = Math.round(TIMER_SECONDS * 0.2);
+  fill.style.width = pct + '%';
+  fill.className = 'timer-fill' + (timeLeft <= danger ? ' danger' : timeLeft <= warn ? ' warning' : '');
+  secs.className = 'timer-seconds' + (timeLeft <= danger ? ' danger' : timeLeft <= warn ? ' warning' : '');
+  secs.textContent = timeLeft + 's';
+}
+
+function answer(idx) {
+  if (answered) return; answered = true; clearInterval(timerInterval);
+  document.getElementById('pauseBtn').disabled = true;
+  var q = questions[current]; var correct = idx === q.answer;
+  answeredState[current] = { chosen: idx, correct: correct };
+  for (var i = 0; i < q.options.length; i++) { document.getElementById('btn' + i).disabled = true; }
+  document.getElementById('btn' + idx).classList.add(correct ? 'correct' : 'wrong');
+  if (!correct) document.getElementById('btn' + q.answer).classList.add('correct');
+  if (correct) { score++; document.getElementById('scoreNum').textContent = score; }
+  var fb = document.getElementById('feedback');
+  fb.textContent = (correct ? '\u2705 Richtig! ' : '\u274C Leider falsch! ') + q.explanation;
+  fb.className = 'feedback show ' + (correct ? 'correct-fb' : 'wrong-fb');
+}
+
+function nextQuestion() {
+  clearInterval(timerInterval); current++;
+  if (current >= questions.length) showResult(); else renderQuestion();
+}
+
+function showResult() {
+  clearInterval(timerInterval);
+  document.getElementById('timerFill').style.width = '0%'; document.getElementById('timerSeconds').textContent = '';
+  document.getElementById('bigNumber').textContent = ''; document.getElementById('bigLabel').textContent = '';
+  document.getElementById('questionArea').style.display = 'none'; document.getElementById('resultScreen').classList.add('show');
+  var wolf = document.getElementById('wolfLogo');
+  wolf.classList.remove('animate');
+  void wolf.offsetWidth;
+  wolf.classList.add('animate');
+  var pct = score / questions.length;
+  document.getElementById('resultTitle').textContent = pct===1?'Perfekt!':pct>=0.75?'Super!':pct>=0.5?'Gut gemacht!':'Weiter \u00fcben!';
+  document.getElementById('resultScore').textContent = pct===1?'Alle 8 richtig. Ausgezeichnet!':score+' von '+questions.length+' Fragen richtig.'+(pct<0.75?' Noch \u00fcben!':'');
+}
+
+function restart() {
+  current = 0; score = 0; answeredState = [];
+  document.getElementById('scoreNum').textContent = 0;
+  document.getElementById('questionArea').style.display = 'block';
+  document.getElementById('resultScreen').classList.remove('show');
+  document.getElementById('quizWrap').style.display = 'none';
+  document.getElementById('startScreen').style.display = 'flex';
+}
+</script>
+
+<footer style="text-align:center;padding:16px;margin-top:8px;font-family:'Quicksand',sans-serif;font-size:0.72rem;color:#b2dfdb;font-weight:600;">
+  &copy; 2026&ndash;2027 Julia Wolf &middot; Quizmaster Wolf &middot; Alle Rechte vorbehalten
+  &middot; <a href="/cdn-cgi/l/email-protection#513b243d38307f263e3d3711252425303c30383d7f323e3c" style="color:#7ab8b3;text-decoration:none;">julia.wolf [at
