@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flashword – Klassenraum</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,900&family=DM+Sans:wght@400;500;700&display=swap');
+  :root {
+    --bg:#0d1117;--surface:#161b22;--border:#30363d;
+    --accent:#f0b429;--accent2:#e05c2a;--text:#e6edf3;--muted:#7d8590;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
+
+  #setup{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem;gap:1.4rem;}
+  #setup h1{font-family:'Fraunces',serif;font-size:clamp(2rem,5vw,3.2rem);color:var(--accent);text-align:center;line-height:1.1;}
+  #setup p{color:var(--muted);text-align:center;max-width:460px;line-height:1.6;font-size:.95rem;}
+
+  textarea{width:100%;max-width:520px;min-height:160px;background:var(--surface);border:2px solid var(--border);border-radius:12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:1.05rem;padding:1rem 1.2rem;resize:vertical;outline:none;transition:border-color .2s;line-height:1.8;}
+  textarea:focus{border-color:var(--accent);}
+  textarea::placeholder{color:var(--muted);}
+
+  .options{display:flex;gap:1.4rem;align-items:center;flex-wrap:wrap;justify-content:center;}
+  label.toggle{display:flex;align-items:center;gap:.5rem;color:var(--muted);cursor:pointer;font-size:.92rem;user-select:none;}
+  label.toggle input{accent-color:var(--accent);width:16px;height:16px;}
+
+  .btn-primary{background:var(--accent);color:#0d1117;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:1.05rem;font-weight:700;padding:.85rem 2.6rem;cursor:pointer;transition:transform .15s,opacity .15s;}
+  .btn-primary:hover{transform:translateY(-2px);opacity:.9;}
+  .btn-primary:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:.4rem .9rem;font-family:'DM Sans',sans-serif;font-size:.85rem;cursor:pointer;transition:color .15s,border-color .15s;}
+  .btn-ghost:hover{color:var(--text);border-color:var(--muted);}
+  #error-msg{color:#f87171;font-size:.88rem;min-height:1.2em;text-align:center;}
+
+  .metronome-panel{display:flex;flex-direction:column;align-items:center;gap:.9rem;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.2rem 1.8rem;width:100%;max-width:520px;}
+  .metronome-panel .panel-title{font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+
+  .beat-dots{display:flex;gap:.7rem;align-items:center;}
+  .beat-dot{width:14px;height:14px;border-radius:50%;background:var(--border);transition:background .06s,transform .06s;}
+  .beat-dot.beat-one{width:18px;height:18px;}
+  .beat-dot.active-one{background:var(--accent);transform:scale(1.35);}
+  .beat-dot.active-rest{background:var(--accent2);transform:scale(1.2);}
+
+  .bpm-row{display:flex;align-items:center;gap:.9rem;width:100%;justify-content:center;}
+  .bpm-display{font-family:'Fraunces',serif;font-size:2.4rem;font-weight:900;color:var(--accent);min-width:4rem;text-align:center;line-height:1;}
+  .bpm-label{font-size:.78rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
+
+  input[type=range].bpm-slider{-webkit-appearance:none;width:220px;height:4px;background:var(--border);border-radius:99px;outline:none;cursor:pointer;}
+  input[type=range].bpm-slider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--accent);cursor:pointer;box-shadow:0 0 0 3px rgba(240,180,41,.18);}
+  input[type=range].bpm-slider::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--accent);cursor:pointer;border:none;}
+
+  .metronome-toggle-row{display:flex;gap:1rem;align-items:center;}
+
+  .beat-select{background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:7px;padding:.35rem .7rem;font-family:'DM Sans',sans-serif;font-size:.88rem;cursor:pointer;outline:none;}
+  .beat-select:focus{border-color:var(--accent);}
+
+  #display{display:none;flex-direction:column;min-height:100vh;}
+  .top-bar{display:flex;justify-content:space-between;align-items:center;padding:.85rem 1.6rem;background:var(--surface);border-bottom:1px solid var(--border);gap:1rem;flex-wrap:wrap;}
+  .progress-label{font-size:.88rem;color:var(--muted);white-space:nowrap;min-width:55px;text-align:right;}
+  .progress-bar-wrap{flex:1;min-width:80px;max-width:360px;height:5px;background:var(--border);border-radius:99px;overflow:hidden;}
+  .progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px;transition:width .4s ease;width:0%;}
+
+  .metro-bar{display:flex;align-items:center;justify-content:center;gap:1rem;padding:.55rem 1.6rem;background:var(--bg);border-bottom:1px solid var(--border);flex-wrap:wrap;}
+  .metro-bar .beat-dots{gap:.5rem;}
+  .metro-bar .beat-dot{width:11px;height:11px;}
+  .metro-bar .beat-dot.beat-one{width:15px;height:15px;}
+  .metro-bar .bpm-mini{font-size:.82rem;color:var(--muted);white-space:nowrap;}
+  .metro-bar input[type=range].bpm-slider{width:110px;}
+
+  .metro-btn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:.25rem .6rem;font-size:.8rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:color .15s,border-color .15s;white-space:nowrap;}
+  .metro-btn:hover{color:var(--text);border-color:var(--muted);}
+  .metro-btn.active{color:var(--accent);border-color:var(--accent);}
+
+  .stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;cursor:pointer;user-select:none;position:relative;overflow:hidden;}
+  .stage::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(240,180,41,.07) 0%,transparent 70%);pointer-events:none;transition:background .1s;}
+  .stage.flash-one::before{background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(240,180,41,.22) 0%,transparent 70%);}
+
+  #word-number{display:inline;}
+  #word-display{font-family:'Fraunces',serif;font-size:clamp(3.5rem,16vw,13rem);font-weight:900;line-height:1;text-align:center;letter-spacing:-0.02em;color:var(--accent);word-break:break-word;max-width:95vw;transition:opacity .15s ease,transform .15s ease;}
+  .review-badge{position:absolute;top:1rem;right:1.4rem;background:rgba(224,92,42,0.15);border:1px solid var(--accent2);color:var(--accent2);border-radius:6px;font-size:.78rem;font-weight:700;letter-spacing:.08em;padding:.25rem .65rem;text-transform:uppercase;}
+  #word-display.out{opacity:0;transform:scale(.92);}
+  @keyframes popIn{from{opacity:0;transform:scale(.86);}to{opacity:1;transform:scale(1);}}
+  .pop{animation:popIn .3s cubic-bezier(.34,1.56,.64,1) both;}
+  .hint{position:absolute;bottom:1.4rem;color:var(--muted);font-size:.82rem;opacity:.5;pointer-events:none;}
+
+  #done{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:1.4rem;padding:2rem;text-align:center;}
+  #done .emoji{font-size:4rem;}
+  #done h2{font-family:'Fraunces',serif;font-size:clamp(2rem,5vw,3rem);color:var(--accent);}
+  #done p{color:var(--muted);font-size:.95rem;}
+  .done-btns{display:flex;flex-direction:column;gap:.75rem;margin-top:.5rem;}
+</style>
+</head>
+<body>
+
+<div id="setup">
+  <h1>Flashword</h1>
+  <p>Wörter einfügen – eines pro Zeile oder kommagetrennt.</p>
+  <textarea id="words-input" placeholder="Hund&#10;Katze&#10;Maus&#10;Schule&#10;..."></textarea>
+  <div class="options">
+    <label class="toggle"><input type="checkbox" id="opt-shuffle" checked>Zufällige Reihenfolge</label>
+    <label class="toggle"><input type="checkbox" id="opt-number">Nummerierung</label>
+  </div>
+
+  <div class="metronome-panel">
+    <div style="display:flex;align-items:center;gap:.7rem;">
+      <select class="beat-select" id="beat-style-select">
+        <option value="swing" selected>🎷 Swing / Jazz</option>
+        <option value="metro">🎵 Metronom</option>
+        <option value="rock">🤘 Rock</option>
+        <option value="bossa">🥁 Bossa Nova</option>
+        <option value="funk">🎉 Funk</option>
+        <option value="waltz">💃 Walzer (3/4)</option>
+        <option value="hiphop">🥁 Hip-Hop</option>
+        <option value="disco">🪩 Disco</option>
+        <option value="country">🤠 Country</option>
+        <option value="dnb">⚡ Drum'n'Bass</option>
+      </select>
+    </div>
+    <div class="bpm-row">
+      <div>
+        <div class="bpm-display" id="setup-bpm-val" style="font-size:1.4rem;">80</div>
+        <div class="bpm-label" style="text-align:center">BPM</div>
+      </div>
+      <input type="range" class="bpm-slider" id="setup-bpm-slider" min="40" max="220" value="80">
+    </div>
+    <div class="metronome-toggle-row">
+      <label class="toggle"><input type="checkbox" id="opt-metro">Beat aktiv</label>
+      <button class="btn-ghost" id="btn-test-metro">▶ Testen</button>
+    </div>
+  </div>
+
+  <div id="error-msg"></div>
+  <button class="btn-primary" id="btn-start">Starten →</button>
+</div>
+
+<div id="display">
+  <div class="top-bar">
+    <button class="btn-ghost" id="btn-back">← Neue Wörter</button>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-fill"></div></div>
+    <div class="progress-label" id="progress-label">0 / 0</div>
+  </div>
+  <div class="metro-bar">
+    <span class="bpm-mini" id="display-bpm-label">80 BPM</span>
+    <input type="range" class="bpm-slider" id="display-bpm-slider" min="40" max="220" value="80">
+    <select class="beat-select" id="display-beat-select" style="font-size:.78rem;padding:.25rem .5rem;">
+      <option value="swing" selected>🎷 Swing</option>
+      <option value="metro">🎵 Metronom</option>
+      <option value="rock">🤘 Rock</option>
+      <option value="bossa">🥁 Bossa Nova</option>
+      <option value="funk">🎉 Funk</option>
+      <option value="waltz">💃 Walzer</option>
+      <option value="hiphop">🥁 Hip-Hop</option>
+      <option value="disco">🪩 Disco</option>
+      <option value="country">🤠 Country</option>
+      <option value="dnb">⚡ Drum'n'Bass</option>
+    </select>
+    <button class="metro-btn" id="btn-metro-toggle">⏸ Stopp</button>
+  </div>
+  <div class="stage" id="stage" title="Klicken oder Leertaste für nächstes Wort">
+    <div id="review-badge" class="review-badge" style="display:none">Besprechung</div>
+    <div id="word-display"><span id="word-number"></span><span id="word-text"></span></div>
+    <div class="hint">Klicken oder Leertaste → nächstes Wort</div>
+  </div>
+</div>
+
+<div id="done">
+  <div class="emoji">🎉</div>
+  <h2>Alle Wörter durch!</h2>
+  <p id="done-count"></p>
+  <div class="done-btns">
+    <button class="btn-primary" id="btn-restart-same">Nochmal (neue Reihenfolge) →</button>
+    <button class="btn-ghost" id="btn-restart-new">Neue Wörter eingeben</button>
+    <button class="btn-ghost" id="btn-review">Besprechung starten</button>
+    <a href="index.html" class="btn-ghost" style="text-align:center;text-decoration:none;">← Zurück zum Portal</a>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   BEAT ENGINE  –  Web Audio API, lookahead scheduler
+   Steps pro Takt:
+     4/4-Patterns  → 16 Steps (Sechzehntel)
+     3/4 (Walzer)  → 12 Steps
+     Swing         → 12 Steps (Triolen-Feeling)
+═══════════════════════════════════════════════════════════ */
+
+let audioCtx      = null;
+let schedulerTimer = null;
+let metroActive   = false;
+let bpm           = 80;
+let beatStyle     = 'swing';
+
+// Scheduler state
+let current16th   = 0;
+let nextNoteTime  = 0.0;
+
+const SCHEDULE_AHEAD = 0.12;
+const SCHEDULER_MS   = 25;
+
+// beat counts per style (visual dots)
+const BEAT_COUNTS = {
+  metro:4, rock:4, swing:4, bossa:4, reggae:4, funk:4, waltz:3, conga:4, clap:4,
+  hiphop:4, disco:4, samba:4, viennese:3, bolero:4, salsa:4,
+  country:4, afrobeat:4, djembe:4, dnb:4, techno:4, blues:4
+};
+// steps per bar per style
+const STEPS = {
+  metro:16, rock:16, swing:12, bossa:16, reggae:16, funk:16, waltz:12, conga:16, clap:16,
+  hiphop:16, disco:16, samba:16, viennese:12, bolero:16, salsa:16,
+  country:12, afrobeat:16, djembe:16, dnb:16, techno:16, blues:12
+};
+
+function getCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+/* ── Sound primitives ── */
+function tone(freq, vol, t, dur, type='sine') {
+  const ctx=getCtx(), o=ctx.createOscillator(), g=ctx.createGain();
+  o.connect(g); g.connect(ctx.destination);
+  o.type=type; o.frequency.setValueAtTime(freq,t);
+  g.gain.setValueAtTime(vol,t);
+  g.gain.exponentialRampToValueAtTime(0.001,t+dur);
+  o.start(t); o.stop(t+dur+0.01);
+}
+
+function noise(vol, t, dur, hp=3000, lp=20000) {
+  const ctx=getCtx();
+  const buf=ctx.createBuffer(1,ctx.sampleRate*0.15,ctx.sampleRate);
+  const d=buf.getChannelData(0);
+  for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+  const src=ctx.createBufferSource(); src.buffer=buf;
+  const hpf=ctx.createBiquadFilter(); hpf.type='highpass'; hpf.frequency.value=hp;
+  const lpf=ctx.createBiquadFilter(); lpf.type='lowpass';  lpf.frequency.value=lp;
+  const g=ctx.createGain();
+  src.connect(hpf); hpf.connect(lpf); lpf.connect(g); g.connect(ctx.destination);
+  g.gain.setValueAtTime(vol,t);
+  g.gain.exponentialRampToValueAtTime(0.001,t+dur);
+  src.start(t); src.stop(t+dur+0.01);
+}
+
+function kick(t, vol=1.0) {
+  const ctx=getCtx(), o=ctx.createOscillator(), g=ctx.createGain();
+  o.connect(g); g.connect(ctx.destination);
+  o.frequency.setValueAtTime(150,t);
+  o.frequency.exponentialRampToValueAtTime(40,t+0.15);
+  g.gain.setValueAtTime(vol,t);
+  g.gain.exponentialRampToValueAtTime(0.001,t+0.28);
+  o.start(t); o.stop(t+0.32);
+}
+
+function snare(t, vol=0.7, body=true) {
+  if(body) tone(200,vol*0.5,t,0.08);
+  noise(vol,t,0.13,1200,18000);
+}
+
+function hihat(t, vol=0.25, open=false) {
+  noise(vol,t,open?0.20:0.045,5000,20000);
+}
+
+function rim(t, vol=0.6) {   // rimshot / clave
+  tone(900,vol,t,0.04,'square');
+  tone(600,vol*0.5,t+0.005,0.03,'square');
+}
+
+function clave(t, vol=0.7) {
+  tone(1200,vol,t,0.035,'sine');
+  tone(800,vol*0.4,t+0.008,0.025,'sine');
+}
+
+function clap(t, vol=0.8) {
+  // layered noise bursts → clap character
+  noise(vol,t,0.04,800,8000);
+  noise(vol*0.7,t+0.012,0.035,1000,9000);
+  noise(vol*0.5,t+0.025,0.06,1200,10000);
+}
+
+function cowbell(t, vol=0.4) {
+  tone(562,vol,t,0.3,'square');
+  tone(845,vol*0.6,t,0.2,'square');
+}
+
+function congaHigh(t, vol=0.7) {
+  const ctx=getCtx(), o=ctx.createOscillator(), g=ctx.createGain();
+  o.connect(g); g.connect(ctx.destination);
+  o.type='sine';
+  o.frequency.setValueAtTime(320,t);
+  o.frequency.exponentialRampToValueAtTime(200,t+0.08);
+  g.gain.setValueAtTime(vol,t);
+  g.gain.exponentialRampToValueAtTime(0.001,t+0.18);
+  o.start(t); o.stop(t+0.2);
+}
+
+function congaLow(t, vol=0.7) {
+  const ctx=getCtx(), o=ctx.createOscillator(), g=ctx.createGain();
+  o.connect(g); g.connect(ctx.destination);
+  o.type='sine';
+  o.frequency.setValueAtTime(180,t);
+  o.frequency.exponentialRampToValueAtTime(100,t+0.12);
+  g.gain.setValueAtTime(vol,t);
+  g.gain.exponentialRampToValueAtTime(0.001,t+0.22);
+  o.start(t); o.stop(t+0.25);
+}
+
+/* ═══════════════════════════════════════════════
+   PATTERN DEFINITIONS  (all 0-indexed)
+   4/4 = 16 steps, waltz/swing = 12 steps
+═══════════════════════════════════════════════ */
+
+/* Each pattern is a function(step, time) */
+
+function patMetro(step, t) {
+  // only quarter notes (steps 0,4,8,12)
+  if(step%4!==0) return;
+  const beat=step/4;
+  tone(beat===0?1000:660, beat===0?0.9:0.5, t, beat===0?0.12:0.08);
+}
+
+function patRock(step, t) {
+  // Kick: 0,8  Snare: 4,12  HiHat: every 2nd step (8ths)
+  if(step===0||step===8)       kick(t);
+  if(step===4||step===12)      snare(t,0.75);
+  if(step%2===0)               hihat(t,0.22,false);
+  // open hat on "+" of 3
+  if(step===10)                hihat(t,0.3,true);
+}
+
+function patSwing(step, t) {
+  // 12 steps = triplet feel (3 per beat × 4 beats)
+  // Kick: beat 1 (0) and beat 3 (6)
+  // Snare: beat 2 (3) and beat 4 (9)
+  // Ride: downbeats + triplet upbeats (0,2,3,5,6,8,9,11)
+  if(step===0||step===6)       kick(t,0.9);
+  if(step===3||step===9)       snare(t,0.65,false);  // ghost snare
+  // ride cymbal: swing 8ths = steps 0,2,3,5,6,8,9,11
+  const rideSteps=[0,2,3,5,6,8,9,11];
+  if(rideSteps.includes(step)) hihat(t,step%3===0?0.35:0.18,false);
+}
+
+function patBossa(step, t) {
+  const kicks   =[1,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0];
+  const snares  =[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0];
+  const hats    =[1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0];
+  const hatsOpen=[0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1];
+  if(kicks[step])    kick(t,0.85);
+  if(snares[step])   snare(t,0.55,false);
+  if(hatsOpen[step]) hihat(t,0.28,true);
+  else if(hats[step]) hihat(t,0.18,false);
+}
+
+function patReggae(step, t) {
+  // Kick: 1 (0) and light on "e" of 3 (9)
+  // Snare: only on 3 (8) — the "one-drop"
+  // HiHat: offbeats (2,6,10,14) and 8ths
+  if(step===0)                 kick(t,1.0);
+  if(step===9)                 kick(t,0.4);
+  if(step===8)                 snare(t,0.8);
+  // offbeat hi-hats (steps 2,6,10,14 = "and" of each beat)
+  if(step%4===2)               hihat(t,0.35,false);
+  // bass guitar-like low thud on "and" of 2
+  if(step===6)                 congaLow(t,0.4);
+}
+
+function patFunk(step, t) {
+  // Syncopated kick, busy 16th hats, snare 2+4 with ghost notes
+  const kicks =[1,0,0,1,0,0,1,0,0,0,1,0,0,1,0,0];
+  const snares=[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0];
+  const ghosts=[0,0,1,0,0,1,0,0,0,1,0,1,0,0,0,1]; // ghost snares
+  // hi-hats on every 16th, open on offbeats
+  const openH =[0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0];
+  if(kicks[step])  kick(t,0.9);
+  if(snares[step]) snare(t,0.75);
+  if(ghosts[step]) snare(t,0.2,false);
+  if(openH[step])  hihat(t,0.28,true);
+  else             hihat(t,0.15,false);
+  // cowbell on beat 2 for funk flavour
+  if(step===4)     cowbell(t,0.25);
+}
+
+function patWaltz(step, t) {
+  // 12 steps = 3 beats × 4 steps each
+  // Kick: beat 1 (0)
+  // Snare: beats 2+3 (4,8) — light
+  // HiHat: 8ths (every 2 steps)
+  const beat=Math.floor(step/4);
+  if(step===0)     kick(t,1.0);
+  if(step===4||step===8) snare(t,0.5,false);
+  if(step%2===0)   hihat(t,0.2,false);
+  // accent on beat 1 hat
+  if(step===0)     hihat(t,0.35,false);
+}
+
+function patConga(step, t) {
+  // Conga pattern – no kick/snare, just congas + clave
+  // High conga: 1, e of 2, + of 3, a of 4
+  // Low conga:  + of 1, 2, + of 3
+  const high=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1];
+  const low =[0,0,1,0,1,0,0,0,1,0,0,0,1,0,0,0];
+  const clav=[1,0,0,1,0,0,1,0,0,0,1,0,0,1,0,0]; // son clave 3-2
+  if(high[step]) congaHigh(t,step===0?0.85:0.65);
+  if(low[step])  congaLow(t,0.6);
+  if(clav[step]) clave(t,0.5);
+}
+
+function patClap(step, t) {
+  // Metronom click on all beats + clap on 2+4
+  if(step%4===0) {
+    const beat=step/4;
+    tone(beat===0?1000:660,beat===0?0.7:0.4,t,0.08);
+  }
+  if(step===4||step===12) clap(t,0.9);
+}
+
+// ── NEW BEATS ──
+
+function patHiphop(step, t) {
+  // Heavy kick on 1 & "e of 3", snare on 2+4, busy 16th hi-hats, clap on 2+4
+  const kicks =[1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0];
+  const snares=[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0];
+  const hats  =[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
+  const openH =[0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0];
+  if(kicks[step])  kick(t, step===0?1.1:0.7);
+  if(snares[step]) { snare(t,0.8); clap(t,0.5); }
+  if(openH[step])  hihat(t,0.3,true);
+  else if(hats[step]) hihat(t, step%2===0?0.22:0.12, false);
+}
+
+function patDisco(step, t) {
+  // 4-on-the-floor kick, snare 2+4, open hats on offbeats, closed on 16ths
+  if(step%4===0)               kick(t,1.0);
+  if(step===4||step===12)      snare(t,0.75);
+  if(step%4===2)               hihat(t,0.35,true);   // offbeat open
+  else                         hihat(t,0.18,false);  // closed 16ths
+  // extra clap on 2+4 for disco shimmer
+  if(step===4||step===12)      clap(t,0.35);
+}
+
+function patSamba(step, t) {
+  // Surdo (kick) on 1+3, rimshot on 2+4, shaker-like 16th hats
+  const surdo=[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0];  // beats 1 & 3
+  const rim2 =[0,0,0,0,1,0,1,0,0,0,0,0,1,0,1,0];  // 2 and "a" of 2
+  const shk  =[1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0];  // 8ths shaker
+  const tamb =[0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1];  // 16th offbeats tamborim
+  if(surdo[step]) kick(t, step===0?1.0:0.75);
+  if(rim2[step])  rim(t, 0.65);
+  if(shk[step])   hihat(t, 0.2, false);
+  if(tamb[step])  tone(1400, 0.18, t, 0.03, 'square');
+}
+
+function patViennese(step, t) {
+  // Fast 3/4, 12 steps = 3 beats × 4 steps
+  // Strong kick on 1, light chord-like tone on 2+3
+  if(step===0)          kick(t,1.0);
+  if(step===4||step===8) { tone(220,0.3,t,0.12,'triangle'); hihat(t,0.15,false); }
+  if(step===0)          hihat(t,0.3,false);
+  if(step%2===0)        hihat(t,0.1,false);
+}
+
+function patBolero(step, t) {
+  // Steady 16ths on snare rim, kick on 1, gradual accent build
+  const rimPat=[1,0,1,1,0,1,1,0,1,0,1,1,0,1,1,0];
+  if(step===0)         kick(t,1.0);
+  if(step===8)         kick(t,0.5);
+  if(rimPat[step])     rim(t, step===0?0.55:0.35);
+  if(step%4===0)       tone(step===0?800:600, 0.2, t, 0.06, 'triangle');
+}
+
+function patSalsa(step, t) {
+  // Clave 3-2 son pattern, timbale, cowbell on 1
+  const clave32=[1,0,0,1,0,0,1,0,0,0,1,0,0,1,0,0];
+  const timbal =[0,0,1,0,0,1,0,1,0,1,0,0,1,0,0,1];
+  const cowb   =[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0];
+  if(step===0||step===8) kick(t,0.7);
+  if(clave32[step])    clave(t,0.75);
+  if(timbal[step])     rim(t,0.5);
+  if(cowb[step])       cowbell(t,0.45);
+  if(step%4===2)       congaHigh(t,0.35);
+}
+
+function patCountry(step, t) {
+  // Boom-chick: 12 steps = triplet/shuffle feel
+  // Kick on 1+3 (steps 0,6), snare on 2+4 (3,9), shuffle hat
+  if(step===0||step===6)       kick(t,1.0);
+  if(step===3||step===9)       snare(t,0.8);
+  // Shuffle hi-hat: downbeats + triplet upbeat
+  const hatSteps=[0,2,3,5,6,8,9,11];
+  if(hatSteps.includes(step))  hihat(t, step%3===0?0.3:0.18, false);
+  // acoustic feel: open hat on upbeat
+  if(step===2||step===8)       hihat(t,0.28,true);
+}
+
+function patAfrobeat(step, t) {
+  // Polyrhythmic: kick off-the-one, snare sparse, clave, agogo bells
+  const kicks =[1,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0];
+  const snares=[0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0];
+  const agogo =[1,0,1,0,0,1,0,1,0,1,0,0,1,0,1,0];
+  const clav  =[1,0,0,1,0,0,1,0,0,0,1,0,0,1,0,0];
+  if(kicks[step])  kick(t, step===0?1.0:0.65);
+  if(snares[step]) snare(t,0.6,false);
+  if(agogo[step])  tone(step%4===0?900:1100, 0.3, t, 0.05, 'sine');
+  if(clav[step])   clave(t,0.55);
+  hihat(t, step%2===0?0.18:0.1, false);
+}
+
+function patDjembe(step, t) {
+  // West African djembe: bass (low), tone (mid), slap (high)
+  // No Western kick/snare — all djembe sounds
+  const bass =[1,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0];
+  const tone1=[0,0,1,0,0,0,1,0,1,0,0,0,1,0,0,0];
+  const slap =[0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1];
+  if(bass[step])  congaLow(t,0.9);
+  if(tone1[step]) congaHigh(t,0.7);
+  if(slap[step])  { noise(0.25,t,0.03,3000,15000); tone(500,0.15,t,0.03,'sine'); }
+}
+
+function patDnb(step, t) {
+  // Breakbeat: syncopated kick, snare on 2+4 but shifted, fast 16th hats
+  // Typical ~160-180 BPM feel baked into pattern density
+  const kicks =[1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,0];
+  const snares=[0,0,0,0,1,0,0,1,0,0,0,0,1,0,1,0];
+  const hats  =[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
+  if(kicks[step])  kick(t, step===0?1.1:0.75);
+  if(snares[step]) snare(t, step%8===4?0.85:0.5, true);
+  hihat(t, step%2===0?0.2:0.1, step===6||step===14);
+}
+
+function patTechno(step, t) {
+  // Minimal: 4-on-the-floor kick, closed hat on 8ths, open hat offbeat
+  if(step%4===0)      kick(t,1.1);       // four on the floor
+  if(step%4===2)      hihat(t,0.35,true); // open hat offbeats
+  else if(step%2===0) hihat(t,0.2,false); // closed on other 8ths
+  // occasional rim accent on 3
+  if(step===8)        rim(t,0.3);
+}
+
+function patBlues(step, t) {
+  // 12-step shuffle: triplet feel, kick 1+3, snare 2+4, ride shuffle
+  // steps: 0-11 (triplet 8ths: 3 per beat × 4 beats)
+  if(step===0||step===6)          kick(t,1.0);
+  if(step===3||step===9)          snare(t,0.75);
+  // Shuffle ride: strong on beat, ghost on triplet upbeat
+  const rideOn=[0,2,3,5,6,8,9,11];
+  if(rideOn.includes(step)) {
+    const isDown=step%3===0;
+    hihat(t, isDown?0.35:0.18, isDown&&(step===0||step===6));
+  }
+  // Bass walk hint: low tone on "and" of 2 and 4
+  if(step===4||step===10)  congaLow(t,0.25);
+}
+
+const PATTERNS = {
+  metro:   patMetro,
+  rock:    patRock,
+  swing:   patSwing,
+  bossa:   patBossa,
+  reggae:  patReggae,
+  funk:    patFunk,
+  waltz:   patWaltz,
+  conga:   patConga,
+  clap:    patClap,
+  hiphop:  patHiphop,
+  disco:   patDisco,
+  samba:   patSamba,
+  viennese:patViennese,
+  bolero:  patBolero,
+  salsa:   patSalsa,
+  country: patCountry,
+  afrobeat:patAfrobeat,
+  djembe:  patDjembe,
+  dnb:     patDnb,
+  techno:  patTechno,
+  blues:   patBlues,
+};
+
+/* ── Scheduler ── */
+function scheduleStep(step, t) {
+  const totalSteps = STEPS[beatStyle] || 16;
+  const beatsInBar = BEAT_COUNTS[beatStyle] || 4;
+  const stepsPerBeat = totalSteps / beatsInBar;
+  const beat = Math.floor(step / stepsPerBeat);
+  const isOne = step === 0;
+
+  // Queue visual dot flash
+  const delayMs = Math.max(0, (t - getCtx().currentTime) * 1000);
+  setTimeout(() => flashDot(beat, isOne, beatsInBar), delayMs);
+
+  // Call pattern
+  if (PATTERNS[beatStyle]) PATTERNS[beatStyle](step, t);
+}
+
+function scheduler() {
+  const ctx = getCtx();
+  const totalSteps = STEPS[beatStyle] || 16;
+  const stepsPerBeat = totalSteps / 4; // always base on quarter note
+  while (nextNoteTime < ctx.currentTime + SCHEDULE_AHEAD) {
+    scheduleStep(current16th, nextNoteTime);
+    // Step duration = quarter note / stepsPerBeat
+    // For 16-step: quarter/4 = sixteenth
+    // For 12-step: quarter/3 = triplet eighth
+    const stepDur = (60 / bpm) / (totalSteps / 4);
+    nextNoteTime += stepDur;
+    current16th = (current16th + 1) % totalSteps;
+  }
+}
+
+function startMetro() {
+  if (schedulerTimer) return;
+  getCtx().resume();
+  current16th  = 0;
+  nextNoteTime = getCtx().currentTime + 0.05;
+  schedulerTimer = setInterval(scheduler, SCHEDULER_MS);
+  metroActive = true;
+  updateMetroBtn();
+}
+
+function stopMetro() {
+  if (schedulerTimer) { clearInterval(schedulerTimer); schedulerTimer = null; }
+  metroActive = false;
+  updateMetroBtn();
+  clearDots();
+}
+
+function restartMetro() {
+  const was = metroActive;
+  stopMetro();
+  if (was) startMetro();
+}
+
+/* ── Controls ── */
+function setBpm(v) {
+  bpm = parseInt(v);
+  document.getElementById('setup-bpm-val').textContent     = bpm;
+  document.getElementById('setup-bpm-slider').value        = bpm;
+  document.getElementById('display-bpm-slider').value      = bpm;
+  document.getElementById('display-bpm-label').textContent = bpm + ' BPM';
+  if (metroActive) restartMetro();
+}
+
+function setBeatStyle(v) {
+  beatStyle = v;
+  document.getElementById('beat-style-select').value   = v;
+  document.getElementById('display-beat-select').value = v;
+  renderDots();
+  if (metroActive) restartMetro();
+}
+
+/* ── Dots ── */
+function renderDots() {
+  const count = BEAT_COUNTS[beatStyle] || 4;
+  ['setup-dots','display-dots'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = '';
+    const prefix = id === 'setup-dots' ? 'sd' : 'dd';
+    for (let i = 0; i < count; i++) {
+      const d = document.createElement('div');
+      d.className = 'beat-dot' + (i === 0 ? ' beat-one' : '');
+      d.id = prefix + i;
+      el.appendChild(d);
+    }
+  });
+}
+
+function flashDot(beat, isOne, beatsInBar) {
+  // visual flash disabled
+}
+
+function clearDots() {
+  // visual flash disabled
+}
+
+function updateMetroBtn() {
+  const btn = document.getElementById('btn-metro-toggle');
+  if (!btn) return;
+  btn.textContent = metroActive ? '⏸ Stopp' : '▶ Start';
+  btn.classList.toggle('active', metroActive);
+}
+
+/* ── Event Listeners ── */
+document.getElementById('setup-bpm-slider').addEventListener('input', e => setBpm(e.target.value));
+document.getElementById('display-bpm-slider').addEventListener('input', e => setBpm(e.target.value));
+document.getElementById('beat-style-select').addEventListener('change', e => setBeatStyle(e.target.value));
+document.getElementById('display-beat-select').addEventListener('change', e => setBeatStyle(e.target.value));
+
+document.getElementById('btn-test-metro').addEventListener('click', () => {
+  const btn = document.getElementById('btn-test-metro');
+  if (metroActive) { stopMetro(); btn.textContent = '▶ Testen'; }
+  else             { startMetro(); btn.textContent = '⏹ Stopp'; }
+});
+document.getElementById('btn-metro-toggle').addEventListener('click', () => {
+  if (metroActive) stopMetro(); else startMetro();
+});
+
+/* ── Init dots ── */
+renderDots();
+
+/* ═══════════════════════════════════════════════
+   WORTANZEIGE
+═══════════════════════════════════════════════ */
+const setupEl    = document.getElementById('setup');
+const displayEl  = document.getElementById('display');
+const doneEl     = document.getElementById('done');
+const wordEl     = document.getElementById('word-display');
+const numberEl   = document.getElementById('word-number');
+const wordTextEl = document.getElementById('word-text');
+const reviewBadge= document.getElementById('review-badge');
+const progressFill=document.getElementById('progress-fill');
+const progressLbl= document.getElementById('progress-label');
+const stageEl    = document.getElementById('stage');
+const doneCount  = document.getElementById('done-count');
+const btnReview  = document.getElementById('btn-review');
+
+let words=[],origWords=[],index=0,busy=false,isReview=false;
+
+function parseWords(raw){return raw.split(/[\n,]+/).map(w=>w.trim()).filter(w=>w.length>0);}
+function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
+
+function show(id){
+  setupEl.style.display='none';displayEl.style.display='none';doneEl.style.display='none';
+  document.getElementById(id).style.display='flex';
+}
+function updateProgress(){
+  const pct=words.length?(index/words.length)*100:0;
+  progressFill.style.width=pct+'%';progressLbl.textContent=index+' / '+words.length;
+}
+function wait(ms){return new Promise(r=>setTimeout(r,ms));}
+
+async function showWord(i){
+  if(busy)return;busy=true;
+  wordEl.classList.add('out');await wait(160);
+  if(i>=words.length){
+    stopMetro();
+    show('done');
+    if(isReview){doneCount.textContent='Besprechung abgeschlossen.';btnReview.style.display='none';}
+    else{doneCount.textContent=words.length+' Wörter wurden angezeigt.';btnReview.style.display='';}
+    busy=false;return;
+  }
+  index=i;
+  wordTextEl.textContent=words[index];
+  numberEl.textContent=document.getElementById('opt-number').checked?(index+1)+'. ':'';
+  wordEl.classList.remove('out','pop');void wordEl.offsetWidth;wordEl.classList.add('pop');
+  updateProgress();busy=false;
+}
+
+function startSession(wordList,review=false){
+  isReview=review;
+  if(!review){origWords=[...wordList];words=[...wordList];if(document.getElementById('opt-shuffle').checked)shuffle(words);}
+  else words=[...origWords];
+  index=0;reviewBadge.style.display=review?'':'none';
+  updateProgress();wordTextEl.textContent='';numberEl.textContent='';
+  wordEl.classList.remove('out','pop');
+  show('display');
+  const metroEnabled = document.getElementById('opt-metro').checked;
+  document.querySelector('.metro-bar').style.display = metroEnabled ? 'flex' : 'none';
+  stopMetro();
+  if(metroEnabled)startMetro();
+  updateMetroBtn();
+  showWord(0);
+}
+
+function resetToSetup(){
+  stopMetro();
+  document.getElementById('btn-test-metro').textContent='▶ Testen';
+  show('setup');
+}
+
+document.getElementById('btn-start').addEventListener('click',()=>{
+  const parsed=parseWords(document.getElementById('words-input').value);
+  if(parsed.length<1){document.getElementById('error-msg').textContent='Bitte mindestens ein Wort eingeben.';return;}
+  document.getElementById('error-msg').textContent='';
+  startSession(parsed,false);
+});
+stageEl.addEventListener('click',()=>showWord(index+1));
+document.addEventListener('keydown',e=>{
+  if(displayEl.style.display==='flex'&&(e.key===' '||e.key==='ArrowRight')){e.preventDefault();showWord(index+1);}
+});
+document.getElementById('btn-back').addEventListener('click',resetToSetup);
+btnReview.addEventListener('click',()=>startSession(origWords,true));
+document.getElementById('btn-restart-same').addEventListener('click',()=>startSession(origWords,false));
+document.getElementById('btn-restart-new').addEventListener('click',resetToSetup);
+</script>
+
+<footer style="text-align:center;padding:16px;margin-top:8px;font-family:'DM Sans',sans-serif;font-size:0.72rem;color:var(--muted);font-weight:600;">
+  &copy; 2026&ndash;2027 Julia Wolf &middot; Quizmaster Wolf &middot; Alle Rechte vorbehalten
+  &middot; <a href="mailto:julia.wolf@tutamail.com" style="color:var(--muted);text-decoration:none;">julia.wolf [at] tutamail.com</a>
+</footer>
+
+</body>
+</html>
