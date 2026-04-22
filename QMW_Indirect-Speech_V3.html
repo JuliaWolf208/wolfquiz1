@@ -71,6 +71,9 @@ h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; text-align: center
 .restart-btn:hover { background: #e0f7f4; }
 .portal-link { text-decoration: none; color: #26a69a; font-weight: 700; font-size: 0.95rem; padding: 10px 24px; border: 2px solid #26a69a; border-radius: 12px; transition: background 0.15s; }
 .portal-link:hover { background: #e0f7f4; }
+.eduki-shop-link { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: #26a69a; font-weight: 700; font-size: 0.88rem; padding: 9px 20px; border: 2px solid #26a69a; border-radius: 12px; background: white; transition: background 0.15s; }
+.eduki-shop-link:hover { background: #e0f7f4; }
+.eduki-divider { width: 80%; height: 1px; background: #b2dfdb; margin: 2px 0; }
 /* ── Wolf Logo Ergebnis-Animationen ── */
 @keyframes howl {
   0%   { transform: rotate(0deg) scale(1); }
@@ -89,29 +92,25 @@ h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; text-align: center
   0%, 100% { filter: drop-shadow(0 0 5px #26a69a); }
   50%       { filter: drop-shadow(0 0 16px #1a7a72); }
 }
-
 .wolf-result-logo {
   width: 90px;
   height: auto;
   display: block;
   margin: 0 auto;
-  /* Diese Befehle entfernen den Rahmen und Hintergrund garantiert: */
   border: none !important;
   border-radius: 0 !important;
   background: transparent !important;
   background-color: transparent !important;
   box-shadow: none !important;
 }
-
 .wolf-start-logo {
-  width: 150px; /* oder dein Wunschmaß */
+  width: 150px;
   border: none !important;
   border-radius: 0 !important;
   background: transparent !important;
   background-color: transparent !important;
   box-shadow: none !important;
 }
-
 .wolf-result-logo.animate {
   animation: howl 1.2s ease-in-out, glow 2s ease-in-out 1.2s infinite;
 }
@@ -119,18 +118,15 @@ h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; text-align: center
 </head>
 <body>
 
-<!-- SWAP 1: Titel + Subtitle
-     %%TITEL%%    = Thema OHNE Nummer (z. B. "Simple Present vs. Present Progressive")
-     %%SUBTITLE%% = immer "8 Questions"
-     Die Nummer (1/2/3) erscheint NICHT hier – nur in der index.html. -->
+<!-- SWAP 1 -->
 <h1>Indirect Speech</h1>
 <!-- END SWAP 1 -->
 
 <div id="startScreen" class="start-screen">
   <img class="wolf-result-logo wolf-start-logo" src="wolf-logo.png" alt="Quizmaster Wolf">
-
   <div class="start-title">Quizmaster Wolf</div>
   <div class="start-info">
+    <p>&#128221; 8 Questions</p>
     <div class="timer-input-row">
       <label for="timerInput">&#9201; Seconds per question:</label>
       <input class="timer-input" id="timerInput" type="number" min="5" max="60" value="15">
@@ -166,14 +162,14 @@ h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; text-align: center
         <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next question &#8594;</button>
       </div>
     </div>
-    
     <div class="result-screen" id="resultScreen">
       <img id="wolfLogo" class="wolf-result-logo" src="wolf-logo.png" alt="Quizmaster Wolf">
-      
       <div class="result-title" id="resultTitle"></div>
       <div class="result-score" id="resultScore"></div>
       <button class="restart-btn" onclick="restart()">&#8629; Play again</button>
       <a href="index.html" class="portal-link">&#8592; Back to Portal</a>
+      <div class="eduki-divider"></div>
+      <a href="https://eduki.com/de/autor/2801416/quizmaster-wolf" target="_blank" class="eduki-shop-link"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="#26a69a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="13" r="1" fill="#26a69a"/><circle cx="11.5" cy="13" r="1" fill="#26a69a"/></svg>More quizzes on eduki.com</a>
     </div>
   </div>
 </div>
@@ -196,11 +192,7 @@ function beep() {
   } catch(e) {}
 }
 
-/* SWAP 2: questions-Array
-   Felder: text, options[5], answer (0-basiert), explanation
-   Optional: direct (nur bei /direkt)
-   WICHTIG: Alle 5 Positionen (0-4) müssen als answer vorkommen!
-   SLOT-FIRST: Positionsplan festlegen VOR dem Schreiben der Fragen. */
+/* SWAP 2 */
 var questions = [
   {direct:'I am reading a great book.',text:'She told me she ______ a great book.',options:['reads','has read','read','is reading','was reading'],answer:4,explanation:'Backshift: am reading \u2192 was reading.'},
   {direct:'He will come tomorrow.',text:'She said he ______ the next day.',options:['will come','would come','came','has come','had come'],answer:1,explanation:'Backshift: will \u2192 would.'},
@@ -353,7 +345,7 @@ function showResult() {
   wolf.classList.add('animate');
   var pct = score / questions.length;
   document.getElementById('resultTitle').textContent = pct===1?'Perfect!':pct>=0.75?'Great job!':pct>=0.5?'Good effort!':'Keep going!';
-  document.getElementById('resultScore').textContent = pct===1?'All 8 correct. Excellent!':score+' out of '+questions.length+' correct.'+(pct<0.75?' Keep practising!':''  );
+  document.getElementById('resultScore').textContent = pct===1?'All 8 correct. Excellent!':score+' out of '+questions.length+' correct.'+(pct<0.75?' Keep practising!':'');
 }
 
 function restart() {
