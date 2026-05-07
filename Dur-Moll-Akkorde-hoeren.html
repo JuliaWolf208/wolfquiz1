@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dur oder Moll? – Akkorde hören</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Quicksand', sans-serif; background: #e0f7f4; color: #1a4a44; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
+h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; text-align: center; color: #1a7a72; }
+.subtitle { color: #7ab8b3; font-size: 0.9rem; margin-bottom: 20px; text-align: center; font-weight: 600; }
+
+/* ── Start Screen ── */
+.start-screen { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
+.start-title { font-size: 1.1rem; font-weight: 600; color: #7ab8b3; letter-spacing: 1px; }
+.start-info { background: white; border-radius: 16px; padding: 24px 28px; max-width: 400px; width: 100%; box-shadow: 0 4px 20px rgba(38,166,154,0.1); display: flex; flex-direction: column; gap: 10px; }
+.start-info p { font-size: 0.95rem; color: #2d6b65; font-weight: 600; }
+.play-btn { padding: 18px 48px; border-radius: 14px; border: none; background: #26a69a; color: white; font-family: 'Quicksand', sans-serif; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: opacity 0.15s; box-shadow: 0 4px 16px rgba(38,166,154,0.3); }
+.play-btn:hover { opacity: 0.88; }
+.portal-link-start { display: inline-block; margin-top: 4px; text-decoration: none; color: #26a69a; font-weight: 700; font-size: 0.95rem; padding: 10px 24px; border: 2px solid #26a69a; border-radius: 12px; transition: background 0.15s; }
+.portal-link-start:hover { background: #e0f7f4; }
+
+/* ── Quiz Wrap ── */
+.question-number-display { font-size: 4rem; font-weight: 700; color: #26a69a; text-align: center; line-height: 1; margin-bottom: 4px; }
+.question-number-label { font-size: 0.85rem; color: #7ab8b3; text-align: center; font-weight: 600; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; }
+.card { background: white; border-radius: 20px; padding: 28px 32px; max-width: 580px; width: 100%; box-shadow: 0 4px 20px rgba(38,166,154,0.1); }
+
+/* ── Progress bar ── */
+.progress-wrap { background: #b2dfdb; border-radius: 99px; height: 10px; margin-bottom: 8px; overflow: hidden; }
+.progress-fill { height: 100%; background: #26a69a; border-radius: 99px; transition: width 0.4s ease; }
+
+/* ── Score row ── */
+.score-row { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 20px; }
+.score-display { font-size: 0.82rem; color: #7ab8b3; font-weight: 700; }
+
+/* ── Audio Player ── */
+.audio-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 28px; }
+.audio-play-btn { display: flex; align-items: center; gap: 10px; padding: 14px 32px; border-radius: 99px; border: none; background: #26a69a; color: white; font-family: 'Quicksand', sans-serif; font-size: 1.1rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 16px rgba(38,166,154,0.25); transition: opacity 0.15s, transform 0.1s; }
+.audio-play-btn:hover { opacity: 0.88; }
+.audio-play-btn:active { transform: scale(0.97); }
+.audio-play-btn.playing { background: #1a7a72; }
+.audio-play-btn svg { flex-shrink: 0; }
+.audio-count { font-size: 0.78rem; color: #7ab8b3; font-weight: 700; letter-spacing: 0.5px; }
+
+/* ── Two-button answer layout ── */
+.btn-group-2 { display: flex; gap: 14px; }
+.answer-btn-2 { flex: 1; padding: 16px 12px; border-radius: 14px; border: 2px solid #b2dfdb; background: white; font-family: 'Quicksand', sans-serif; font-size: 1.15rem; font-weight: 700; color: #1a4a44; cursor: pointer; text-align: center; transition: all 0.2s; }
+.answer-btn-2:hover:not(:disabled) { background: #e0f7f4; border-color: #26a69a; }
+.answer-btn-2.correct { background: #e0f7f4 !important; border-color: #26a69a !important; color: #1a7a72 !important; }
+.answer-btn-2.wrong { background: #fce4ec !important; border-color: #f48fb1 !important; color: #c62828 !important; text-decoration: line-through; opacity: 0.7; }
+.answer-btn-2:disabled { cursor: default; }
+
+/* ── Feedback ── */
+.feedback { margin-top: 16px; padding: 12px 16px; border-radius: 12px; font-size: 0.9rem; font-weight: 600; display: none; line-height: 1.5; }
+.feedback.show { display: block; }
+.feedback.correct-fb { background: #e0f7f4; color: #1a7a72; border: 1.5px solid #80cbc4; }
+.feedback.wrong-fb { background: #fce4ec; color: #c62828; border: 1.5px solid #f48fb1; }
+
+/* ── Navigation buttons ── */
+.btn-row { display: flex; gap: 10px; margin-top: 18px; }
+.back-btn { padding: 14px 18px; border-radius: 12px; border: 1.5px solid #b2dfdb; background: white; color: #1a7a72; font-family: 'Quicksand', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background 0.15s; white-space: nowrap; }
+.back-btn:hover { background: #e0f7f4; }
+.next-btn { flex: 1; padding: 14px; border-radius: 12px; border: none; background: #26a69a; color: white; font-family: 'Quicksand', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: opacity 0.15s; }
+.next-btn:hover { opacity: 0.88; }
+.next-btn:disabled { opacity: 0.35; cursor: default; }
+
+/* ── Result screen ── */
+.result-screen { display: none; flex-direction: column; align-items: center; text-align: center; gap: 12px; }
+.result-screen.show { display: flex; }
+.result-title { font-size: 1.6rem; font-weight: 700; color: #1a7a72; }
+.result-score { color: #7ab8b3; font-size: 1rem; font-weight: 600; }
+.result-message { font-size: 0.95rem; color: #2d6b65; font-weight: 600; max-width: 340px; line-height: 1.5; }
+.restart-btn { margin-top: 8px; padding: 14px 36px; border-radius: 12px; border: none; background: #26a69a; color: white; font-family: 'Quicksand', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: opacity 0.15s; box-shadow: 0 4px 16px rgba(38,166,154,0.3); }
+.restart-btn:hover { opacity: 0.88; }
+.portal-link { text-decoration: none; color: #26a69a; font-weight: 700; font-size: 0.95rem; padding: 10px 24px; border: 2px solid #26a69a; border-radius: 12px; transition: background 0.15s; }
+.portal-link:hover { background: #e0f7f4; }
+
+/* ── Wolf Logo animations ── */
+@keyframes howl {
+  0%   { transform: rotate(0deg) scale(1); }
+  10%  { transform: rotate(-8deg) scale(1.05); }
+  20%  { transform: rotate(8deg) scale(1.08); }
+  30%  { transform: rotate(-6deg) scale(1.06); }
+  40%  { transform: rotate(6deg) scale(1.1); }
+  50%  { transform: rotate(-4deg) scale(1.08); }
+  60%  { transform: rotate(4deg) scale(1.06); }
+  70%  { transform: rotate(-2deg) scale(1.04); }
+  80%  { transform: rotate(2deg) scale(1.02); }
+  90%  { transform: rotate(-1deg) scale(1.01); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+@keyframes glow {
+  0%, 100% { filter: drop-shadow(0 0 5px #26a69a); }
+  50%       { filter: drop-shadow(0 0 16px #1a7a72); }
+}
+.wolf-result-logo {
+  width: 90px; height: auto; display: block; margin: 0 auto;
+  border: none !important; border-radius: 0 !important;
+  background: transparent !important; background-color: transparent !important;
+  box-shadow: none !important;
+}
+.wolf-start-logo {
+  width: 150px;
+  border: none !important; border-radius: 0 !important;
+  background: transparent !important; background-color: transparent !important;
+  box-shadow: none !important;
+}
+.wolf-result-logo.animate {
+  animation: howl 1.2s ease-in-out, glow 2s ease-in-out 1.2s infinite;
+}
+</style>
+</head>
+<body>
+
+<h1>Dur oder Moll?</h1>
+
+<!-- ══════════════ START SCREEN ══════════════ -->
+<div id="startScreen" class="start-screen">
+  <img class="wolf-result-logo wolf-start-logo" src="wolf-logo.png" alt="Quizmaster Wolf">
+  <div class="start-title">Quizmaster Wolf</div>
+  <div class="start-info">
+    <p>&#127925; 14 Fragen &nbsp;&middot;&nbsp; H&ouml;r&uuml;bung</p>
+    <p>&#128261; H&ouml;r genau hin: Dur oder Moll?</p>
+  </div>
+  <button class="play-btn" onclick="startQuiz()">&#9654; Starten</button>
+  <a href="index.html" class="portal-link-start">&#8592; Zur&uuml;ck zum Portal</a>
+</div>
+
+<!-- ══════════════ QUIZ WRAP ══════════════ -->
+<div id="quizWrap" style="display:none; width:100%; max-width:580px;">
+  <div class="question-number-display" id="bigNumber">1</div>
+  <div class="question-number-label" id="bigLabel">von 14</div>
+  <div class="card">
+    <!-- Progress bar -->
+    <div class="progress-wrap"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <!-- Score row -->
+    <div class="score-row">
+      <span class="score-display">Punkte: <strong id="scoreNum">0</strong></span>
+    </div>
+
+    <!-- Question area -->
+    <div id="questionArea">
+
+      <!-- Audio player -->
+      <div class="audio-wrap">
+        <button class="audio-play-btn" id="audioPlayBtn" onclick="playAudio()">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <circle cx="11" cy="11" r="10" stroke="white" stroke-width="1.8"/>
+            <polygon points="8.5,7 16,11 8.5,15" fill="white"/>
+          </svg>
+          <span id="audioPlayLabel">Abspielen</span>
+        </button>
+        <span class="audio-count" id="audioCount"></span>
+      </div>
+
+      <!-- 2-option answer buttons -->
+      <div class="btn-group-2" id="btnGroup"></div>
+
+      <div class="feedback" id="feedback"></div>
+      <div class="btn-row">
+        <button class="back-btn" id="backBtn" onclick="goBack()">&#8592; Zur&uuml;ck</button>
+        <button class="next-btn" id="nextBtn" onclick="nextQuestion()" disabled>N&auml;chste Frage &#8594;</button>
+      </div>
+    </div>
+
+    <!-- Result screen (shown in-card at end) -->
+    <div class="result-screen" id="resultScreen">
+      <img id="wolfLogo" class="wolf-result-logo" src="wolf-logo.png" alt="Quizmaster Wolf">
+      <div class="result-title" id="resultTitle"></div>
+      <div class="result-score" id="resultScore"></div>
+      <div class="result-message" id="resultMessage"></div>
+      <button class="restart-btn" onclick="restart()">&#8635; Nochmal</button>
+      <a href="index.html" class="portal-link">&#8592; Zur&uuml;ck zum Portal</a>
+    </div>
+  </div>
+</div>
+
+<script>
+var questions = [
+  { audio: 'Dur 1.mp3',  answer: 0 },
+  { audio: 'Dur 2.mp3',  answer: 0 },
+  { audio: 'Dur 3.mp3',  answer: 0 },
+  { audio: 'Dur 4.mp3',  answer: 0 },
+  { audio: 'Dur 5.mp3',  answer: 0 },
+  { audio: 'Dur 6.mp3',  answer: 0 },
+  { audio: 'Dur 7.mp3',  answer: 0 },
+  { audio: 'Moll 1.mp3', answer: 1 },
+  { audio: 'Moll 2.mp3', answer: 1 },
+  { audio: 'Moll 3.mp3', answer: 1 },
+  { audio: 'Moll 4.mp3', answer: 1 },
+  { audio: 'Moll 5.mp3', answer: 1 },
+  { audio: 'Moll 6.mp3', answer: 1 },
+  { audio: 'Moll 7.mp3', answer: 1 }
+];
+
+/* ── Antwort-Labels (fest) ── */
+var OPTIONS = ['Dur', 'Moll'];
+
+/* ── State ── */
+var shuffled = [];
+var current = 0;
+var score = 0;
+var answeredState = [];
+var playCount = 0;
+var currentAudio = null;
+
+/* ── Fisher-Yates shuffle ── */
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function startQuiz() {
+  shuffled = shuffle(questions.map(function(_, i){ return i; }));
+  current = 0; score = 0; answeredState = [];
+  document.getElementById('scoreNum').textContent = 0;
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('quizWrap').style.display = 'block';
+  document.getElementById('questionArea').style.display = 'block';
+  document.getElementById('resultScreen').classList.remove('show');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  stopAudio();
+  playCount = 0;
+
+  var q = questions[shuffled[current]];
+  var total = questions.length;
+
+  document.getElementById('bigNumber').textContent = current + 1;
+  document.getElementById('bigLabel').textContent = 'von ' + total;
+
+  var pct = (current / total) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+
+  /* Reset audio button */
+  updateAudioBtn(false);
+  document.getElementById('audioCount').textContent = '';
+
+  /* Build 2 answer buttons */
+  var html = '';
+  for (var i = 0; i < OPTIONS.length; i++) {
+    html += '<button class="answer-btn-2" id="btn' + i + '" onclick="answer(' + i + ')">' + OPTIONS[i] + '</button>';
+  }
+  document.getElementById('btnGroup').innerHTML = html;
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('feedback').textContent = '';
+
+  var nextBtn = document.getElementById('nextBtn');
+  nextBtn.disabled = true;
+  nextBtn.textContent = (current + 1 < total) ? 'Nächste Frage →' : 'Ergebnis anzeigen →';
+
+  var backBtn = document.getElementById('backBtn');
+  backBtn.textContent = (current === 0) ? '← Start' : '← Zurück';
+
+  /* Restore answered state if navigating back */
+  if (answeredState[current] !== undefined) {
+    var state = answeredState[current];
+    for (var i = 0; i < OPTIONS.length; i++) {
+      document.getElementById('btn' + i).disabled = true;
+    }
+    document.getElementById('btn' + state.chosen).classList.add(state.correct ? 'correct' : 'wrong');
+    if (!state.correct) document.getElementById('btn' + q.answer).classList.add('correct');
+    var fb = document.getElementById('feedback');
+    fb.textContent = state.correct ? '✅ Richtig!' : '❌ Leider falsch! Es war ' + OPTIONS[q.answer] + '.';
+    fb.className = 'feedback show ' + (state.correct ? 'correct-fb' : 'wrong-fb');
+    nextBtn.disabled = false;
+    document.getElementById('audioPlayBtn').disabled = false;
+  } else {
+    /* Autoplay on new question */
+    setTimeout(function() { playAudio(); }, 300);
+  }
+}
+
+function playAudio() {
+  stopAudio();
+  var q = questions[shuffled[current]];
+  currentAudio = new Audio(q.audio);
+  updateAudioBtn(true);
+  currentAudio.play().catch(function() { updateAudioBtn(false); });
+  currentAudio.onended = function() {
+    playCount++;
+    updateAudioBtn(false);
+    document.getElementById('audioCount').textContent =
+      playCount === 1 ? '1× abgespielt' : playCount + '× abgespielt';
+  };
+}
+
+function stopAudio() {
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.src = '';
+    currentAudio = null;
+  }
+  updateAudioBtn(false);
+}
+
+function updateAudioBtn(playing) {
+  var btn = document.getElementById('audioPlayBtn');
+  var label = document.getElementById('audioPlayLabel');
+  if (playing) {
+    btn.classList.add('playing');
+    label.textContent = 'Wird abgespielt…';
+  } else {
+    btn.classList.remove('playing');
+    label.textContent = 'Nochmal anhören';
+  }
+}
+
+function answer(idx) {
+  if (answeredState[current] !== undefined) return;
+  stopAudio();
+  var q = questions[shuffled[current]];
+  var correct = (idx === q.answer);
+  answeredState[current] = { chosen: idx, correct: correct };
+
+  for (var i = 0; i < OPTIONS.length; i++) {
+    document.getElementById('btn' + i).disabled = true;
+  }
+  document.getElementById('btn' + idx).classList.add(correct ? 'correct' : 'wrong');
+  if (!correct) document.getElementById('btn' + q.answer).classList.add('correct');
+
+  if (correct) { score++; document.getElementById('scoreNum').textContent = score; }
+
+  var fb = document.getElementById('feedback');
+  fb.textContent = correct ? '✅ Richtig!' : '❌ Leider falsch! Es war ' + OPTIONS[q.answer] + '.';
+  fb.className = 'feedback show ' + (correct ? 'correct-fb' : 'wrong-fb');
+
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function goBack() {
+  stopAudio();
+  if (current === 0) {
+    document.getElementById('quizWrap').style.display = 'none';
+    document.getElementById('startScreen').style.display = 'flex';
+    current = 0; score = 0; answeredState = [];
+    document.getElementById('scoreNum').textContent = 0;
+    document.getElementById('questionArea').style.display = 'block';
+    document.getElementById('resultScreen').classList.remove('show');
+  } else {
+    current--;
+    recalcScore();
+    renderQuestion();
+  }
+}
+
+function recalcScore() {
+  var s = 0;
+  for (var i = 0; i <= current; i++) {
+    if (answeredState[i] && answeredState[i].correct) s++;
+  }
+  score = s;
+  document.getElementById('scoreNum').textContent = score;
+}
+
+function nextQuestion() {
+  stopAudio();
+  current++;
+  if (current >= questions.length) {
+    showResult();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResult() {
+  stopAudio();
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('bigNumber').textContent = '';
+  document.getElementById('bigLabel').textContent = '';
+  document.getElementById('questionArea').style.display = 'none';
+  document.getElementById('resultScreen').classList.add('show');
+
+  var wolf = document.getElementById('wolfLogo');
+  wolf.classList.remove('animate');
+  void wolf.offsetWidth;
+  wolf.classList.add('animate');
+
+  var total = questions.length;
+  var pct = score / total;
+  var title, msg;
+  if (pct === 1) {
+    title = 'Perfekt! 🌟';
+    msg = 'Alle ' + total + ' richtig. Hervorragend!';
+  } else if (pct >= 0.75) {
+    title = 'Super! 👏';
+    msg = score + ' von ' + total + ' richtig. Fast perfekt!';
+  } else if (pct >= 0.5) {
+    title = 'Gut gemacht! 💪';
+    msg = score + ' von ' + total + ' richtig. Weiter üben – du wirst besser!';
+  } else {
+    title = 'Weiter üben! 📚';
+    msg = score + ' von ' + total + ' richtig. Hör die Beispiele nochmal und versuche es erneut!';
+  }
+
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultScore').textContent = score + ' / ' + total;
+  document.getElementById('resultMessage').textContent = msg;
+}
+
+function restart() {
+  stopAudio();
+  current = 0; score = 0; answeredState = [];
+  document.getElementById('scoreNum').textContent = 0;
+  document.getElementById('questionArea').style.display = 'block';
+  document.getElementById('resultScreen').classList.remove('show');
+  document.getElementById('quizWrap').style.display = 'none';
+  document.getElementById('startScreen').style.display = 'flex';
+}
+</script>
+
+<footer style="text-align:center;padding:16px;margin-top:8px;font-family:'Quicksand',sans-serif;font-size:0.72rem;color:#b2dfdb;font-weight:600;">
+  &copy; 2026 Julia Wolf &middot; Quizmaster Wolf &middot; Alle Rechte vorbehalten
+</footer>
+
+</body>
+</html>
