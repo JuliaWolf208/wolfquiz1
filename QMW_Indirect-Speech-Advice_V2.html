@@ -175,6 +175,7 @@ function beep() {
 }
 
 /* SWAP 2 */
+/* SLOT-FIRST Plan V2: 3,0,2,4,1,3,0,4 */
 var questions = [
   {
     direct: '"Eat more vegetables every day."',
@@ -186,8 +187,8 @@ var questions = [
   {
     direct: '"Why don\'t we try the new caf\u00e9?"',
     text: 'Lisa _____ _____ the new caf\u00e9.',
-    options: ['told us / to try', 'suggested / trying', 'asked us / to try', 'advised / trying', 'suggested / to try'],
-    answer: 1,
+    options: ['suggested / trying', 'told us / to try', 'asked us / to try', 'advised / trying', 'suggested / to try'],
+    answer: 0,
     explanation: '"Why don\'t we \u2026" is a suggestion \u2192 suggest + gerund \u2192 suggested trying.'
   },
   {
@@ -200,36 +201,36 @@ var questions = [
   {
     direct: '"Never run in the corridors!"',
     text: 'The teacher _____ the students _____ in the corridors.',
-    options: ['advised / not to run', 'asked / not to run', 'suggested / not running', 'told / not to run', 'told / to not run'],
-    answer: 3,
+    options: ['advised / not to run', 'asked / not to run', 'suggested / not running', 'told / to not run', 'told / not to run'],
+    answer: 4,
     explanation: 'A firm rule/command uses "tell sb. not to do sth." \u2192 told the students not to run.'
   },
   {
     direct: '"You should practise more before the exam."',
     text: 'Mr Brown _____ us _____ more before the exam.',
-    options: ['told / to practise', 'suggested / to practise', 'advised / to practise', 'asked / to practise', 'suggested / practising'],
-    answer: 2,
+    options: ['told / to practise', 'advised / to practise', 'suggested / to practise', 'asked / to practise', 'suggested / practising'],
+    answer: 1,
     explanation: '"Should" indicates advice \u2192 advise sb. to do sth. \u2192 advised us to practise.'
   },
   {
     direct: '"Let\'s take the bus instead."',
     text: 'Tom _____ that we _____ the bus instead.',
-    options: ['advised / take', 'told / take', 'suggested / take', 'asked / take', 'suggested / to take'],
-    answer: 2,
+    options: ['advised / take', 'told / take', 'asked / take', 'suggested / take', 'suggested / to take'],
+    answer: 3,
     explanation: '"suggest that + subject + base verb" is correct \u2192 suggested that we take.'
   },
   {
     direct: '"Can you carry my bag upstairs?"',
     text: 'Grandma _____ me _____ her bag upstairs.',
-    options: ['told / to carry', 'asked / to carry', 'suggested / carrying', 'advised / to carry', 'asked / carrying'],
-    answer: 1,
+    options: ['asked / to carry', 'told / to carry', 'suggested / carrying', 'advised / to carry', 'asked / carrying'],
+    answer: 0,
     explanation: '"Can you \u2026?" is a request \u2192 ask sb. to do sth. \u2192 asked me to carry.'
   },
   {
     direct: '"Don\'t stay up too late!"',
     text: 'Mum _____ my brother _____ up too late.',
-    options: ['advised / not to stay', 'told / not to stay', 'asked / not to stay', 'suggested / not staying', 'told / to not stayed'],
-    answer: 1,
+    options: ['advised / not to stay', 'asked / not to stay', 'suggested / not staying', 'told / to not stayed', 'told / not to stay'],
+    answer: 4,
     explanation: 'A warning/command \u2192 tell sb. not to do sth. \u2192 told my brother not to stay.'
   }
 ];

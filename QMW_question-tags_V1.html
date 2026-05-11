@@ -3,18 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QMW_question-tags_V1.html</title>
+<title>Question Tags</title>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Quicksand', sans-serif; background: #e0f7f4; color: #1a4a44; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
 h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; text-align: center; color: #1a7a72; }
-.subtitle { color: #7ab8b3; font-size: 0.9rem; margin-bottom: 20px; text-align: center; font-weight: 600; }
 .start-screen { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
-.start-emoji { font-size: 4rem; }
 .start-title { font-size: 1.1rem; font-weight: 600; color: #7ab8b3; letter-spacing: 1px; }
 .start-info { background: white; border-radius: 16px; padding: 24px 28px; max-width: 400px; width: 100%; box-shadow: 0 4px 20px rgba(38,166,154,0.1); display: flex; flex-direction: column; gap: 14px; }
-.start-info p { font-size: 0.95rem; color: #2d6b65; font-weight: 600; }
 .timer-input-row { display: flex; align-items: center; gap: 10px; }
 .timer-input-row label { font-size: 0.95rem; color: #2d6b65; font-weight: 600; white-space: nowrap; }
 .timer-input { width: 70px; padding: 8px 12px; border-radius: 8px; border: 2px solid #b2dfdb; font-family: 'Quicksand', sans-serif; font-size: 1rem; font-weight: 700; color: #1a7a72; text-align: center; outline: none; background: white; }
@@ -159,15 +156,57 @@ function beep() {
   } catch(e) {}
 }
 
+/* V1 — PLAN: 2,0,4,1,3,2,0,4
+   Alle Positionen 0-4 vertreten. Keine drei gleichen. Keine zwei gleichen hintereinander. ✅ */
 var questions = [
-  {text:'She works at the hospital, ______?',options:['does she','isn\'t she','she doesn\'t','doesn\'t she','she does'],answer:3,explanation:'After a positive statement with \'works\' (does), the tag is negative: doesn\'t she.'},
-  {text:'They ______ finish the report by Friday, can they?',options:['can\'t','cannot','could','can','will'],answer:0,explanation:'Negative tag \'can they\' \u2192 the main clause must be negative: can\'t.'},
-  {text:'You were at the party last night, ______?',options:['were you','you were','aren\'t you','wasn\'t you','weren\'t you'],answer:4,explanation:'\'were\' past tense \u2192 tag is \'weren\'t you\'.'},
-  {text:'He ______ speak French when he was young, did he?',options:['doesn\'t','didn\'t','can\'t','wasn\'t','couldn\'t'],answer:1,explanation:'Negative tag \'did he\' \u2192 main clause uses \'didn\'t\'. Past simple negative.'},
-  {text:'You have finished your homework, ______?',options:['do you','have you','haven\'t you','had you','didn\'t you'],answer:2,explanation:'\'have finished\' (present perfect) \u2192 tag is \'haven\'t you\'.'},
-  {text:'The concert ______ start at eight, does it?',options:['isn\'t','wasn\'t','can\'t','won\'t','doesn\'t'],answer:4,explanation:'Negative tag \'does it\' \u2192 main clause is \'doesn\'t\'. Present simple.'},
-  {text:'I ______ come to the meeting tomorrow, can I?',options:['can\'t','cannot','couldn\'t','can','won\'t'],answer:0,explanation:'Negative tag \'can I\' \u2192 main clause needs \'can\'t\'. Modal \'can\' negative.'},
-  {text:'She ______ been waiting for long, has she?',options:['wasn\'t','didn\'t','can\'t','hasn\'t','wouldn\'t'],answer:3,explanation:'Negative tag \'has she\' \u2192 main clause needs \'hasn\'t been\'. Present perfect.'}
+  {
+    text: 'She plays tennis every week, ______?',
+    options: ['does she','she does','doesn\'t she','she plays','is she'],
+    answer: 2,
+    explanation: 'Positive statement with "plays" (does) \u2192 negative tag: doesn\'t she.'
+  },
+  {
+    text: 'He didn\'t finish his homework before dinner, ______?',
+    options: ['did he','doesn\'t he','wasn\'t he','couldn\'t he','hasn\'t he'],
+    answer: 0,
+    explanation: 'Negative "didn\'t" \u2192 positive tag: did he. Past simple.'
+  },
+  {
+    text: 'You were late to school yesterday, ______?',
+    options: ['are you','you were','wasn\'t you','were you','weren\'t you'],
+    answer: 4,
+    explanation: 'Positive "were" \u2192 negative tag: weren\'t you. Past tense to-be.'
+  },
+  {
+    text: 'We went to the zoo last Sunday, ______?',
+    options: ['did we','didn\'t we','weren\'t we','do we','we did'],
+    answer: 1,
+    explanation: 'Positive past simple "went" \u2192 negative tag: didn\'t we.'
+  },
+  {
+    text: 'They have already eaten lunch, ______?',
+    options: ['did they','do they','have they','haven\'t they','hadn\'t they'],
+    answer: 3,
+    explanation: 'Positive "have eaten" (present perfect) \u2192 negative tag: haven\'t they.'
+  },
+  {
+    text: 'You forgot your keys again, ______?',
+    options: ['do you','did you','didn\'t you','were you','don\'t you'],
+    answer: 2,
+    explanation: 'Positive past simple "forgot" \u2192 negative tag: didn\'t you.'
+  },
+  {
+    text: 'She hasn\'t called him back, ______?',
+    options: ['has she','didn\'t she','wasn\'t she','couldn\'t she','wouldn\'t she'],
+    answer: 0,
+    explanation: 'Negative "hasn\'t" \u2192 positive tag: has she. Present perfect.'
+  },
+  {
+    text: 'He reads the newspaper every morning, ______?',
+    options: ['is he','does he','reads he','he does','doesn\'t he'],
+    answer: 4,
+    explanation: 'Positive statement with "reads" (does) \u2192 negative tag: doesn\'t he.'
+  }
 ];
 
 var current = 0, score = 0, answered = false, paused = false;
@@ -201,7 +240,6 @@ function renderQuestion() {
   document.getElementById('backBtn').textContent = current === 0 ? '\u2190 Start' : '\u2190 Back';
   document.getElementById('pauseBtn').textContent = 'Pause';
   paused = false;
-
   if (answeredState[current] !== undefined) {
     answered = true; clearInterval(timerInterval);
     var state = answeredState[current];
@@ -213,7 +251,7 @@ function renderQuestion() {
       fb.textContent = (state.correct ? '\u2705 Correct! ' : '\u274C Not quite! ') + q.explanation;
       fb.className = 'feedback show ' + (state.correct ? 'correct-fb' : 'wrong-fb');
     } else {
-      document.getElementById('feedback').textContent = "\u23F0 Time's up! Next question please.";
+      document.getElementById('feedback').textContent = '\u23F0 Time\'s up! Next question please.';
       document.getElementById('feedback').className = 'feedback show timeout-fb';
     }
     document.getElementById('timerFill').style.width = '0%';
@@ -235,9 +273,7 @@ function goBack() {
     document.getElementById('scoreNum').textContent = 0;
     document.getElementById('questionArea').style.display = 'block';
     document.getElementById('resultScreen').classList.remove('show');
-  } else {
-    current--; renderQuestion();
-  }
+  } else { current--; renderQuestion(); }
 }
 
 function togglePause() {
@@ -259,7 +295,7 @@ function tick() {
     if (!answered) {
       answered = true; answeredState[current] = { chosen: null, correct: false };
       for (var i = 0; i < questions[current].options.length; i++) { document.getElementById('btn' + i).disabled = true; }
-      document.getElementById('feedback').textContent = "\u23F0 Time's up! Next question please.";
+      document.getElementById('feedback').textContent = '\u23F0 Time\'s up! Next question please.';
       document.getElementById('feedback').className = 'feedback show timeout-fb';
       document.getElementById('pauseBtn').disabled = true;
     }
@@ -302,12 +338,10 @@ function showResult() {
   document.getElementById('bigNumber').textContent = ''; document.getElementById('bigLabel').textContent = '';
   document.getElementById('questionArea').style.display = 'none'; document.getElementById('resultScreen').classList.add('show');
   var wolf = document.getElementById('wolfLogo');
-  wolf.classList.remove('animate');
-  void wolf.offsetWidth;
-  wolf.classList.add('animate');
+  wolf.classList.remove('animate'); void wolf.offsetWidth; wolf.classList.add('animate');
   var pct = score / questions.length;
   document.getElementById('resultTitle').textContent = pct===1?'Perfect!':pct>=0.75?'Great job!':pct>=0.5?'Good effort!':'Keep going!';
-  document.getElementById('resultScore').textContent = pct===1?'All 8 correct. Excellent!':score+' out of '+questions.length+' correct.'+(pct<0.75?' Keep practising!':'');
+  document.getElementById('resultScore').textContent = pct===1?'All '+questions.length+' correct. Excellent!':score+' out of '+questions.length+' correct.'+(pct<0.75?' Keep practising!':'');
 }
 
 function restart() {
